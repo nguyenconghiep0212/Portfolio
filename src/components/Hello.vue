@@ -3,9 +3,9 @@ defineProps<{ msg: string }>()
 </script>
 
 <template>
-  <h3>{{ msg }}</h3>
+  <h3 class="text-red-400">{{ msg }}</h3>
 
-  <p>
+  <p  >
     Recommended IDE setup:
     <a href="https://code.visualstudio.com/" target="_blank">VSCode</a>
     +
