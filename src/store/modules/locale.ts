@@ -11,13 +11,19 @@ const ls = createLocalStorage();
 const lsLocaleSetting = (ls.get(LOCALE_KEY) || localeSetting) as LocaleSetting;
 
 export const useLocaleStore = defineStore("localeStore", () => {
-  const localInfo: LocaleSetting = lsLocaleSetting;
+  let localInfo: LocaleSetting = lsLocaleSetting;
   const locale = computed(() => {
     return localInfo.locale;
   });
 
+  function setLocaleInfo(info: Partial<LocaleSetting>) {
+    localInfo = { ...localInfo, ...info };
+    ls.set(LOCALE_KEY, localInfo);
+  }
+
   return {
     localInfo,
     locale,
+    setLocaleInfo,
   };
 });
