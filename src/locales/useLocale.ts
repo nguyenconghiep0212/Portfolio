@@ -15,11 +15,7 @@ interface LangModule {
 
 function setI18nLanguage(locale: LocaleType) {
   const localeStore = useLocaleStore();
-  if (i18n.mode === "legacy") {
-    i18n.global.locale = locale;
-  } else {
-    (i18n.global.locale as any).value = locale;
-  }
+  (i18n.global.locale as any).value = locale;
   localeStore.setLocaleInfo({ locale });
   setHtmlPageLang(locale);
 }
@@ -34,8 +30,6 @@ export function useLocale() {
   async function changeLocale(locale: LocaleType) {
     const globalI18n = i18n.global;
     const currentLocale = unref(globalI18n.locale);
-    console.log(currentLocale, "currentLocale");
-    console.log(locale, "change to");
     if (currentLocale === locale) {
       return locale;
     }
