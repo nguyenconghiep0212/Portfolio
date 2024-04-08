@@ -6,6 +6,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "index",
     component: () => import("../views/index.vue"),
   },
+  {
+    path: "/solarSystem",
+    name: "solarSystem",
+    component: () => import("../views/solarSystem.vue"),
+  },
 ];
 
 const router = createRouter({
