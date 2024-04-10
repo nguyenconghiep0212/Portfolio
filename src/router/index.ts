@@ -2,17 +2,17 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/interactive-map",
+    path: "/",
     name: "index",
     component: () => import("../views/index.vue"),
   },
   {
-    path: "/interactive-map/playground",
+    path: "/playground",
     name: "playground",
     component: () => import("../views/playground.vue"),
   },
   {
-    path: "/interactive-map/solarSystem",
+    path: "/solarSystem",
     name: "solarSystem",
     component: () => import("../views/solarSystem.vue"),
   },
