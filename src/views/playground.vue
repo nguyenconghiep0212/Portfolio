@@ -86,11 +86,11 @@ function addStars() {
   star.position.set(x, y, z);
   scene.add(star);
 }
-Array(500)
-  .fill()
-  .forEach(() => {
-    addStars();
-  });
+// Array(500)
+//   .fill()
+//   .forEach(() => {
+//     addStars();
+//   });
 
 // LOAD BACKGROUND IMAGE
 const loader = new THREE.TextureLoader();
