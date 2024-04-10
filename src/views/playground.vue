@@ -7,6 +7,7 @@
 import * as THREE from "three";
 import { onMounted, ref } from "vue";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
 // SET UP CANVAS
 const el = ref(null);
 const scene = new THREE.Scene();
@@ -41,6 +42,7 @@ const material = new THREE.MeshStandardMaterial({
   color: "orange",
 });
 const torus = new THREE.Mesh(geometry, material);
+torus.position.set(50,50,50)
 scene.add(torus);
 function animate() {
   requestAnimationFrame(animate);
@@ -51,28 +53,10 @@ function animate() {
   orbitControls.update();
 
   render(scene, camera);
+
+  // ROTATE EARTH
+  earth.rotation.y -= 0.001;
 }
-
-// POPULATE SCENE WITH STARS
-function addStars() {
-  const geometry = new THREE.SphereGeometry();
-  const material = new THREE.MeshStandardMaterial({ color: "yellow" });
-
-  const star = new THREE.Mesh(geometry, material);
-
-  const [x, y, z] = Array(3)
-    .fill()
-    .map(() => THREE.MathUtils.randFloatSpread(100));
-
-  star.position.set(x, y, z);
-  scene.add(star);
-}
-
-Array(500)
-  .fill()
-  .forEach(() => {
-    addStars();
-  });
 
 // LIGHTING
 const pointLight1 = new THREE.PointLight(0xffffff, 2, 0, 1);
@@ -81,8 +65,32 @@ const pointLight2 = new THREE.PointLight(0xffffff);
 pointLight2.position.set(0, 0, 0);
 scene.add(pointLight1, pointLight2);
 
-const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
+const ambientLight = new THREE.AmbientLight(0x404040, 4);
 scene.add(ambientLight);
+
+// GRIP HELPER
+const lightHelper1 = new THREE.PointLightHelper(pointLight1);
+const lightHelper2 = new THREE.PointLightHelper(pointLight2);
+const gridHelper = new THREE.GridHelper(200, 50);
+scene.add(lightHelper1, lightHelper2, gridHelper);
+
+// POPULATE SCENE WITH STARS
+function addStars() {
+  const geometry = new THREE.SphereGeometry();
+  const material = new THREE.MeshStandardMaterial({ color: "yellow" });
+  const star = new THREE.Mesh(geometry, material);
+  const [x, y, z] = Array(3)
+    .fill()
+    .map(() => THREE.MathUtils.randFloatSpread(100));
+
+  star.position.set(x, y, z);
+  scene.add(star);
+}
+Array(500)
+  .fill()
+  .forEach(() => {
+    addStars();
+  });
 
 // LOAD BACKGROUND IMAGE
 const loader = new THREE.TextureLoader();
@@ -93,9 +101,19 @@ loader.load("src/assets/images/space_bg.jpg", function (texture: any) {
   scene.background = texture;
 });
 
-// GRIP HELPER
-const lightHelper1 = new THREE.PointLightHelper(pointLight1);
-const lightHelper2 = new THREE.PointLightHelper(pointLight2);
-const gridHelper = new THREE.GridHelper(200, 50);
-scene.add(lightHelper1, lightHelper2, gridHelper);
+// TEXTURE MAPPING
+const earthTexture = new THREE.TextureLoader().load(
+  "src/assets/images/earth.jpg"
+);
+const earthNormalTexture = new THREE.TextureLoader().load(
+  "src/assets/images/earth_normal_map.jpg"
+);
+const earth = new THREE.Mesh(
+  new THREE.SphereGeometry(5, 32, 32),
+  new THREE.MeshStandardMaterial({
+    map: earthTexture,
+    normalMap: earthNormalTexture,
+  })
+);
+scene.add(earth);
 </script>
