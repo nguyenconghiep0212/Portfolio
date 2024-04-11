@@ -4,8 +4,8 @@ import eslintPLugin from "vite-plugin-eslint";
 import { resolve } from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig({ 
-  base:'/interactive-map/',
+export default defineConfig({
+  base: "/interactive-map/",
   server: {
     port: 4001,
   },

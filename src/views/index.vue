@@ -1,5 +1,7 @@
 <template>
   <div class="h-full mx-8 my-3">
+        <div>{{ t("view.test") }}</div>
+
     <div class="grid grid-cols-2 gap-2">
       <div
         v-for="(item, index) in menu"
@@ -15,6 +17,11 @@
 
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
+
+import { useI18n } from "/@/hooks/useI18n";
+
+const { t } = useI18n(); 
+
 const router = useRouter();
 const menu = [
   {
