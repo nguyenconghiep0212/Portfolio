@@ -7,6 +7,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/index.vue"),
   },
   {
+    path: "/tresjs",
+    name: "tresjs",
+    component: () => import("../views/tresjs.vue"),
+  },
+  {
     path: "/playground",
     name: "playground",
     component: () => import("../views/playground.vue"),
