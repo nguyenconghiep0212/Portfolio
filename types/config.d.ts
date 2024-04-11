@@ -11,18 +11,10 @@ export interface LocaleSetting {
 }
 
 export interface GlobConfig {
-  // Site title
-  title: string;
-  // Name Map
-  nameApp: object;
   // Service interface url
   apiUrl: string;
   // Upload url
   uploadUrl?: string;
-  //  Service interface url prefix
-  urlPrefix?: string;
-  // Project abbreviation
-  shortName: string;
 }
 export interface GlobEnvConfig {
   // Service interface url
