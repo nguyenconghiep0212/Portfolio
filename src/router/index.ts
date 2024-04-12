@@ -21,6 +21,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "solarSystem",
     component: () => import("../views/solarSystem.vue"),
   },
+
+  {
+    path: "/404",
+    name: "error",
+    component: () => import("../views/error.vue"),
+  },
 ];
 
 const router = createRouter({
@@ -28,4 +34,7 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, from) => {
+  console.log(from, "---->", to);
+});
 export default router;
