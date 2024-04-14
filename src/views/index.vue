@@ -19,24 +19,18 @@
 import { useRouter } from "vue-router";
 
 import { useI18n } from "/@/hooks/useI18n";
+import { computed } from "vue";
 
-const { t } = useI18n(); 
+const { t } = useI18n();
 
 const router = useRouter();
-const menu = [
-  {
-    title: "tresjs test",
-    to: "tresjs",
-  },
-  {
-    title: "Solar System",
-    to: "solarSystem",
-  },
-  {
-    title: "Playground",
-    to: "playground",
-  },
-];
+ console.log(router.options.routes)
+const menu = computed(() => {
+  return router.options.routes.map(e => ({
+    title: e.meta ? e.meta.title : e.name,
+    to: e.name,
+  }))
+})
 
 function redirect(to: string) {
   window.open(

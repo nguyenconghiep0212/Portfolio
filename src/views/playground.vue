@@ -7,6 +7,7 @@
 import * as THREE from "three";
 import { onMounted, ref } from "vue";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import getStarfield from "/@/utils/helper/starField";
 
 // SET UP CANVAS
 const el = ref(null);
@@ -81,28 +82,30 @@ const gridHelper = new THREE.GridHelper(200, 50);
 scene.add(lightHelper1, lightHelper2, gridHelper);
 
 // POPULATE SCENE WITH STARS
-function addStars() {
-  const geometry = new THREE.SphereGeometry();
-  const material = new THREE.MeshStandardMaterial({ color: "yellow" });
-  const star = new THREE.Mesh(geometry, material);
-  const [x, y, z] = Array(3)
-    .fill()
-    .map(() => THREE.MathUtils.randFloatSpread(100));
+// function addStars() {
+//   const geometry = new THREE.SphereGeometry();
+//   const material = new THREE.MeshStandardMaterial({ color: "yellow" });
+//   const star = new THREE.Mesh(geometry, material);
+//   const [x, y, z] = Array(3)
+//     .fill()
+//     .map(() => THREE.MathUtils.randFloatSpread(100));
 
-  star.position.set(x, y, z);
-  scene.add(star);
-}
+//   star.position.set(x, y, z);
+//   scene.add(star);
+// }
 // Array(500)
 //   .fill()
 //   .forEach(() => {
 //     addStars();
 //   });
+const stars = getStarfield()
+scene.add(stars)
 
 // LOAD BACKGROUND IMAGE
-const loader = new THREE.TextureLoader();
-loader.load("src/assets/images/space_bg.png", function (texture: any) {
-  scene.background = texture;
-});
+// const loader = new THREE.TextureLoader();
+// loader.load("src/assets/images/space_bg.png", function (texture: any) {
+//   scene.background = texture;
+// });
 
 // TEXTURE MAPPING
 const earthTexture = new THREE.TextureLoader().load(
