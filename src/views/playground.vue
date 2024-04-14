@@ -43,7 +43,7 @@ const material = new THREE.MeshStandardMaterial({
 });
 const torus = new THREE.Mesh(geometry, material);
 torus.position.set(50,50,50)
-scene.add(torus);
+// scene.add(torus);
 function animate() {
   requestAnimationFrame(animate);
   torus.rotation.x += 0.001;
@@ -56,16 +56,22 @@ function animate() {
 
   // ROTATE EARTH
   earth.rotation.y -= 0.001;
+  moon.rotation.y -= 0.002;
 }
 
 // LIGHTING
+// PointLight( color : Integer, intensity : Float, distance : Number, decay : Float )
+// color - (optional) hexadecimal color of the light. Default is 0xffffff (white).
+// intensity - (optional) numeric value of the light's strength/intensity. Default is 1.
+// distance - Maximum range of the light. Default is 0 (no limit).
+// decay - The amount the light dims along the distance of the light. Default is 2.
 const pointLight1 = new THREE.PointLight(0xffffff, 2, 0, 1);
 pointLight1.position.set(10, 10, 10);
-const pointLight2 = new THREE.PointLight(0xffffff);
-pointLight2.position.set(0, 0, 0);
+const pointLight2 = new THREE.PointLight(0xffffff, 5, 500, 0);
+pointLight2.position.set(-35, -5, 20);
 scene.add(pointLight1, pointLight2);
 
-const ambientLight = new THREE.AmbientLight(0x404040, 4);
+const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
 scene.add(ambientLight);
 
 // GRIP HELPER
@@ -94,10 +100,7 @@ function addStars() {
 
 // LOAD BACKGROUND IMAGE
 const loader = new THREE.TextureLoader();
-loader.load("src/assets/images/space_bg.jpg", function (texture: any) {
-  console.log(texture, "spaceBackground");
-
-  // in this example we create the material when the texture is loaded
+loader.load("src/assets/images/space_bg.png", function (texture: any) {
   scene.background = texture;
 });
 
@@ -109,11 +112,29 @@ const earthNormalTexture = new THREE.TextureLoader().load(
   "src/assets/images/earth_normal_map.jpg"
 );
 const earth = new THREE.Mesh(
-  new THREE.SphereGeometry(5, 32, 32),
+  new THREE.SphereGeometry(15, 32, 32),
   new THREE.MeshStandardMaterial({
     map: earthTexture,
     normalMap: earthNormalTexture,
   })
 );
 scene.add(earth);
+
+// ADDING THE MOON AND ORBIT
+const moonTexture = new THREE.TextureLoader().load(
+  "src/assets/images/moon.jpg"
+);
+const moonNormalTexture = new THREE.TextureLoader().load(
+  "src/assets/images/moon_normal_map.jpg"
+);
+const moon = new THREE.Mesh(
+  new THREE.SphereGeometry(6.25, 32, 32),
+  new THREE.MeshStandardMaterial({
+    map: moonTexture,
+    normalMap: moonNormalTexture,
+  })
+);
+moon.position.set(20,0,50)
+
+scene.add(moon);
 </script>
