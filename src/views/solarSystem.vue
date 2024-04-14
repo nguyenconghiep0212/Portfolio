@@ -16,7 +16,6 @@
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
   });
-  const earthSystem = new THREE.Object3D();
 
   onMounted(() => {
     scene.background = new THREE.Color("black");
@@ -42,33 +41,49 @@
     requestAnimationFrame(animate);
     orbitControls.update();
     render(scene, camera);
-    // ROTATE EARTH
+
+    sun.rotateY(0.001)
     earth.rotateY(0.01);
     moon.rotateY(-0.02);
-    earthSystem.rotateY(0.001);
+    earthSystem.rotateY(0.01);
+    earthSystemObj.rotateY(0.01)
   }
 
   // LIGHTING
-  const pointLight1 = new THREE.PointLight(0xffffff, 2, 0, 1);
-  pointLight1.position.set(10, 10, 10);
-  const pointLight2 = new THREE.PointLight(0xffffff, 3, 500, 0);
-  pointLight2.position.set(-35, -5, 20);
-  scene.add(pointLight1, pointLight2);
+  const pointLight1 = new THREE.PointLight(0xffffff, 2, 500, 0);
+  pointLight1.position.set(0, 0, 0);
+  // const pointLight2 = new THREE.PointLight(0xffffff, 3, 500, 0);
+  // pointLight2.position.set(-35, -5, 20);
+  scene.add(pointLight1);
 
   const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
   scene.add(ambientLight);
 
   // GRIP HELPER
   const lightHelper1 = new THREE.PointLightHelper(pointLight1);
-  const lightHelper2 = new THREE.PointLightHelper(pointLight2);
+  // const lightHelper2 = new THREE.PointLightHelper(pointLight2);
   const gridHelper = new THREE.GridHelper(200, 50);
-  scene.add(lightHelper1, lightHelper2, gridHelper);
+  scene.add(lightHelper1,  gridHelper);
 
   // POPULATE SCENE WITH STARS
   const stars = getStarfield();
   scene.add(stars);
 
+  // ADDING SUN
+  const sunGeo = new THREE.SphereGeometry(20, 12, 12);
+  const sunMat = new THREE.MeshBasicMaterial({
+    color: "#FFE600",
+    wireframe: true,
+  });
+  const sun = new THREE.Mesh(sunGeo, sunMat);
+  scene.add(sun);
+
   // ADDING EARTH
+  const earthSystemObj = new THREE.Object3D();
+
+  const earthSystem = new THREE.Object3D();
+  earthSystem.position.set(40, 0, 0);
+
   const earthTexture = new THREE.TextureLoader().load(
     "src/assets/images/earth.jpg"
   );
@@ -76,7 +91,7 @@
     "src/assets/images/earth_normal_map.jpg"
   );
   const earth = new THREE.Mesh(
-    new THREE.SphereGeometry(15, 32, 32),
+    new THREE.SphereGeometry(4, 32, 32),
     new THREE.MeshStandardMaterial({
       map: earthTexture,
       normalMap: earthNormalTexture,
@@ -91,16 +106,17 @@
     "src/assets/images/moon_normal_map.jpg"
   );
   const moon = new THREE.Mesh(
-    new THREE.SphereGeometry(6.25, 32, 32),
+    new THREE.SphereGeometry(1, 32, 32),
     new THREE.MeshStandardMaterial({
       map: moonTexture,
       normalMap: moonNormalTexture,
     })
   );
-  moon.position.set(20, 0, 50);
-  const pointLightMoon = new THREE.PointLight(0xffffff, 0.04, 500, 0);
+  moon.position.set(6, 0, 0);
+  const pointLightMoon = new THREE.PointLight(0xffffff, 0.2, 500, 0);
   moon.add(pointLightMoon);
 
   earthSystem.add(earth, moon);
-  scene.add(earthSystem);
+  earthSystemObj.add(earthSystem)
+  scene.add(earthSystemObj);
 </script>
