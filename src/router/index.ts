@@ -36,7 +36,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/solarSystem",
     name: "solarSystem",
-    component: () => import("../views/solarSystem.vue"),
+    component: () => import("../views/SolarSystem/solarSystem.vue"),
     meta: {
       title: "Solar system",
     },

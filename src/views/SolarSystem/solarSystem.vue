@@ -8,6 +8,16 @@
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   import getStarfield from "/@/utils/helper/starField";
 
+  // PLANETS
+  import {
+    MarsSystemObj,
+    MarsSystem,
+    Mars,
+    DeimosObj,
+    PhobosObj,
+  } from "./MarsSystem";
+  import { earth, earthSystem, earthSystemObj, moon } from "./EarthSystem";
+
   // SET UP CANVAS
   const el = ref(null);
   const scene = new THREE.Scene();
@@ -21,7 +31,7 @@
     scene.background = new THREE.Color("black");
     const { width, height } = el.value.getBoundingClientRect();
     camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    camera.position.setZ(30);
+    camera.position.set(0, 50, 50);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
     el.value.appendChild(renderer.domElement);
@@ -42,11 +52,20 @@
     orbitControls.update();
     render(scene, camera);
 
-    sun.rotateY(0.001)
+    sun.rotateY(0.001);
+
+    // EARTH ROTATION
     earth.rotateY(0.01);
     moon.rotateY(-0.02);
     earthSystem.rotateY(0.01);
-    earthSystemObj.rotateY(0.01)
+    earthSystemObj.rotateY(0.0009);
+
+    // MARS ROTATION
+    MarsSystemObj.rotateY(0.0008);
+    MarsSystem.rotateY(0.009);
+    Mars.rotateY(0.01);
+    DeimosObj.rotateY(0.02);
+    PhobosObj.rotateY(0.025);
   }
 
   // LIGHTING
@@ -63,7 +82,7 @@
   const lightHelper1 = new THREE.PointLightHelper(pointLight1);
   // const lightHelper2 = new THREE.PointLightHelper(pointLight2);
   const gridHelper = new THREE.GridHelper(200, 50);
-  scene.add(lightHelper1,  gridHelper);
+  scene.add(lightHelper1, gridHelper);
 
   // POPULATE SCENE WITH STARS
   const stars = getStarfield();
@@ -78,45 +97,6 @@
   const sun = new THREE.Mesh(sunGeo, sunMat);
   scene.add(sun);
 
-  // ADDING EARTH
-  const earthSystemObj = new THREE.Object3D();
-
-  const earthSystem = new THREE.Object3D();
-  earthSystem.position.set(40, 0, 0);
-
-  const earthTexture = new THREE.TextureLoader().load(
-    "src/assets/images/earth.jpg"
-  );
-  const earthNormalTexture = new THREE.TextureLoader().load(
-    "src/assets/images/earth_normal_map.jpg"
-  );
-  const earth = new THREE.Mesh(
-    new THREE.SphereGeometry(4, 32, 32),
-    new THREE.MeshStandardMaterial({
-      map: earthTexture,
-      normalMap: earthNormalTexture,
-    })
-  );
-
-  // ADDING THE MOON AND ORBIT
-  const moonTexture = new THREE.TextureLoader().load(
-    "src/assets/images/moon.jpg"
-  );
-  const moonNormalTexture = new THREE.TextureLoader().load(
-    "src/assets/images/moon_normal_map.jpg"
-  );
-  const moon = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 32, 32),
-    new THREE.MeshStandardMaterial({
-      map: moonTexture,
-      normalMap: moonNormalTexture,
-    })
-  );
-  moon.position.set(6, 0, 0);
-  const pointLightMoon = new THREE.PointLight(0xffffff, 0.2, 500, 0);
-  moon.add(pointLightMoon);
-
-  earthSystem.add(earth, moon);
-  earthSystemObj.add(earthSystem)
   scene.add(earthSystemObj);
+  scene.add(MarsSystemObj);
 </script>
