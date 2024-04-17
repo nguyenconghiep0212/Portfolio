@@ -1,10 +1,9 @@
 import * as THREE from "three";
-
+import createLineLoopWithMesh from "/@/utils/helper/orbitalPath";
 // ADDING EARTH
 export const earthSystemObj = new THREE.Object3D();
-
 export const earthSystem = new THREE.Object3D();
-earthSystem.position.set(40, 0, 0);
+earthSystem.position.set(70, 0, 0);
 
 const earthTexture = new THREE.TextureLoader().load(
   "src/assets/images/earth.jpg"
@@ -38,5 +37,8 @@ moon.position.set(6, 0, 0);
 const pointLightMoon = new THREE.PointLight(0xffffff, 0.2, 500, 0);
 moon.add(pointLightMoon);
 
-earthSystem.add(earth, moon);
+export const earthPath = createLineLoopWithMesh(70, 0xffffff, 3);
+const moonPath = createLineLoopWithMesh(6, 0xffffff, 3);
+
+earthSystem.add(earth, moon, moonPath);
 earthSystemObj.add(earthSystem);

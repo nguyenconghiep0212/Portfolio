@@ -9,14 +9,24 @@
   import getStarfield from "/@/utils/helper/starField";
 
   // PLANETS
+  import { sun, sunLightHelper } from "./Sun";
+  import { mercurySystemObj, mercury } from "./Mercury";
+  import { venusSystemObj, venus } from "./Venus";
   import {
-    MarsSystemObj,
-    MarsSystem,
-    Mars,
-    DeimosObj,
-    PhobosObj,
+    earth,
+    earthSystem,
+    earthSystemObj,
+    earthPath,
+    moon,
+  } from "./EarthSystem";
+
+  import {
+    marsSystemObj,
+    marsSystem,
+    mars,
+    deimosObj,
+    phobosObj,
   } from "./MarsSystem";
-  import { earth, earthSystem, earthSystemObj, moon } from "./EarthSystem";
 
   // SET UP CANVAS
   const el = ref(null);
@@ -54,6 +64,14 @@
 
     sun.rotateY(0.001);
 
+    // MERCURY
+    mercury.rotateY(0.006);
+    mercurySystemObj.rotateY(0.01);
+
+    // Venus
+    venus.rotateY(0.002);
+    venusSystemObj.rotateY(0.003);
+
     // EARTH ROTATION
     earth.rotateY(0.01);
     moon.rotateY(-0.02);
@@ -61,42 +79,33 @@
     earthSystemObj.rotateY(0.0009);
 
     // MARS ROTATION
-    MarsSystemObj.rotateY(0.0008);
-    MarsSystem.rotateY(0.009);
-    Mars.rotateY(0.01);
-    DeimosObj.rotateY(0.02);
-    PhobosObj.rotateY(0.025);
+    marsSystemObj.rotateY(0.0008);
+    marsSystem.rotateY(0.009);
+    mars.rotateY(0.01);
+    deimosObj.rotateY(0.02);
+    phobosObj.rotateY(0.025);
   }
 
   // LIGHTING
-  const pointLight1 = new THREE.PointLight(0xffffff, 2, 500, 0);
-  pointLight1.position.set(0, 0, 0);
-  // const pointLight2 = new THREE.PointLight(0xffffff, 3, 500, 0);
-  // pointLight2.position.set(-35, -5, 20);
-  scene.add(pointLight1);
-
   const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
   scene.add(ambientLight);
 
   // GRIP HELPER
-  const lightHelper1 = new THREE.PointLightHelper(pointLight1);
-  // const lightHelper2 = new THREE.PointLightHelper(pointLight2);
-  const gridHelper = new THREE.GridHelper(200, 50);
-  scene.add(lightHelper1, gridHelper);
+  const gridHelper = new THREE.GridHelper(500, 100);
+  scene.add(gridHelper, sunLightHelper);
 
   // POPULATE SCENE WITH STARS
   const stars = getStarfield();
   scene.add(stars);
 
-  // ADDING SUN
-  const sunGeo = new THREE.SphereGeometry(20, 12, 12);
-  const sunMat = new THREE.MeshBasicMaterial({
-    color: "#FFE600",
-    wireframe: true,
+  const loader = new THREE.TextureLoader();
+  loader.load("src/assets/images/background.jpg", function (texture: any) {
+    scene.background = texture;
   });
-  const sun = new THREE.Mesh(sunGeo, sunMat);
-  scene.add(sun);
 
-  scene.add(earthSystemObj);
-  scene.add(MarsSystemObj);
+  scene.add(sun);
+  scene.add(mercurySystemObj);
+  scene.add(venusSystemObj);
+  scene.add(earthSystemObj, earthPath);
+  scene.add(marsSystemObj);
 </script>

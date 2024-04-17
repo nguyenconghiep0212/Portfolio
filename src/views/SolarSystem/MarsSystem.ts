@@ -1,34 +1,34 @@
 import * as THREE from "three";
 import createRock from "/@/utils/helper/astroid";
 
-export const MarsSystemObj = new THREE.Object3D();
-export const MarsSystem = new THREE.Object3D();
-MarsSystem.position.set(60, 0, 0);
+export const marsSystemObj = new THREE.Object3D();
+export const marsSystem = new THREE.Object3D();
+marsSystem.position.set(90, 0, 0);
 
-const MarsTextureMap = new THREE.TextureLoader().load(
+const marsTextureMap = new THREE.TextureLoader().load(
   "src/assets/images/mars.jpg"
 );
-const MarsNormalMap = new THREE.TextureLoader().load(
+const marsNormalMap = new THREE.TextureLoader().load(
   "src/assets/images/mars_normal_map.jpg"
 );
 
-const MarsGeo = new THREE.SphereGeometry(3, 32, 32);
-const MarsMat = new THREE.MeshStandardMaterial({
-  map: MarsTextureMap,
-  normalMap: MarsNormalMap,
+const marsGeo = new THREE.SphereGeometry(3, 32, 32);
+const marsMat = new THREE.MeshStandardMaterial({
+  map: marsTextureMap,
+  normalMap: marsNormalMap,
 });
-export const Mars = new THREE.Mesh(MarsGeo, MarsMat);
+export const mars = new THREE.Mesh(marsGeo, marsMat);
 
-export const PhobosObj = new THREE.Object3D();
-const Phobos = createRock(0.3)
-PhobosObj.add(Phobos);
-Phobos.position.set(5, 0, 0);
+export const phobosObj = new THREE.Object3D();
+const phobos = createRock(0.3)
+phobosObj.add(phobos);
+phobos.position.set(5, 0, 0);
 
-export const DeimosObj = new THREE.Object3D();
-const Deimos = createRock(0.2)
-DeimosObj.add(Deimos);
-Deimos.position.set(6, 0, 0);
+export const deimosObj = new THREE.Object3D();
+const deimos = createRock(0.2)
+deimosObj.add(deimos);
+deimos.position.set(6, 0, 0);
 
-MarsSystem.add(Mars, PhobosObj, DeimosObj);
+marsSystem.add(mars, phobosObj, deimosObj);
 
-MarsSystemObj.add(MarsSystem);
+marsSystemObj.add(marsSystem);
