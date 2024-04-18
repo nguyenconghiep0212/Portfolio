@@ -1,5 +1,5 @@
 import * as THREE from "three";
-export default function createLineLoopWithMesh(radius: number, color: number, width: number) {
+export default function createLineLoopWithMesh(radius: number, color: number | string, width: number) {
   const material = new THREE.LineBasicMaterial({
     color: color,
     linewidth: width,

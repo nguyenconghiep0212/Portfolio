@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import createLineLoopWithMesh from "/@/utils/helper/orbitalPath";
 
 // ADDING EARTH
 export const mercurySystemObj = new THREE.Object3D();
@@ -17,5 +18,6 @@ export const mercury = new THREE.Mesh(
   })
 );
 mercury.position.set(30, 0, 0);
+export const mercuryPath = createLineLoopWithMesh(30, "white", 1);
 
 mercurySystemObj.add(mercury);

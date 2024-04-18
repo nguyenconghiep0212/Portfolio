@@ -2,7 +2,7 @@ import * as THREE from "three";
 import createRock from "/@/utils/helper/astroid";
 
 export const marsSystemObj = new THREE.Object3D();
-export const marsSystem = new THREE.Object3D();
+const marsSystem = new THREE.Object3D();
 marsSystem.position.set(90, 0, 0);
 
 const marsTextureMap = new THREE.TextureLoader().load(
@@ -20,15 +20,14 @@ const marsMat = new THREE.MeshStandardMaterial({
 export const mars = new THREE.Mesh(marsGeo, marsMat);
 
 export const phobosObj = new THREE.Object3D();
-const phobos = createRock(0.3)
+const phobos = createRock(0.3);
 phobosObj.add(phobos);
 phobos.position.set(5, 0, 0);
 
 export const deimosObj = new THREE.Object3D();
-const deimos = createRock(0.2)
+const deimos = createRock(0.2);
 deimosObj.add(deimos);
 deimos.position.set(6, 0, 0);
 
 marsSystem.add(mars, phobosObj, deimosObj);
-
 marsSystemObj.add(marsSystem);

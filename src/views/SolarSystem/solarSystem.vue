@@ -1,16 +1,22 @@
 <template>
-  <div ref="el" class="w-full h-full"></div>
+  <div class="relative w-full h-full">
+    <div ref="el" class="w-full h-full"></div>
+    <div class="absolute top-0 right-0">
+      <NavOverlay />
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
   import * as THREE from "three";
-  import { onMounted, ref } from "vue";
+  import { onMounted, ref, watch } from "vue";
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   import getStarfield from "/@/utils/helper/starField";
-
+  import NavOverlay from "./navOverlay.vue";
+  import { useSolarSystem } from "/@/store/solarSystem";
   // PLANETS
   import { sun, sunLightHelper } from "./Sun";
-  import { mercurySystemObj, mercury } from "./Mercury";
+  import { mercurySystemObj, mercuryPath, mercury } from "./Mercury";
   import { venusSystemObj, venus } from "./Venus";
   import {
     earth,
@@ -19,14 +25,13 @@
     earthPath,
     moon,
   } from "./EarthSystem";
+  import { marsSystemObj, mars, deimosObj, phobosObj } from "./MarsSystem";
+  import { jupiter, jupiterSystemObj } from "./Jupiter";
+  import { saturn, saturnSystemObj } from "./Saturn";
+  import { uranus, uranusSystemObj } from "./Uranus";
+  import { neptune, neptuneSystemObj } from "./Neptune";
 
-  import {
-    marsSystemObj,
-    marsSystem,
-    mars,
-    deimosObj,
-    phobosObj,
-  } from "./MarsSystem";
+  const store = useSolarSystem();
 
   // SET UP CANVAS
   const el = ref(null);
@@ -48,9 +53,32 @@
 
     // SET UP ORBIT CONTROL
     orbitControls = new OrbitControls(camera, renderer.domElement);
+
+    // ADD OBJECT TO SCENE
+    scene.add(sun);
+    scene.add(mercurySystemObj);
+    scene.add(venusSystemObj);
+    scene.add(earthSystemObj);
+    scene.add(marsSystemObj);
+    scene.add(jupiterSystemObj);
+    scene.add(saturnSystemObj);
+    scene.add(uranusSystemObj);
+    scene.add(neptuneSystemObj);
+
     // ANIMATE
     animate();
   });
+
+  watch(
+    () => store.displayPath,
+    (value) => {
+      if (value) {
+        scene.add(mercuryPath, earthPath);
+      } else {
+        scene.remove(mercuryPath, earthPath);
+      }
+    }
+  );
 
   // RENDER FUNCTION
   function render(scene: any, camera: any) {
@@ -80,10 +108,25 @@
 
     // MARS ROTATION
     marsSystemObj.rotateY(0.0008);
-    marsSystem.rotateY(0.009);
     mars.rotateY(0.01);
     deimosObj.rotateY(0.02);
     phobosObj.rotateY(0.025);
+
+    // JUPITER
+    jupiter.rotateY(0.01);
+    jupiterSystemObj.rotateY(0.003);
+
+    // SATURN
+    saturn.rotateY(0.01);
+    saturnSystemObj.rotateY(0.005);
+
+    // URANUS
+    uranus.rotateY(0.005);
+    uranusSystemObj.rotateY(0.0008);
+
+    // NEPTUNE
+    neptune.rotateY(0.002);
+    neptuneSystemObj.rotateY(0.0003);
   }
 
   // LIGHTING
@@ -102,10 +145,4 @@
   loader.load("src/assets/images/background.jpg", function (texture: any) {
     scene.background = texture;
   });
-
-  scene.add(sun);
-  scene.add(mercurySystemObj);
-  scene.add(venusSystemObj);
-  scene.add(earthSystemObj, earthPath);
-  scene.add(marsSystemObj);
 </script>

@@ -1,5 +1,9 @@
 import * as THREE from "three";
 import createLineLoopWithMesh from "/@/utils/helper/orbitalPath";
+import { useSolarSystem } from "/@/store/solarSystem";
+import { watch } from "vue";
+
+const store = useSolarSystem();
 // ADDING EARTH
 export const earthSystemObj = new THREE.Object3D();
 export const earthSystem = new THREE.Object3D();
@@ -37,8 +41,19 @@ moon.position.set(6, 0, 0);
 const pointLightMoon = new THREE.PointLight(0xffffff, 0.2, 500, 0);
 moon.add(pointLightMoon);
 
-export const earthPath = createLineLoopWithMesh(70, 0xffffff, 3);
+export const earthPath = createLineLoopWithMesh(70, "white", 1);
 const moonPath = createLineLoopWithMesh(6, 0xffffff, 3);
 
-earthSystem.add(earth, moon, moonPath);
+earthSystem.add(earth, moon);
 earthSystemObj.add(earthSystem);
+
+watch(
+  () => store.displayPath,
+  (value) => {
+    if (value) {
+      earthSystem.add(moonPath);
+    } else {
+      earthSystem.remove(moonPath);
+    }
+  }
+);
