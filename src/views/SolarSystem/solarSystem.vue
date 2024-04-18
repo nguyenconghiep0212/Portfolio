@@ -9,13 +9,13 @@
 
 <script lang="ts" setup>
   import * as THREE from "three";
-  import { onMounted, ref, watch } from "vue";
+  import { onMounted, ref, watch, watchEffect } from "vue";
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   import getStarfield from "/@/utils/helper/starField";
   import NavOverlay from "./navOverlay.vue";
   import { useSolarSystem } from "/@/store/solarSystem";
   // PLANETS
-  import { sun, sunLightHelper } from "./Sun";
+  import { sun } from "./Sun";
   import { mercurySystemObj, mercuryPath, mercury } from "./Mercury";
   import { venusSystemObj, venus } from "./Venus";
   import {
@@ -41,6 +41,9 @@
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
   });
+
+  // GRID HELPER
+  const gridHelper = new THREE.GridHelper(500, 100);
 
   onMounted(() => {
     scene.background = new THREE.Color("black");
@@ -69,16 +72,19 @@
     animate();
   });
 
-  watch(
-    () => store.displayPath,
-    (value) => {
-      if (value) {
-        scene.add(mercuryPath, earthPath);
-      } else {
-        scene.remove(mercuryPath, earthPath);
-      }
+  watchEffect(() => {
+    if (store.displayPath) {
+      scene.add(mercuryPath, earthPath);
+    } else {
+      scene.remove(mercuryPath, earthPath);
     }
-  );
+
+    if (store.displayGridHelper) {
+      scene.add(gridHelper);
+    } else {
+      scene.remove(gridHelper);
+    }
+  });
 
   // RENDER FUNCTION
   function render(scene: any, camera: any) {
@@ -132,10 +138,6 @@
   // LIGHTING
   const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
   scene.add(ambientLight);
-
-  // GRIP HELPER
-  const gridHelper = new THREE.GridHelper(500, 100);
-  scene.add(gridHelper, sunLightHelper);
 
   // POPULATE SCENE WITH STARS
   const stars = getStarfield();
