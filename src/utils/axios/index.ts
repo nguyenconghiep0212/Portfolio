@@ -14,9 +14,7 @@ import { joinTimestamp, formatRequestDate } from "./helper";
 import { useMessage } from "naive-ui";
 
 const globSetting = useGlobSetting();
-const urlPrefix = globSetting.urlPrefix;
 const createMessage = useMessage();
-
 const transform: AxiosTransform = {
   transformRequestHook: (
     res: AxiosResponse<Result>,
@@ -63,18 +61,7 @@ const transform: AxiosTransform = {
   },
 
   beforeRequestHook: (config, options) => {
-    const {
-      apiUrl,
-      joinPrefix,
-      joinParamsToUrl,
-      formatDate,
-      joinTime = true,
-      urlPrefix,
-    } = options;
-
-    if (joinPrefix) {
-      config.url = `${urlPrefix}${config.url}`;
-    }
+    const { apiUrl, joinParamsToUrl, formatDate, joinTime = true } = options;
 
     if (apiUrl && isString(apiUrl)) {
       config.url = `${apiUrl}${config.url}`;
@@ -180,14 +167,12 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
         // headers: { 'Content-Type': ContentTypeEnum.FORM_URLENCODED },
         transform: clone(transform),
         requestOptions: {
-          joinPrefix: true,
           isReturnNativeResponse: false,
           isTransformResponse: true,
           joinParamsToUrl: false,
           formatDate: true,
           errorMessageMode: "message",
           apiUrl: globSetting.apiUrl,
-          urlPrefix: urlPrefix,
           joinTime: true,
           ignoreCancelToken: true,
           withToken: true,
