@@ -7,13 +7,6 @@ const sunTexture = new THREE.TextureLoader().load("src/assets/images/sun.jpg");
 const sunGeo = new THREE.SphereGeometry(20, 32, 32);
 const sunMat = new THREE.MeshBasicMaterial({
   map: sunTexture,
-
-  // emissive: "#FFE600",
-  // emissiveIntensity: 0.1,
 });
-// const sunMat = new THREE.MeshBasicMaterial({
-//   color: "#FFE600",
-//   wireframe: true,
-// });
 export const sun = new THREE.Mesh(sunGeo, sunMat);
 sun.add(pointLight1);

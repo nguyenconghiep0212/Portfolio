@@ -30,7 +30,23 @@
   import { saturn, saturnSystemObj } from "./Saturn";
   import { uranus, uranusSystemObj } from "./Uranus";
   import { neptune, neptuneSystemObj } from "./Neptune";
+  import { fetchSolarSystemTextureMaps } from "/@/api/solarSystem";
 
+  solarSystemTextureMaps();
+  async function solarSystemTextureMaps() {
+    const params = {
+      filter: [
+        {
+          key: "folder",
+          value: "Solar",
+        },
+      ],
+    };
+    const res = await fetchSolarSystemTextureMaps(params);
+    if (res) {
+      console.log(res, "fetchSolarSystemTextureMaps");
+    }
+  }
   const store = useSolarSystem();
 
   // SET UP CANVAS

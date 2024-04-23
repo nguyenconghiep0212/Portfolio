@@ -25,10 +25,10 @@ export const earth = new THREE.Mesh(
 
 // ADDING THE MOON AND ORBIT
 const moonTexture = new THREE.TextureLoader().load(
-  "src/assets/images/moon.jpg"
+  "./src/assets/images/moon.jpg"
 );
 const moonNormalTexture = new THREE.TextureLoader().load(
-  "src/assets/images/moon_normal_map.jpg"
+  "./src/assets/images/moon_normal_map.jpg"
 );
 export const moon = new THREE.Mesh(
   new THREE.SphereGeometry(1, 32, 32),
