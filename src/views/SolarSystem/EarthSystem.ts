@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import createLineLoopWithMesh from "/@/utils/helper/orbitalPath";
 import { useSolarSystem } from "/@/store/solarSystem";
-import { watch } from "vue";
+import { watchEffect } from "vue";
 
 const store = useSolarSystem();
 // ADDING EARTH
@@ -47,13 +47,10 @@ const moonPath = createLineLoopWithMesh(6, 0xffffff, 3);
 earthSystem.add(earth, moon);
 earthSystemObj.add(earthSystem);
 
-watch(
-  () => store.displayPath,
-  (value) => {
-    if (value) {
-      earthSystem.add(moonPath);
-    } else {
-      earthSystem.remove(moonPath);
-    }
+watchEffect(() => {
+  if (store.displayPath) {
+    earthSystem.add(moonPath);
+  } else {
+    earthSystem.remove(moonPath);
   }
-);
+});

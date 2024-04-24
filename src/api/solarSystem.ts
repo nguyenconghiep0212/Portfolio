@@ -11,3 +11,10 @@ export const fetchSolarSystemTextureMaps = (filter: { filter: Filter[] }) => {
     { isTransformResponse: false, joinParamsToUrl: false }
   );
 };
+
+export const fetchSolarSystemPlanets = (filter: { filter: Filter[] }) => {
+  return http.post(
+    { url: "/api/planets/list-all", data: filter },
+    { isTransformResponse: false, joinParamsToUrl: false }
+  );
+};

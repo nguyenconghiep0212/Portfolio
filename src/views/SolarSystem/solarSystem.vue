@@ -30,21 +30,16 @@
   import { saturn, saturnSystemObj } from "./Saturn";
   import { uranus, uranusSystemObj } from "./Uranus";
   import { neptune, neptuneSystemObj } from "./Neptune";
-  import { fetchSolarSystemTextureMaps } from "/@/api/solarSystem";
+  import { fetchSolarSystemPlanets } from "/@/api/solarSystem";
 
   solarSystemTextureMaps();
   async function solarSystemTextureMaps() {
     const params = {
-      filter: [
-        {
-          key: "folder",
-          value: "Solar",
-        },
-      ],
+      filter: [],
     };
-    const res = await fetchSolarSystemTextureMaps(params);
+    const res = await fetchSolarSystemPlanets(params);
     if (res) {
-      console.log(res, "fetchSolarSystemTextureMaps");
+      console.log(res, "fetchSolarSystemPlanets");
     }
   }
   const store = useSolarSystem();
@@ -86,6 +81,8 @@
 
     // ANIMATE
     animate();
+
+    window.addEventListener("resize", windowResize);
   });
 
   watchEffect(() => {
@@ -101,6 +98,12 @@
       scene.remove(gridHelper);
     }
   });
+
+  // RESIZE
+  function windowResize() {
+    const { width, height } = el.value.getBoundingClientRect();
+    renderer.setSize(width, height);
+  }
 
   // RENDER FUNCTION
   function render(scene: any, camera: any) {
