@@ -1,9 +1,7 @@
 <template>
   <div class="relative w-full h-full">
     <div ref="el" class="w-full h-full"></div>
-    <div class="absolute top-0 right-0">
-      <NavOverlay />
-    </div>
+    <NavOverlay />
   </div>
 </template>
 
@@ -11,25 +9,26 @@
   import * as THREE from "three";
   import { onMounted, ref, watchEffect } from "vue";
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+  import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
   import getStarfield from "/@/utils/helper/starField";
   import NavOverlay from "./navOverlay.vue";
   import { useSolarSystem } from "/@/store/solarSystem";
   // PLANETS
-  import { sun } from "./Sun";
-  import { mercurySystemObj, mercuryPath, mercury } from "./Mercury";
-  import { venusSystemObj, venus } from "./Venus";
-  import {
-    earth,
-    earthSystem,
-    earthSystemObj,
-    earthPath,
-    moon,
-  } from "./EarthSystem";
-  import { marsSystemObj, mars, deimosObj, phobosObj } from "./MarsSystem";
-  import { jupiter, jupiterSystemObj } from "./Jupiter";
-  import { saturn, saturnSystemObj } from "./Saturn";
-  import { uranus, uranusSystemObj } from "./Uranus";
-  import { neptune, neptuneSystemObj } from "./Neptune";
+  // import { sun } from "./Sun";
+  // import { mercurySystemObj, mercuryPath, mercury } from "./Mercury";
+  // import { venusSystemObj, venus } from "./Venus";
+  // import {
+  //   earth,
+  //   earthSystem,
+  //   earthSystemObj,
+  //   earthPath,
+  //   moon,
+  // } from "./EarthSystem";
+  // import { marsSystemObj, mars, deimosObj, phobosObj } from "./MarsSystem";
+  // import { jupiter, jupiterSystemObj } from "./Jupiter";
+  // import { saturn, saturnSystemObj } from "./Saturn";
+  // import { uranus, uranusSystemObj } from "./Uranus";
+  // import { neptune, neptuneSystemObj } from "./Neptune";
   import { fetchSolarSystemPlanets } from "/@/api/solarSystem";
   import { planet_generator } from "./PlanetGeneration";
   import { Planet } from "/@/interface/solarSystem";
@@ -45,9 +44,10 @@
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
   });
+  const labelRenderer = new CSS2DRenderer();
 
   // GRID HELPER
-  const gridHelper = new THREE.GridHelper(500, 100);
+  const gridHelper = new THREE.GridHelper(10000000, 100);
 
   // LIGHTING
   const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
@@ -64,15 +64,21 @@
   onMounted(() => {
     scene.background = new THREE.Color("black");
     const { width, height } = el.value.getBoundingClientRect();
-    camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 100000000000000000000000);
-    camera.position.set(0, 50, 50);
+    camera = new THREE.PerspectiveCamera(
+      75,
+      width / height,
+      0.1,
+      1_000_000_000_000
+    );
+    camera.position.set(0, 80000, 80000);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
     el.value.appendChild(renderer.domElement);
 
     // SET UP ORBIT CONTROL
     orbitControls = new OrbitControls(camera, renderer.domElement);
-
+    orbitControls.zoomSpeed = store.controlSpeed;
+    orbitControls.panSpeed = store.controlSpeed;
     // ADD OBJECT TO SCENE
 
     // scene.add(sun);
@@ -97,25 +103,20 @@
     // } else {
     //   scene.remove(mercuryPath, earthPath);
     // }
-    // if (store.displayGridHelper) {
-    //   scene.add(gridHelper);
-    // } else {
-    //   scene.remove(gridHelper);
-    // if (scene) {
-    // planets.value.forEach((e) => {
-    //   e.bodies.forEach((f) => {
-    //     scene.add(f);
-    //   });
-    //   e.paths.forEach((f) => {
-    //     scene.add(f);
-    //   });
-    // });
-    // }
+    if (store.displayGridHelper) {
+      scene.add(gridHelper);
+    } else {
+      scene.remove(gridHelper);
+    }
+    if (orbitControls) {
+      orbitControls.zoomSpeed = store.controlSpeed;
+      orbitControls.panSpeed = store.controlSpeed;
+    }
   });
 
   solarSystemTextureMaps();
   async function solarSystemTextureMaps() {
-    store.planets = [];
+    const temp: any = [];
     const params = {
       filter: [],
     };
@@ -133,10 +134,10 @@
             }
           }
         } else {
-          store.planets.push(e);
+          temp.push(e);
         }
       });
-      store.planets.forEach((e) => {
+      temp.forEach((e: any) => {
         planets.push(planet_generator(e));
       });
       planets.forEach((e) => {
@@ -163,7 +164,7 @@
 
   function animate() {
     requestAnimationFrame(animate);
-    orbitControls.update();
+    // orbitControls.update();
     render(scene, camera);
 
     // sun.rotateY(0.001);

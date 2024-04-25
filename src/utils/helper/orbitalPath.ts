@@ -3,7 +3,7 @@ export default function createLineLoopWithMesh(
   radius: number,
   color: number | string,
   width: number,
-  opacity = 0.4
+  opacity = 0.6
 ) {
   const material = new THREE.LineBasicMaterial({
     color: color,
