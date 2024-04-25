@@ -22,6 +22,7 @@ export const earth = new THREE.Mesh(
     normalMap: earthNormalTexture,
   })
 );
+earth.rotateX(Math.PI , 0, 0);
 
 // ADDING THE MOON AND ORBIT
 const moonTexture = new THREE.TextureLoader().load(

@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
   import * as THREE from "three";
-  import { onMounted, ref, watch, watchEffect } from "vue";
+  import { onMounted, ref, watchEffect } from "vue";
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   import getStarfield from "/@/utils/helper/starField";
   import NavOverlay from "./navOverlay.vue";
@@ -31,18 +31,11 @@
   import { uranus, uranusSystemObj } from "./Uranus";
   import { neptune, neptuneSystemObj } from "./Neptune";
   import { fetchSolarSystemPlanets } from "/@/api/solarSystem";
+  import { planet_generator } from "./PlanetGeneration";
+  import { Planet } from "/@/interface/solarSystem";
 
-  solarSystemTextureMaps();
-  async function solarSystemTextureMaps() {
-    const params = {
-      filter: [],
-    };
-    const res = await fetchSolarSystemPlanets(params);
-    if (res) {
-      console.log(res, "fetchSolarSystemPlanets");
-    }
-  }
   const store = useSolarSystem();
+  const planets: { bodies: any[]; paths: any[] }[] = [];
 
   // SET UP CANVAS
   const el = ref(null);
@@ -56,10 +49,22 @@
   // GRID HELPER
   const gridHelper = new THREE.GridHelper(500, 100);
 
+  // LIGHTING
+  const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
+  scene.add(ambientLight);
+
+  // POPULATE SCENE WITH STARS
+  const stars = getStarfield();
+  scene.add(stars);
+
+  const loader = new THREE.TextureLoader();
+  loader.load("src/assets/images/background.jpg", function (texture: any) {
+    scene.background = texture;
+  });
   onMounted(() => {
     scene.background = new THREE.Color("black");
     const { width, height } = el.value.getBoundingClientRect();
-    camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 100000000000000000000000);
     camera.position.set(0, 50, 50);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
@@ -69,15 +74,16 @@
     orbitControls = new OrbitControls(camera, renderer.domElement);
 
     // ADD OBJECT TO SCENE
-    scene.add(sun);
-    scene.add(mercurySystemObj);
-    scene.add(venusSystemObj);
-    scene.add(earthSystemObj);
-    scene.add(marsSystemObj);
-    scene.add(jupiterSystemObj);
-    scene.add(saturnSystemObj);
-    scene.add(uranusSystemObj);
-    scene.add(neptuneSystemObj);
+
+    // scene.add(sun);
+    // scene.add(mercurySystemObj);
+    // scene.add(venusSystemObj);
+    // scene.add(earthSystemObj);
+    // scene.add(marsSystemObj);
+    // scene.add(jupiterSystemObj);
+    // scene.add(saturnSystemObj);
+    // scene.add(uranusSystemObj);
+    // scene.add(neptuneSystemObj);
 
     // ANIMATE
     animate();
@@ -86,18 +92,63 @@
   });
 
   watchEffect(() => {
-    if (store.displayPath) {
-      scene.add(mercuryPath, earthPath);
-    } else {
-      scene.remove(mercuryPath, earthPath);
-    }
-
-    if (store.displayGridHelper) {
-      scene.add(gridHelper);
-    } else {
-      scene.remove(gridHelper);
-    }
+    // if (store.displayPath) {
+    //   scene.add(mercuryPath, earthPath);
+    // } else {
+    //   scene.remove(mercuryPath, earthPath);
+    // }
+    // if (store.displayGridHelper) {
+    //   scene.add(gridHelper);
+    // } else {
+    //   scene.remove(gridHelper);
+    // if (scene) {
+    // planets.value.forEach((e) => {
+    //   e.bodies.forEach((f) => {
+    //     scene.add(f);
+    //   });
+    //   e.paths.forEach((f) => {
+    //     scene.add(f);
+    //   });
+    // });
+    // }
   });
+
+  solarSystemTextureMaps();
+  async function solarSystemTextureMaps() {
+    store.planets = [];
+    const params = {
+      filter: [],
+    };
+    const res = await fetchSolarSystemPlanets(params);
+    if (res) {
+      res.data.forEach((e: Planet) => {
+        if (e.mother_planet) {
+          const temp = res.data.find((f: Planet) => f.key === e.mother_planet);
+          if (temp) {
+            if (temp.moons) {
+              temp.moons.push(e);
+            } else {
+              temp.moons = [];
+              temp.moons.push(e);
+            }
+          }
+        } else {
+          store.planets.push(e);
+        }
+      });
+      store.planets.forEach((e) => {
+        planets.push(planet_generator(e));
+      });
+      planets.forEach((e) => {
+        e.bodies.forEach((f) => {
+          scene.add(f);
+        });
+        e.paths.forEach((f) => {
+          scene.add(f);
+        });
+      });
+    }
+  }
 
   // RESIZE
   function windowResize() {
@@ -115,55 +166,42 @@
     orbitControls.update();
     render(scene, camera);
 
-    sun.rotateY(0.001);
+    // sun.rotateY(0.001);
 
-    // MERCURY
-    mercury.rotateY(0.006);
-    mercurySystemObj.rotateY(0.01);
+    // // MERCURY
+    // mercury.rotateY(0.006);
+    // mercurySystemObj.rotateY(0.01);
 
-    // Venus
-    venus.rotateY(0.002);
-    venusSystemObj.rotateY(0.003);
+    // // Venus
+    // venus.rotateY(0.002);
+    // venusSystemObj.rotateY(0.003);
 
-    // EARTH ROTATION
-    earth.rotateY(0.01);
-    moon.rotateY(-0.02);
-    earthSystem.rotateY(0.01);
-    earthSystemObj.rotateY(0.0009);
+    // // EARTH ROTATION
+    // earth.rotateY(0.01);
+    // moon.rotateY(-0.02);
+    // earthSystem.rotateY(0.01);
+    // earthSystemObj.rotateY(0.0009);
 
-    // MARS ROTATION
-    marsSystemObj.rotateY(0.0008);
-    mars.rotateY(0.01);
-    deimosObj.rotateY(0.02);
-    phobosObj.rotateY(0.025);
+    // // MARS ROTATION
+    // marsSystemObj.rotateY(0.0008);
+    // mars.rotateY(0.01);
+    // deimosObj.rotateY(0.02);
+    // phobosObj.rotateY(0.025);
 
-    // JUPITER
-    jupiter.rotateY(0.01);
-    jupiterSystemObj.rotateY(0.003);
+    // // JUPITER
+    // jupiter.rotateY(0.01);
+    // jupiterSystemObj.rotateY(0.003);
 
-    // SATURN
-    saturn.rotateY(0.01);
-    saturnSystemObj.rotateY(0.005);
+    // // SATURN
+    // saturn.rotateY(0.01);
+    // saturnSystemObj.rotateY(0.005);
 
-    // URANUS
-    uranus.rotateY(0.005);
-    uranusSystemObj.rotateY(0.0008);
+    // // URANUS
+    // uranus.rotateY(0.005);
+    // uranusSystemObj.rotateY(0.0008);
 
-    // NEPTUNE
-    neptune.rotateY(0.002);
-    neptuneSystemObj.rotateY(0.0003);
+    // // NEPTUNE
+    // neptune.rotateY(0.002);
+    // neptuneSystemObj.rotateY(0.0003);
   }
-
-  // LIGHTING
-  const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
-  scene.add(ambientLight);
-
-  // POPULATE SCENE WITH STARS
-  const stars = getStarfield();
-  scene.add(stars);
-
-  const loader = new THREE.TextureLoader();
-  loader.load("src/assets/images/background.jpg", function (texture: any) {
-    scene.background = texture;
-  });
 </script>

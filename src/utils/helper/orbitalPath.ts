@@ -1,8 +1,15 @@
 import * as THREE from "three";
-export default function createLineLoopWithMesh(radius: number, color: number | string, width: number) {
+export default function createLineLoopWithMesh(
+  radius: number,
+  color: number | string,
+  width: number,
+  opacity = 0.4
+) {
   const material = new THREE.LineBasicMaterial({
     color: color,
     linewidth: width,
+    transparent: true,
+    opacity: opacity,
   });
   const geometry = new THREE.BufferGeometry();
   const lineLoopPoints = [];

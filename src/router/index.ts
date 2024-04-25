@@ -6,6 +6,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "index",
     component: () => import("../views/index.vue"),
     meta: {
+      hidden: true,
       title: "Trang chủ",
     },
   },
@@ -14,6 +15,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "tresjs",
     component: () => import("../views/tresjs.vue"),
     meta: {
+      hidden: true,
       title: "Tresjs",
     },
   },
@@ -47,6 +49,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "error",
     component: () => import("../views/error.vue"),
     meta: {
+      hidden: true,
       title: "404",
     },
   },

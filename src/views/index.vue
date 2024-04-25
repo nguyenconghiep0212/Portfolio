@@ -1,7 +1,6 @@
 <template>
   <div class="h-full mx-8 my-3">
-        <div>{{ t("view.test") }}</div>
-
+    <div>{{ t("view.test") }}</div>
     <div class="grid grid-cols-2 gap-2">
       <div
         v-for="(item, index) in menu"
@@ -16,28 +15,33 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from "vue-router";
+  import { useRouter } from "vue-router";
 
-import { useI18n } from "/@/hooks/useI18n";
-import { computed } from "vue";
+  import { useI18n } from "/@/hooks/useI18n";
+  import { computed } from "vue";
 
-const { t } = useI18n();
+  const { t } = useI18n();
 
-const router = useRouter();
- console.log(router.options.routes)
-const menu = computed(() => {
-  return router.options.routes.map(e => ({
-    title: e.meta ? e.meta.title : e.name,
-    to: e.name,
-  }))
-})
+  const router = useRouter();
+  const menu = computed(() => {
+    return router.options.routes
+      .map((e) => {
+        if (!e.meta.hidden) {
+          return {
+            title: e.meta ? e.meta.title : e.name,
+            to: e.name,
+          };
+        }
+      })
+      .filter((f) => f);
+  });
 
-function redirect(to: string) {
-  window.open(
-    router.resolve({
-      name: to,
-    }).href,
-    "_self"
-  );
-}
+  function redirect(to: string) {
+    window.open(
+      router.resolve({
+        name: to,
+      }).href,
+      "_self"
+    );
+  }
 </script>
