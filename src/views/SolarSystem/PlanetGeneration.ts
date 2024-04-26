@@ -24,11 +24,15 @@ export function planet_generator(planet_data: Planet) {
     planet_data.normal_map
   );
   const planet = new THREE.Mesh(
-    new THREE.SphereGeometry(planet_data.radius * store.scaleDown, 32, 32),
-    new THREE.MeshStandardMaterial({
-      map: planetTexture,
-      normalMap: planetNormalTexture,
-    })
+    new THREE.SphereGeometry(planet_data.radius * store.scaleDown, 264, 164),
+    planet_data.key === "sun"
+      ? new THREE.MeshBasicMaterial({
+          map: planetTexture,
+        })
+      : new THREE.MeshStandardMaterial({
+          map: planetTexture,
+          normalMap: planet_data.normal_map ? planetNormalTexture : null,
+        })
   );
 
   // ADD LIGHT TO STAR
@@ -40,6 +44,20 @@ export function planet_generator(planet_data: Planet) {
       0
     );
     planet.add(pointLight);
+  }
+
+  // ADD RING
+  if (planet_data.ring) {
+    const ringTexture = new THREE.TextureLoader().load(planet_data.ring);
+    const ringGeo = new THREE.RingGeometry(20, 30, 32);
+    const ringMat = new THREE.MeshStandardMaterial({
+      map: ringTexture,
+      side: THREE.DoubleSide,
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotateY(-0.5 * Math.PI);
+    ring.rotateX(-0.4 * Math.PI);
+    planetSystem.add(ring);
   }
 
   // ADD MOONS TO SYSTEM
@@ -69,9 +87,10 @@ export function planet_generator(planet_data: Planet) {
         );
         moon.add(pointLightMoon);
         moonObj.add(moon);
-        addLabel(moon, moonObj, e);
 
         planetSystem.add(moonObj);
+        addLabel(moon, moonObj, e);
+
         //   PATH
         const moonPath = createLineLoopWithMesh(
           AstronomicalUnitToKilometer(e.perihelion_astronomical_unit) *
@@ -102,7 +121,6 @@ export function planet_generator(planet_data: Planet) {
 }
 
 function addLabel(planet: any, planetSystem: any, planet_data: Planet) {
-  console.log(planet_data, "planet_data");
   const labelDiv = document.createElement("div");
   labelDiv.className = `${planet_data.key} tracking-widest text-white uppercase cursor-pointer text-bold opacity-60`;
   labelDiv.innerText = planet_data.name;

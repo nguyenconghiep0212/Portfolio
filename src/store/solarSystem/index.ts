@@ -14,6 +14,8 @@ export const useSolarSystem = defineStore("solarSystemStore", () => {
     threshold: 0.4,
     radius: 0,
   };
+
+  const planets = ref([])
   return {
     displayPath,
     displayGridHelper,
@@ -21,5 +23,6 @@ export const useSolarSystem = defineStore("solarSystemStore", () => {
     controlSpeed,
     scaleDown,
     BLOOM_PARAMS,
+    planets
   };
 });

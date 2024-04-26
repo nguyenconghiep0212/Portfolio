@@ -128,9 +128,9 @@
 
   emitter.on("move-to-planet", (data: any) => {
     const { x, y, z } = data.object3d.position;
-    camera.position.x = x + 3;
-    camera.position.y = y + 5;
-    camera.position.z = z + 3;
+    camera.position.x = x - data.planetData.radius * store.scaleDown - 2;
+    camera.position.y = y + data.planetData.radius * store.scaleDown + 2;
+    camera.position.z = z + data.planetData.radius * store.scaleDown + 2;
 
     orbitControls.target = new THREE.Vector3(x, y, z);
   });
@@ -175,6 +175,7 @@
           temp.push(e);
         }
       });
+      store.planets = temp;
       temp.forEach((e: any) => {
         planets.push(planet_generator(e));
       });

@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 export default function getStarfield({ numStars = 5000 } = {}) {
   function randomSpherePoint() {
-    const radius = Math.random() * 1_000 + 50_000_000;
+    const radius = Math.random() * 25 + 50_000_000;
     const u = Math.random();
     const v = Math.random();
     const theta = 2 * Math.PI * u;
@@ -35,21 +35,17 @@ export default function getStarfield({ numStars = 5000 } = {}) {
   const mat = new THREE.PointsMaterial({
     size: 0.2,
     vertexColors: true,
-    map: new THREE.TextureLoader().load(
-      "src/utils/helper/circle.png"
-    ),
+    map: new THREE.TextureLoader().load("src/utils/helper/circle.png"),
   });
   const points = new THREE.Points(geo, mat);
   return points;
 }
 
-
-
 // import { Star } from "./star";
 
 // export default function getStarfield(scene: any, { numStars = 5000 } = {}) {
 //   function randomSpherePoint() {
-//     const radius = Math.random() * 250 + 1000 ;
+//     const radius = Math.random() *  25 + 50_000_000 ;
 //     const u = Math.random();
 //     const v = Math.random();
 //     const theta = 2 * Math.PI * u;

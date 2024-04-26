@@ -1,3 +1,3 @@
 export function AstronomicalUnitToKilometer(au: number) {
-  return au * 149600000;
+  return au * 149_600_000;
 }
