@@ -4,9 +4,9 @@
     <div class="m-2 space-y-1"></div>
   </div>
   <!-- OPTION PANEL -->
-  <div class="absolute top-0 right-0">
+  <div class="absolute top-0 right-0 z-10">
     <div class="m-2 space-y-1">
-      <h3 class="text-bold text-white">Option</h3>
+      <h3 class="text-white text-bold">Option</h3>
       <div
         :class="`p-2 cursor-pointer  ${
           store.displayPath
@@ -47,11 +47,11 @@
   <!-- NAV PANEL -->
 
   <!-- FOOTER -->
-  <div class="absolute bottom-1 left-1">
+  <div class="absolute z-10 bottom-1 left-1">
     <div class="opacity-50">
-      <span class="text-white mr-1"> Inspired by </span>
+      <span class="mr-1 text-white"> Inspired by </span>
       <a
-        class="underline text-blue-400"
+        class="text-blue-400 underline"
         href="https://eyes.nasa.gov/apps/solar-system/#/home"
         target="_blank"
       >

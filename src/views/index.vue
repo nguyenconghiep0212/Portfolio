@@ -5,7 +5,7 @@
       <div
         v-for="(item, index) in menu"
         :key="index"
-        class="px-4 py-2 rounded-sm bg-slate-400"
+        class="px-4 py-2 rounded-sm cursor-pointer bg-slate-400"
         @click="redirect(item.to)"
       >
         {{ item.title }}

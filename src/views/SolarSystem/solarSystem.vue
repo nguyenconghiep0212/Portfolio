@@ -10,9 +10,24 @@
   import { onMounted, ref, watchEffect } from "vue";
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
+  import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+  import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+  import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+
+  // HELPER
   import getStarfield from "/@/utils/helper/starField";
-  import NavOverlay from "./navOverlay.vue";
+  import { planet_generator } from "./PlanetGeneration";
+  import { Planet } from "/@/interface/solarSystem";
   import { useSolarSystem } from "/@/store/solarSystem";
+
+  // COMPONENTS
+  import NavOverlay from "./navOverlay.vue";
+
+  // API
+  import { fetchSolarSystemPlanets } from "/@/api/solarSystem";
+  import emitter from "/@/utils/helper/emitter";
+  import { AstronomicalUnitToKilometer } from "/@/utils/helper/AstronomicalUnitToKilometer";
+
   // PLANETS
   // import { sun } from "./Sun";
   // import { mercurySystemObj, mercuryPath, mercury } from "./Mercury";
@@ -29,9 +44,6 @@
   // import { saturn, saturnSystemObj } from "./Saturn";
   // import { uranus, uranusSystemObj } from "./Uranus";
   // import { neptune, neptuneSystemObj } from "./Neptune";
-  import { fetchSolarSystemPlanets } from "/@/api/solarSystem";
-  import { planet_generator } from "./PlanetGeneration";
-  import { Planet } from "/@/interface/solarSystem";
 
   const store = useSolarSystem();
   const planets: { bodies: any[]; paths: any[] }[] = [];
@@ -43,9 +55,10 @@
   let orbitControls: any;
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
+    logarithmicDepthBuffer: false,
   });
   const labelRenderer = new CSS2DRenderer();
-
+  let composer: any;
   // GRID HELPER
   const gridHelper = new THREE.GridHelper(10000000, 100);
 
@@ -53,17 +66,15 @@
   const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
   scene.add(ambientLight);
 
-  // POPULATE SCENE WITH STARS
-  const stars = getStarfield();
-  scene.add(stars);
-
-  const loader = new THREE.TextureLoader();
-  loader.load("src/assets/images/background.jpg", function (texture: any) {
-    scene.background = texture;
-  });
   onMounted(() => {
     scene.background = new THREE.Color("black");
-    const { width, height } = el.value.getBoundingClientRect();
+
+    // POPULATE SCENE WITH STARS
+    // getStarfield(scene);
+    const stars = getStarfield();
+    scene.add(stars);
+
+    const { width, height, top } = el.value.getBoundingClientRect();
     camera = new THREE.PerspectiveCamera(
       75,
       width / height,
@@ -75,12 +86,30 @@
     renderer.setSize(width, height);
     el.value.appendChild(renderer.domElement);
 
+    // ADD 2D RENDERER
+    labelRenderer.setSize(width, height);
+    labelRenderer.domElement.style.position = "absolute";
+    labelRenderer.domElement.style.top = top + "px";
+    document.body.appendChild(labelRenderer.domElement);
+
+    // ADD FILTER AND EFFECT
+    // const renderScene = new RenderPass(scene, camera);
+    // composer = new EffectComposer(renderer);
+    // composer.addPass(renderScene);
+    // const bloomPass = new UnrealBloomPass(
+    //   new THREE.Vector2(width, height), //  resolution of scene
+    //   store.BLOOM_PARAMS.strength,
+    //   store.BLOOM_PARAMS.radius,
+    //   store.BLOOM_PARAMS.threshold
+    // );
+    // composer.addPass(bloomPass);
+
     // SET UP ORBIT CONTROL
-    orbitControls = new OrbitControls(camera, renderer.domElement);
+    orbitControls = new OrbitControls(camera, labelRenderer.domElement);
     orbitControls.zoomSpeed = store.controlSpeed;
     orbitControls.panSpeed = store.controlSpeed;
-    // ADD OBJECT TO SCENE
 
+    // ADD OBJECT TO SCENE
     // scene.add(sun);
     // scene.add(mercurySystemObj);
     // scene.add(venusSystemObj);
@@ -95,6 +124,15 @@
     animate();
 
     window.addEventListener("resize", windowResize);
+  });
+
+  emitter.on("move-to-planet", (data: any) => {
+    const { x, y, z } = data.object3d.position;
+    camera.position.x = x + 3;
+    camera.position.y = y + 5;
+    camera.position.z = z + 3;
+
+    orbitControls.target = new THREE.Vector3(x, y, z);
   });
 
   watchEffect(() => {
@@ -160,12 +198,14 @@
   // RENDER FUNCTION
   function render(scene: any, camera: any) {
     renderer.render(scene, camera);
+    labelRenderer.render(scene, camera);
   }
 
   function animate() {
     requestAnimationFrame(animate);
-    // orbitControls.update();
+    orbitControls.update();
     render(scene, camera);
+    // composer.render();
 
     // sun.rotateY(0.001);
 

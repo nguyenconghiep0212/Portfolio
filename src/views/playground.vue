@@ -8,6 +8,7 @@
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   import getStarfield from "/@/utils/helper/starField";
   import createRock from "/@/utils/helper/astroid";
+  import { Star } from "../utils/helper/star";
 
   // SET UP CANVAS
   const el = ref(null);
@@ -16,6 +17,7 @@
   let orbitControls: any;
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
+    logarithmicDepthBuffer: true,
   });
   onMounted(() => {
     scene.background = new THREE.Color("black");
@@ -54,10 +56,6 @@
     orbitControls.update();
 
     render(scene, camera);
-
-    // ROTATE EARTH
-    earth.rotation.y -= 0.001;
-    moon.rotation.y -= 0.002;
   }
 
   // LIGHTING
@@ -75,71 +73,33 @@
   const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
   scene.add(ambientLight);
 
+  // BACKGROUND
+  const loader = new THREE.TextureLoader();
+  loader.load("src/assets/images/background.jpg", function (texture: any) {
+    scene.background = texture;
+  });
   // GRIP HELPER
   const lightHelper1 = new THREE.PointLightHelper(pointLight1);
   const lightHelper2 = new THREE.PointLightHelper(pointLight2);
   const gridHelper = new THREE.GridHelper(200, 50);
   scene.add(lightHelper1, lightHelper2, gridHelper);
 
-  // POPULATE SCENE WITH STARS
-  // function addStars() {
-  //   const geometry = new THREE.SphereGeometry();
-  //   const material = new THREE.MeshStandardMaterial({ color: "yellow" });
-  //   const star = new THREE.Mesh(geometry, material);
-  //   const [x, y, z] = Array(3)
-  //     .fill()
-  //     .map(() => THREE.MathUtils.randFloatSpread(100));
-
-  //   star.position.set(x, y, z);
-  //   scene.add(star);
-  // }
-  // Array(500)
-  //   .fill()
-  //   .forEach(() => {
-  //     addStars();
-  //   });
-  const stars = getStarfield();
-  scene.add(stars);
-
-  // LOAD BACKGROUND IMAGE
-  // const loader = new THREE.TextureLoader();
-  // loader.load("src/assets/images/space_bg.png", function (texture: any) {
-  //   scene.background = texture;
-  // });
-
-  // TEXTURE MAPPING
-  const earthTexture = new THREE.TextureLoader().load(
-    "src/assets/images/earth.jpg"
-  );
-  const earthNormalTexture = new THREE.TextureLoader().load(
-    "src/assets/images/earth_normal_map.jpg"
-  );
-  const earth = new THREE.Mesh(
-    new THREE.SphereGeometry(15, 32, 32),
-    new THREE.MeshStandardMaterial({
-      map: earthTexture,
-      normalMap: earthNormalTexture,
-    })
-  );
-  scene.add(earth);
-
-  // ADDING THE MOON AND ORBIT
-  const moonTexture = new THREE.TextureLoader().load(
-    "src/assets/images/moon.jpg"
-  );
-  const moonNormalTexture = new THREE.TextureLoader().load(
-    "src/assets/images/moon_normal_map.jpg"
-  );
-  const moon = new THREE.Mesh(
-    new THREE.SphereGeometry(6.25, 32, 32),
-    new THREE.MeshStandardMaterial({
-      map: moonTexture,
-      normalMap: moonNormalTexture,
-    })
-  );
-  moon.position.set(20, 0, 50);
-
-  scene.add(moon);
+  function guassianRandom(mean = 0, stdev = 1) {
+    const u = 1 - Math.random();
+    const v = Math.random();
+    const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+    return z * stdev + mean;
+  }
+  for (let i = 0; i < 200; i++) {
+    const pos = new THREE.Vector3(
+      guassianRandom(0, 20),
+      guassianRandom(0, 20),
+      guassianRandom(0, 20)
+    );
+    const star = new Star(pos);
+    star.toThreeObject(scene);
+  }
+  // getStarfield(scene);
 
   // ASTROID
   const astroid = createRock(10);
