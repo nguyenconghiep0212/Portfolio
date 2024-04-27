@@ -48,12 +48,12 @@
   const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
   scene.add(ambientLight);
 
-  onMounted(() => {
+  onMounted(async () => {
     scene.background = new THREE.Color("black");
 
     // POPULATE SCENE WITH STARS
     // getStarfield(scene);
-    const stars = getStarfield();
+    const stars = await getStarfield();
     scene.add(stars);
 
     const { width, height, top } = el.value.getBoundingClientRect();
@@ -98,7 +98,7 @@
   });
 
   emitter.on("move-to-planet", (data: any) => {
-    console.log(data.object3d.position,'data.object3d.position')
+    console.log(data.object3d.position, "data.object3d.position");
     const { x, y, z } = data.object3d.position;
     camera.position.x = x - data.planetData.radius * store.scaleDown - 2;
     camera.position.y = y + data.planetData.radius * store.scaleDown + 5;
@@ -150,11 +150,11 @@
       temp.forEach((e: any) => {
         planet_generator(e);
       });
-       store.planets.forEach((e) => {
+      store.planets.forEach((e) => {
         scene.add(toRaw(e.bodySystemObj));
         scene.add(toRaw(e.path));
       });
-     }
+    }
   }
 
   // RESIZE

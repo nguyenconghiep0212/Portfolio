@@ -1,6 +1,7 @@
 import * as THREE from "three";
+import { fetchSolarSystemTextureMaps } from "/@/api/solarSystem";
 
-export default function getStarfield({ numStars = 5000 } = {}) {
+export default async function getStarfield({ numStars = 5000 } = {}) {
   function randomSpherePoint() {
     const radius = Math.random() * 25 + 50_000_000;
     const u = Math.random();
@@ -32,13 +33,24 @@ export default function getStarfield({ numStars = 5000 } = {}) {
   const geo = new THREE.BufferGeometry();
   geo.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
   geo.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
-  const mat = new THREE.PointsMaterial({
-    size: 0.2,
-    vertexColors: true,
-    map: new THREE.TextureLoader().load("src/utils/helper/circle.png"),
-  });
-  const points = new THREE.Points(geo, mat);
-  return points;
+  const params = {
+    filter: [
+      {
+        key: "key",
+        value: "star",
+      },
+    ],
+  };
+  const res = await fetchSolarSystemTextureMaps(params);
+  if (res) {
+    const mat = new THREE.PointsMaterial({
+      size: 0.2,
+      vertexColors: true,
+      map: new THREE.TextureLoader().load(res.data[0].url),
+    });
+    const points = new THREE.Points(geo, mat);
+    return points;
+  }
 }
 
 // import { Star } from "./star";
