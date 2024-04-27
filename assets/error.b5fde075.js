@@ -1,0 +1,1 @@
+import{_ as e}from"./index.7ad83e6a.js";import{b as r,a as o}from"./vendor.f1f6ee3c.js";const a={};function c(n,t){return o(),r("div",null," 404 ERROR ")}var _=e(a,[["render",c]]);export{_ as default};
