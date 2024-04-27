@@ -5,11 +5,10 @@ import { AstronomicalUnitToKilometer } from "/@/utils/helper/AstronomicalUnitToK
 import { CSS2DObject } from "three/addons/renderers/CSS2DRenderer.js";
 import emitter from "/@/utils/helper/emitter";
 import { useSolarSystem } from "/@/store/solarSystem";
+import { Object3DReactive } from "/@/utils/helper/reactiveObject3D";
 
 const store = useSolarSystem();
 export function planet_generator(planet_data: Planet) {
-  const planets: { bodies: any[]; paths: any[] } = { bodies: [], paths: [] };
-
   // INIT PLANET SYSTEM
   const planetSystemObj = new THREE.Object3D();
   const planetSystem = new THREE.Object3D();
@@ -78,6 +77,7 @@ export function planet_generator(planet_data: Planet) {
           0,
           0
         );
+        console.log(moon.position.x, "moon.position");
         //   MOON LUMINOSITY
         const pointLightMoon = new THREE.PointLight(
           e.color || 0xffffff,
@@ -89,7 +89,7 @@ export function planet_generator(planet_data: Planet) {
         moonObj.add(moon);
 
         planetSystem.add(moonObj);
-        addLabel(moon, moonObj, e);
+        addLabel(moon, moon, e);
 
         //   PATH
         const moonPath = createLineLoopWithMesh(
@@ -114,10 +114,13 @@ export function planet_generator(planet_data: Planet) {
   planetSystem.add(planet);
   planetSystemObj.add(planetSystem);
 
-  planets.bodies.push(planetSystemObj);
-  planets.paths.push(planetPath);
-
-  return planets;
+  store.planets.push({
+    raw: planet_data,
+    bodySystemObj: planetSystemObj,
+    bodySystem: planetSystem,
+    body: planet,
+    path: planetPath,
+  });
 }
 
 function addLabel(planet: any, planetSystem: any, planet_data: Planet) {

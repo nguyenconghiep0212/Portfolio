@@ -2,13 +2,12 @@
   <!-- PLANETS NAV -->
   <div class="absolute top-0 left-0 z-10">
     <div
-      :class="`m-2  transition-all duration-100
+      :class="`m-2  transition-all duration-200
        ${showPlanetList ? 'w-[20vw]' : 'w-0'}`"
     >
-      <div class="flex justify-between items-center mb-1">
+      <div class="flex items-center justify-between mb-1">
         <div
-          v-if="showPlanetList"
-          class="tracking-widest text-white uppercase cursor-pointer text-bold opacity-60"
+          class="tracking-widest text-white uppercase truncate transition-all duration-100 cursor-pointer text-bold opacity-60"
         >
           {{ t("view.solar_system.planet_nav.title") }}
         </div>
@@ -29,20 +28,23 @@
           </n-button>
         </div>
       </div>
-      <div class="overflow-y-auto overflow-x-hidden space-y-1 planet-list pb-1 pr-1 max-h-[70vh]">
+      <div
+        class="overflow-y-auto overflow-x-hidden space-y-1 planet-list pb-1 pr-1 max-h-[70vh]"
+      >
         <div
           v-for="(item, index) in store.planets"
           :key="index"
-          class="bg-[#25252799] h-[7vh] hover:bg-[#39393c99] transition-all duration-100 cursor-pointer rounded-sm opacity-50 hover:opacity-100"
+          class="bg-[#3a3a3d99] h-[7vh] hover:bg-[#39393c99] transition-all duration-100 cursor-pointer rounded-sm opacity-50 hover:opacity-100"
+          @click="moveToPlanet(item)"
         >
           <div class="flex justify-between h-full">
-            <div class="my-1 mx-3">
+            <div class="mx-3 my-1">
               <div class="tracking-widest text-white cursor-pointer text-bold">
-                {{ item.name }}
+                {{ item.raw.name }}
               </div>
             </div>
             <div class="translate-x-1/3">
-              <img :src="item.logo" class="h-full" />
+              <img :src="item.raw.logo" class="h-full" />
             </div>
           </div>
         </div>
@@ -52,7 +54,13 @@
   <!-- OPTION PANEL -->
   <div class="absolute top-0 right-0 z-10">
     <div class="m-2 space-y-1">
-      <h3 class="text-white text-bold">Option</h3>
+      <div class="text-right">
+        <h3
+          class="tracking-widest text-white uppercase cursor-pointer text-bold opacity-60"
+        >
+          Option
+        </h3>
+      </div>
       <div
         :class="`p-2 cursor-pointer  ${
           store.displayPath
@@ -111,12 +119,27 @@
   import { useSolarSystem } from "/@/store/solarSystem";
   import { useI18n } from "/@/hooks/useI18n";
   import { Icon } from "/@/uikits/Icon";
-  import { ref } from "vue";
+  import { ref, toRaw } from "vue";
+  import emitter from "/@/utils/helper/emitter";
+  import { Planet } from "/@/interface/solarSystem";
   const { t } = useI18n();
 
   const store = useSolarSystem();
 
   const showPlanetList = ref(true);
+
+  function moveToPlanet(data: {
+    raw: Planet;
+    bodySystemObj: any;
+    bodySystem: any;
+    body: any;
+    path: any;
+  }) {
+    emitter.emit("move-to-planet", {
+      object3d: data.bodySystem,
+      planetData: data.raw,
+    });
+  }
 </script>
 
 <style>

@@ -7,7 +7,7 @@
 
 <script lang="ts" setup>
   import * as THREE from "three";
-  import { onMounted, ref, watchEffect } from "vue";
+  import { onMounted, ref, toRaw, unref, watchEffect } from "vue";
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
   import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
@@ -28,25 +28,7 @@
   import emitter from "/@/utils/helper/emitter";
   import { AstronomicalUnitToKilometer } from "/@/utils/helper/AstronomicalUnitToKilometer";
 
-  // PLANETS
-  // import { sun } from "./Sun";
-  // import { mercurySystemObj, mercuryPath, mercury } from "./Mercury";
-  // import { venusSystemObj, venus } from "./Venus";
-  // import {
-  //   earth,
-  //   earthSystem,
-  //   earthSystemObj,
-  //   earthPath,
-  //   moon,
-  // } from "./EarthSystem";
-  // import { marsSystemObj, mars, deimosObj, phobosObj } from "./MarsSystem";
-  // import { jupiter, jupiterSystemObj } from "./Jupiter";
-  // import { saturn, saturnSystemObj } from "./Saturn";
-  // import { uranus, uranusSystemObj } from "./Uranus";
-  // import { neptune, neptuneSystemObj } from "./Neptune";
-
   const store = useSolarSystem();
-  const planets: { bodies: any[]; paths: any[] }[] = [];
 
   // SET UP CANVAS
   const el = ref(null);
@@ -109,17 +91,6 @@
     orbitControls.zoomSpeed = store.controlSpeed;
     orbitControls.panSpeed = store.controlSpeed;
 
-    // ADD OBJECT TO SCENE
-    // scene.add(sun);
-    // scene.add(mercurySystemObj);
-    // scene.add(venusSystemObj);
-    // scene.add(earthSystemObj);
-    // scene.add(marsSystemObj);
-    // scene.add(jupiterSystemObj);
-    // scene.add(saturnSystemObj);
-    // scene.add(uranusSystemObj);
-    // scene.add(neptuneSystemObj);
-
     // ANIMATE
     animate();
 
@@ -127,9 +98,10 @@
   });
 
   emitter.on("move-to-planet", (data: any) => {
+    console.log(data.object3d.position,'data.object3d.position')
     const { x, y, z } = data.object3d.position;
     camera.position.x = x - data.planetData.radius * store.scaleDown - 2;
-    camera.position.y = y + data.planetData.radius * store.scaleDown + 2;
+    camera.position.y = y + data.planetData.radius * store.scaleDown + 5;
     camera.position.z = z + data.planetData.radius * store.scaleDown + 2;
 
     orbitControls.target = new THREE.Vector3(x, y, z);
@@ -175,19 +147,14 @@
           temp.push(e);
         }
       });
-      store.planets = temp;
       temp.forEach((e: any) => {
-        planets.push(planet_generator(e));
+        planet_generator(e);
       });
-      planets.forEach((e) => {
-        e.bodies.forEach((f) => {
-          scene.add(f);
-        });
-        e.paths.forEach((f) => {
-          scene.add(f);
-        });
+       store.planets.forEach((e) => {
+        scene.add(toRaw(e.bodySystemObj));
+        scene.add(toRaw(e.path));
       });
-    }
+     }
   }
 
   // RESIZE

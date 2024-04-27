@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { Planet } from "/@/interface/solarSystem";
 
 export const useSolarSystem = defineStore("solarSystemStore", () => {
   const displayPath = ref(true);
@@ -15,7 +16,15 @@ export const useSolarSystem = defineStore("solarSystemStore", () => {
     radius: 0,
   };
 
-  const planets = ref([])
+  const planets = ref<
+    {
+      raw: Planet;
+      bodySystemObj: any;
+      bodySystem: any;
+      body: any;
+      path: any;
+    }[]
+  >([]);
   return {
     displayPath,
     displayGridHelper,
@@ -23,6 +32,6 @@ export const useSolarSystem = defineStore("solarSystemStore", () => {
     controlSpeed,
     scaleDown,
     BLOOM_PARAMS,
-    planets
+    planets,
   };
 });
