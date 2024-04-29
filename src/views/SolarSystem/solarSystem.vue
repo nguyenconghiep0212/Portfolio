@@ -7,7 +7,16 @@
 
 <script lang="ts" setup>
   import * as THREE from "three";
-  import { onMounted, ref, toRaw, unref, watchEffect } from "vue";
+  import {
+    onBeforeMount,
+    onBeforeUnmount,
+    onMounted,
+    onUnmounted,
+    ref,
+    toRaw,
+    unref,
+    watchEffect,
+  } from "vue";
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
   import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
@@ -33,6 +42,7 @@
   // SET UP CANVAS
   const el = ref(null);
   const scene = new THREE.Scene();
+  const animationId = ref<any>(null);
   let camera: any;
   let orbitControls: any;
   const renderer = new THREE.WebGLRenderer({
@@ -42,7 +52,7 @@
   const labelRenderer = new CSS2DRenderer();
   let composer: any;
   // GRID HELPER
-  const gridHelper = new THREE.GridHelper(10000000, 100);
+  const gridHelper = new THREE.GridHelper(10_000_000, 100);
 
   // LIGHTING
   const ambientLight = new THREE.AmbientLight(0x404040, 0.2);
@@ -63,7 +73,7 @@
       0.1,
       1_000_000_000_000
     );
-    camera.position.set(0, 80000, 80000);
+    camera.position.set(0, 80_000, 80_000);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
     el.value.appendChild(renderer.domElement);
@@ -97,22 +107,31 @@
     window.addEventListener("resize", windowResize);
   });
 
+  // onBeforeUnmount(() => {
+  //   document.body.removeChild(labelRenderer.domElement);
+  //   while (scene.children.length > 0) {
+  //     scene.remove(scene.children[0]);
+  //   }
+  // });
+
+  onBeforeUnmount(() => {
+    location.reload()
+  })
+
   emitter.on("move-to-planet", (data: any) => {
-    console.log(data.object3d.position, "data.object3d.position");
-    const { x, y, z } = data.object3d.position;
-    camera.position.x = x - data.planetData.radius * store.scaleDown - 2;
-    camera.position.y = y + data.planetData.radius * store.scaleDown + 5;
-    camera.position.z = z + data.planetData.radius * store.scaleDown + 2;
+    store.selectedPlanet = data;
+    const { x, y, z } = store.selectedPlanet.object3d.position;
+    camera.position.x =
+      x - store.selectedPlanet.planetData.radius * store.scaleDown - 2;
+    camera.position.y =
+      y + store.selectedPlanet.planetData.radius * store.scaleDown + 1;
+    camera.position.z =
+      z + store.selectedPlanet.planetData.radius * store.scaleDown + 2;
 
     orbitControls.target = new THREE.Vector3(x, y, z);
   });
 
   watchEffect(() => {
-    // if (store.displayPath) {
-    //   scene.add(mercuryPath, earthPath);
-    // } else {
-    //   scene.remove(mercuryPath, earthPath);
-    // }
     if (store.displayGridHelper) {
       scene.add(gridHelper);
     } else {
@@ -152,7 +171,9 @@
       });
       store.planets.forEach((e) => {
         scene.add(toRaw(e.bodySystemObj));
-        scene.add(toRaw(e.path));
+        if (e.path) {
+          scene.add(toRaw(e.path.path));
+        }
       });
     }
   }
@@ -170,47 +191,34 @@
   }
 
   function animate() {
-    requestAnimationFrame(animate);
+    animationId.value = requestAnimationFrame(animate);
     orbitControls.update();
     render(scene, camera);
     // composer.render();
 
-    // sun.rotateY(0.001);
+    if (store.planets.length) {
+      store.planets.forEach((e) => {
+        e.body.rotateY(
+          store.realTime
+            ? e.raw.synodic_rotation_period / 86_400
+            : e.raw.synodic_rotation_period
+        );
+        if (e.path) {
+          toRaw(e.path.animatedPath());
+        }
+      });
+    }
 
-    // // MERCURY
-    // mercury.rotateY(0.006);
-    // mercurySystemObj.rotateY(0.01);
+    if (store.selectedPlanet) {
+      const { x, y, z } = store.selectedPlanet.object3d.position;
+      camera.position.x =
+        x - store.selectedPlanet.planetData.radius * store.scaleDown - 2;
+      camera.position.y =
+        y + store.selectedPlanet.planetData.radius * store.scaleDown + 1;
+      camera.position.z =
+        z + store.selectedPlanet.planetData.radius * store.scaleDown + 2;
 
-    // // Venus
-    // venus.rotateY(0.002);
-    // venusSystemObj.rotateY(0.003);
-
-    // // EARTH ROTATION
-    // earth.rotateY(0.01);
-    // moon.rotateY(-0.02);
-    // earthSystem.rotateY(0.01);
-    // earthSystemObj.rotateY(0.0009);
-
-    // // MARS ROTATION
-    // marsSystemObj.rotateY(0.0008);
-    // mars.rotateY(0.01);
-    // deimosObj.rotateY(0.02);
-    // phobosObj.rotateY(0.025);
-
-    // // JUPITER
-    // jupiter.rotateY(0.01);
-    // jupiterSystemObj.rotateY(0.003);
-
-    // // SATURN
-    // saturn.rotateY(0.01);
-    // saturnSystemObj.rotateY(0.005);
-
-    // // URANUS
-    // uranus.rotateY(0.005);
-    // uranusSystemObj.rotateY(0.0008);
-
-    // // NEPTUNE
-    // neptune.rotateY(0.002);
-    // neptuneSystemObj.rotateY(0.0003);
+      orbitControls.target = new THREE.Vector3(x, y, z);
+    }
   }
 </script>

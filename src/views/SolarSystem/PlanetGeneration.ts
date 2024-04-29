@@ -5,19 +5,13 @@ import { AstronomicalUnitToKilometer } from "/@/utils/helper/AstronomicalUnitToK
 import { CSS2DObject } from "three/addons/renderers/CSS2DRenderer.js";
 import emitter from "/@/utils/helper/emitter";
 import { useSolarSystem } from "/@/store/solarSystem";
-import { Object3DReactive } from "/@/utils/helper/reactiveObject3D";
 
 const store = useSolarSystem();
 export function planet_generator(planet_data: Planet) {
   // INIT PLANET SYSTEM
   const planetSystemObj = new THREE.Object3D();
   const planetSystem = new THREE.Object3D();
-  planetSystem.position.set(
-    AstronomicalUnitToKilometer(planet_data.perihelion_astronomical_unit) *
-      store.scaleDown,
-    0,
-    0
-  );
+
   const planetTexture = new THREE.TextureLoader().load(planet_data.texture_map);
   const planetNormalTexture = new THREE.TextureLoader().load(
     planet_data.normal_map
@@ -33,17 +27,7 @@ export function planet_generator(planet_data: Planet) {
           normalMap: planet_data.normal_map ? planetNormalTexture : null,
         })
   );
-
-  // ADD LIGHT TO STAR
-  if (planet_data.key === "sun") {
-    const pointLight = new THREE.PointLight(
-      0xffffff,
-      planet_data.luminosity * 5,
-      5_000_000,
-      0
-    );
-    planet.add(pointLight);
-  }
+  planet.rotateY(planet_data.tilt);
 
   // ADD RING
   if (planet_data.ring) {
@@ -77,7 +61,6 @@ export function planet_generator(planet_data: Planet) {
           0,
           0
         );
-        console.log(moon.position.x, "moon.position");
         //   MOON LUMINOSITY
         const pointLightMoon = new THREE.PointLight(
           e.color || 0xffffff,
@@ -92,23 +75,31 @@ export function planet_generator(planet_data: Planet) {
         addLabel(moon, moon, e);
 
         //   PATH
-        const moonPath = createLineLoopWithMesh(
-          AstronomicalUnitToKilometer(e.perihelion_astronomical_unit) *
-            store.scaleDown,
-          e.color || 0xffffff,
-          3
-        );
-        planetSystem.add(moonPath);
+        const moonPath = createLineLoopWithMesh(moonObj, e);
+        // planetSystem.add(moonPath);
+
+
       });
+
     }
 
   // ADD PLANET ORBITAL PATH
-  const planetPath = createLineLoopWithMesh(
-    AstronomicalUnitToKilometer(planet_data.perihelion_astronomical_unit) *
-      store.scaleDown,
-    planet_data.color || "white",
-    1
-  );
+  let planetPath: any;
+  if (planet_data.key !== "sun") {
+    planetPath = createLineLoopWithMesh(planetSystem, planet_data);
+  }
+
+  // ADD LIGHT TO STAR
+  if (planet_data.key === "sun") {
+    const pointLight = new THREE.PointLight(
+      0xffffff,
+      planet_data.luminosity * 5,
+      5_000_000,
+      0
+    );
+    planet.add(pointLight);
+  }
+
   addLabel(planet, planetSystem, planet_data);
 
   planetSystem.add(planet);

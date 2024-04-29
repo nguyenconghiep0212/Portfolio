@@ -1,9 +1,9 @@
 import * as THREE from "three";
 import { fetchSolarSystemTextureMaps } from "/@/api/solarSystem";
 
-export default async function getStarfield({ numStars = 5000 } = {}) {
+export default async function getStarfield({ numStars = 10_000 } = {}) {
   function randomSpherePoint() {
-    const radius = Math.random() * 25 + 50_000_000;
+    const radius = Math.random() * 25 + 5_000_000_000_000;
     const u = Math.random();
     const v = Math.random();
     const theta = 2 * Math.PI * u;
@@ -14,19 +14,20 @@ export default async function getStarfield({ numStars = 5000 } = {}) {
 
     return {
       pos: new THREE.Vector3(x, y, z),
-      hue: 0.6,
       minDist: radius,
     };
   }
   const verts = [];
   const colors = [];
   const positions = [];
+  const hues = [0, 0.1, 0.65];
   let col;
   for (let i = 0; i < numStars; i += 1) {
+    const hue = hues[Math.floor(Math.random() * hues.length)];
     const p = randomSpherePoint();
-    const { pos, hue } = p;
+    const { pos } = p;
     positions.push(p);
-    col = new THREE.Color().setHSL(hue, 0.2, Math.random());
+    col = new THREE.Color().setHSL(hue, Math.random(), Math.random());
     verts.push(pos.x, pos.y, pos.z);
     colors.push(col.r, col.g, col.b);
   }

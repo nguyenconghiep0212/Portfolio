@@ -7,15 +7,16 @@ export const useSolarSystem = defineStore("solarSystemStore", () => {
   const displayGridHelper = ref(false);
   const isRealScale = ref(true);
   const scaleDown = 0.0001;
-
   const controlSpeed = ref(3);
+  const realTime = ref(false);
+  const timelapseMultiply = ref(60);
   const BLOOM_PARAMS = {
     exposure: 1,
     strength: 1.2,
     threshold: 0.4,
     radius: 0,
   };
-
+  const selectedPlanet = ref<any>(null);
   const planets = ref<
     {
       raw: Planet;
@@ -26,10 +27,13 @@ export const useSolarSystem = defineStore("solarSystemStore", () => {
     }[]
   >([]);
   return {
+    realTime,
+    selectedPlanet,
     displayPath,
     displayGridHelper,
     isRealScale,
     controlSpeed,
+    timelapseMultiply,
     scaleDown,
     BLOOM_PARAMS,
     planets,

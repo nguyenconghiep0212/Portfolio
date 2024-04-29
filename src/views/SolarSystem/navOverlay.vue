@@ -1,4 +1,68 @@
 <template>
+  <!-- TIME LAPSE -->
+  <div class="absolute bottom-10 left-1/2 z-10">
+    <div class="-translate-x-1/2 w-max space-y-1">
+      <div
+        v-if="!store.realTime"
+        class="flex justify-center tracking-widest text-white truncate transition-all duration-100 text-bold opacity-60 space-x-1"
+      >
+        <span class="mr-1">1 year =</span>
+        <span class="text-green-400">
+          {{ timeDisplay }}
+        </span>
+        <n-dropdown
+          trigger="hover"
+          :options="timelapseOptions"
+          @select="timelapseUnitChange"
+        >
+          <span>{{ timelapseUnit }}</span>
+        </n-dropdown>
+      </div>
+      <div class="grid grid-cols-3 gap-7 min-h-[34px]">
+        <div>
+          <n-button
+            v-if="!store.realTime"
+            :disabled="timeDisplay === 1 || store.realTime"
+            quaternary
+            class="text-white opacity-60 !bg-[#ffffff4d] w-min"
+            @click="decreaseTimelapse"
+          >
+            <Icon icon="solar:skip-previous-line-duotone" />
+          </n-button>
+        </div>
+
+        <div class="flex justify-center items-center">
+          <div
+            :class="`${
+              store.realTime
+                ? 'bg-green-600 before:bg-green-600'
+                : 'bg-blue-600 before:bg-blue-600'
+            } rounded-full w-4 h-4 cursor-pointer before:w-6 before:h-6 before:opacity-60 before:content-[''] before:flex before:-m-1 before:rounded-full`"
+            @click="handleChangeTime"
+          ></div>
+        </div>
+        <div>
+          <n-button
+            v-if="!store.realTime"
+            :disabled="store.realTime"
+            quaternary
+            class="text-white opacity-60 !bg-[#ffffff4d] w-min"
+            @click="increaseTimelapse"
+          >
+            <Icon icon="solar:skip-next-line-duotone" />
+          </n-button>
+        </div>
+      </div>
+      <div
+        :class="`tracking-widest text-[16px] uppercase ${
+          store.realTime ? 'text-green-600' : 'text-blue-600'
+        } font-thin truncate transition-all duration-100 text-bold opacity-60`"
+      >
+        {{ store.realTime ? "Real time" : "Relative time" }}
+      </div>
+    </div>
+  </div>
+
   <!-- PLANETS NAV -->
   <div class="absolute top-0 left-0 z-10">
     <div
@@ -34,13 +98,30 @@
         <div
           v-for="(item, index) in store.planets"
           :key="index"
-          class="bg-[#3a3a3d99] h-[7vh] hover:bg-[#39393c99] transition-all duration-100 cursor-pointer rounded-sm opacity-50 hover:opacity-100"
-          @click="moveToPlanet(item)"
+          class="bg-[#3a3a3d99] h-[7vh] hover:bg-[#39393c99] transition-all duration-100 rounded-sm opacity-40 hover:opacity-100"
         >
           <div class="flex justify-between h-full">
-            <div class="mx-3 my-1">
+            <div class="mx-3 my-1 flex flex-col justify-between">
               <div class="tracking-widest text-white cursor-pointer text-bold">
                 {{ item.raw.name }}
+              </div>
+              <div class="flex space-x-2 mb-1 text-white">
+                <Icon
+                  class="cursor-pointer"
+                  :icon="
+                    store.selectedPlanet
+                      ? store.selectedPlanet.planetData.key === item.raw.key
+                        ? 'solar:pin-bold'
+                        : 'solar:pin-broken'
+                      : 'solar:pin-broken'
+                  "
+                  @click="pinPlanet(item)"
+                />
+                <Icon
+                  class="cursor-pointer"
+                  icon="solar:info-square-outline"
+                  @click="displayPlanetInfo(item)"
+                />
               </div>
             </div>
             <div class="translate-x-1/3">
@@ -119,26 +200,131 @@
   import { useSolarSystem } from "/@/store/solarSystem";
   import { useI18n } from "/@/hooks/useI18n";
   import { Icon } from "/@/uikits/Icon";
-  import { ref, toRaw } from "vue";
+  import { ref, watchEffect } from "vue";
   import emitter from "/@/utils/helper/emitter";
   import { Planet } from "/@/interface/solarSystem";
+  import PlanetDetail from './planetDetail.vue'
   const { t } = useI18n();
 
   const store = useSolarSystem();
 
+  const timelapseUnit = ref("minute(s)");
+  const timelapseOptions = [
+    {
+      key: "second(s)",
+      label: "second",
+    },
+    {
+      key: "minute(s)",
+      label: "minute",
+    },
+    {
+      key: "hour(s)",
+      label: "hour",
+    },
+    {
+      key: "day(s)",
+      label: "day",
+    },
+  ];
   const showPlanetList = ref(true);
+  const timeDisplay = ref(0);
 
-  function moveToPlanet(data: {
+  watchEffect(() => {
+    if (timelapseUnit.value === "minute(s)") {
+      timeDisplay.value = store.timelapseMultiply / 60;
+    } else if (timelapseUnit.value === "hour(s)") {
+      timeDisplay.value = store.timelapseMultiply / (60 * 60);
+    } else if (timelapseUnit.value === "day(s)") {
+      timeDisplay.value = store.timelapseMultiply / (60 * 60 * 24);
+    } else {
+      timeDisplay.value = store.timelapseMultiply;
+    }
+  });
+
+  function pinPlanet(data: {
     raw: Planet;
     bodySystemObj: any;
     bodySystem: any;
     body: any;
     path: any;
   }) {
-    emitter.emit("move-to-planet", {
-      object3d: data.bodySystem,
-      planetData: data.raw,
-    });
+    if (store.selectedPlanet) {
+      if (store.selectedPlanet.planetData.key === data.raw.key) {
+        store.selectedPlanet = null;
+      } else {
+        emitter.emit("move-to-planet", {
+          object3d: data.bodySystem,
+          planetData: data.raw,
+        });
+      }
+    } else {
+      emitter.emit("move-to-planet", {
+        object3d: data.bodySystem,
+        planetData: data.raw,
+      });
+    }
+  }
+
+  function increaseTimelapse() {
+    switch (timelapseUnit.value) {
+      case "minute(s)":
+        store.timelapseMultiply = store.timelapseMultiply + 60;
+        break;
+      case "hour(s)":
+        store.timelapseMultiply = store.timelapseMultiply + 60 * 60;
+        break;
+      case "day(s)":
+        store.timelapseMultiply = store.timelapseMultiply + 60 * 60 * 24;
+        break;
+      default:
+        ++store.timelapseMultiply;
+        break;
+    }
+  }
+  function decreaseTimelapse() {
+    if (store.timelapseMultiply > 0) {
+      switch (timelapseUnit.value) {
+        case "minute(s)":
+          store.timelapseMultiply = store.timelapseMultiply - 60;
+          break;
+        case "hour(s)":
+          store.timelapseMultiply = store.timelapseMultiply - 60 * 60;
+          break;
+        case "day(s)":
+          store.timelapseMultiply = store.timelapseMultiply - 60 * 60 * 24;
+          break;
+        default:
+          --store.timelapseMultiply;
+          break;
+      }
+    }
+  }
+
+  function timelapseUnitChange(event: string) {
+    timelapseUnit.value = event;
+    switch (timelapseUnit.value) {
+      case "minute(s)":
+        store.timelapseMultiply = timeDisplay.value * 60;
+        break;
+      case "hour(s)":
+        store.timelapseMultiply = timeDisplay.value * 60 * 60;
+        break;
+      case "day(s)":
+        store.timelapseMultiply = timeDisplay.value * 60 * 60 * 24;
+        break;
+      default:
+        store.timelapseMultiply = timeDisplay.value;
+        break;
+    }
+  }
+
+  function handleChangeTime() {
+    store.realTime = !store.realTime;
+  }
+
+  function displayPlanetInfo(data: any) {
+    console.log(data);
   }
 </script>
 
