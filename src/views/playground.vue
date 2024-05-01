@@ -33,7 +33,13 @@
     // ANIMATE
     animate();
   });
-
+  const obj = new THREE.SphereGeometry(10, 12, 6);
+  const mat = new THREE.MeshBasicMaterial({
+    wireframe: true,
+  });
+  const mesh = new THREE.Mesh(obj, mat);
+  // mesh.rotateZ(Math.PI / 2)
+  scene.add(mesh);
   // RENDER FUNCTION
   function render(scene: any, camera: any) {
     renderer.render(scene, camera);
@@ -53,10 +59,14 @@
     torus.rotation.y += 0.02;
     torus.rotation.z += 0.001;
 
+    mesh.rotateY(0.01);
+
     orbitControls.update();
 
     render(scene, camera);
   }
+  const axesHelper = new THREE.AxesHelper(50);
+  scene.add(axesHelper);
 
   // LIGHTING
   // PointLight( color : Integer, intensity : Float, distance : Number, decay : Float )
@@ -100,7 +110,6 @@
     star.toThreeObject(scene);
   }
   // getStarfield(scene);
-
   // ASTROID
   const astroid = createRock(10);
   astroid.position.set(50, 0, 30);

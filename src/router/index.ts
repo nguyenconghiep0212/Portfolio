@@ -1,4 +1,10 @@
-import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from "vue-router";
+import {
+  useRouter,
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+  RouteRecordRaw,
+} from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,6 +30,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "playground",
     component: () => import("../views/playground.vue"),
     meta: {
+      hidden: true,
       title: "playground",
     },
   },
@@ -38,14 +45,21 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/solarSystem",
     name: "solarSystem",
-    component: () => import("../views/SolarSystem/solarSystem.vue"),
+    component: () => import("../views/SolarSystem/index.vue"),
     meta: {
       title: "Solar system",
     },
   },
-
   {
-    path: "/404",
+    path: "/3dBuilding",
+    name: "3dBuilding",
+    component: () => import("../views/3DBuilding/index.vue"),
+    meta: {
+      title: "3D Building",
+    },
+  },
+  {
+    path: "/:pathMatch(.*)*",
     name: "error",
     component: () => import("../views/error.vue"),
     meta: {
@@ -55,12 +69,12 @@ const routes: Array<RouteRecordRaw> = [
   },
 ];
 
-const router = createRouter({
+const routers = createRouter({
   history: createWebHashHistory("/interactive-map/"),
   routes,
 });
 
-router.beforeEach((to, from) => {
+routers.beforeEach((to, from) => {
   console.log(from, "---->", to);
 });
-export default router;
+export default routers;

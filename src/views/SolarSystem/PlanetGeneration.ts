@@ -27,12 +27,12 @@ export function planet_generator(planet_data: Planet) {
           normalMap: planet_data.normal_map ? planetNormalTexture : null,
         })
   );
-  planet.rotateY(planet_data.tilt);
+  planet.rotateZ((Math.PI / 180) * planet_data.tilt);
 
   // ADD RING
   if (planet_data.ring) {
     const ringTexture = new THREE.TextureLoader().load(planet_data.ring);
-    const ringGeo = new THREE.RingGeometry(20, 30, 32);
+    const ringGeo = new THREE.RingGeometry(20, 30, 128);
     const ringMat = new THREE.MeshStandardMaterial({
       map: ringTexture,
       side: THREE.DoubleSide,
@@ -77,10 +77,7 @@ export function planet_generator(planet_data: Planet) {
         //   PATH
         const moonPath = createLineLoopWithMesh(moonObj, e);
         // planetSystem.add(moonPath);
-
-
       });
-
     }
 
   // ADD PLANET ORBITAL PATH
@@ -116,10 +113,10 @@ export function planet_generator(planet_data: Planet) {
 
 function addLabel(planet: any, planetSystem: any, planet_data: Planet) {
   const labelDiv = document.createElement("div");
-  labelDiv.className = `${planet_data.key} tracking-widest text-white uppercase cursor-pointer text-bold opacity-60`;
+  labelDiv.className = `${planet_data.key} tracking-widest  uppercase cursor-pointer text-bold opacity-60`;
   labelDiv.innerText = planet_data.name;
   labelDiv.addEventListener("pointerdown", () => {
-    emitter.emit("move-to-planet", {
+    emitter.emit("pin-planet", {
       object3d: planetSystem,
       planetData: planet_data,
     });

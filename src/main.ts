@@ -8,16 +8,30 @@ import {
   // create naive ui
   create,
   // component
+  NConfigProvider,
   NButton,
+  NButtonGroup,
   NDropdown,
   NInput,
   NSelect,
   NSwitch,
+  NDivider,
+  NTooltip,
 } from "naive-ui";
 
 async function bootstrap() {
   const naive = create({
-    components: [NButton, NDropdown, NInput, NSelect, NSwitch],
+    components: [
+      NConfigProvider,
+      NButton,
+      NButtonGroup,
+      NDropdown,
+      NInput,
+      NSelect,
+      NSwitch,
+      NDivider,
+      NTooltip,
+    ],
   });
   const app = createApp(App)
     .use(router)

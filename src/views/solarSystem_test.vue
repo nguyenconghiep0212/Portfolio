@@ -370,7 +370,7 @@ function animate() {
       mesh.rotation.z = Math.PI * 0.5;
     }
   });
-  if (activePlanet) { 
+  if (activePlanet) {
     camera.position.x = activePlanet.position.x;
     camera.position.y = -activePlanet.position.z;
   } else {
@@ -412,6 +412,7 @@ function animate() {
 }
 
 .planet-title {
+
   font-family: "Arial", sans-serif;
   font-size: 0.6em;
   font-weight: 600;

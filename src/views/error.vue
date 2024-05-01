@@ -1,8 +1,4 @@
 <template>
-    <div>
-404 ERROR
-    </div>
+  <div>404 ERROR</div>
 </template>
-<script lang="ts" setup>
-
-</script>
+<script lang="ts" setup></script>

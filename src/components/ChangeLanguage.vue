@@ -1,11 +1,11 @@
 <template>
   <n-dropdown trigger="hover" :options="localeList" @select="toggleLocale">
-    <n-button>
+    <div class=" opacity-40">
       <span class="flex items-center cursor-pointer space-x-1">
-        <Icon icon="material-symbols:language-chinese-dayi-rounded" />
-        <div style="font-size: smaller">{{ getLocaleText }}</div>
+        <Icon icon="ion:language-sharp" />
+        <div class="tracking-widest  truncate transition-all duration-100 text-bold">{{ getLocaleText }}</div>
       </span>
-    </n-button>
+    </div>
   </n-dropdown>
 </template>
 <script lang="ts" setup>
@@ -43,6 +43,6 @@
     if (!selectedKeys.value) {
       return "";
     }
-    return localeList.find((item) => item.key === selectedKeys.value)?.label;
+    return localeList.find((item) => item.key === selectedKeys.value)?.key;
   });
 </script>

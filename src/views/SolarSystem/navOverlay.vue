@@ -4,7 +4,7 @@
     <div class="-translate-x-1/2 w-max space-y-1">
       <div
         v-if="!store.realTime"
-        class="flex justify-center tracking-widest text-white truncate transition-all duration-100 text-bold opacity-60 space-x-1"
+        class="flex justify-center tracking-widest  truncate transition-all duration-100 text-bold opacity-60 space-x-1"
       >
         <span class="mr-1">1 year =</span>
         <span class="text-green-400">
@@ -24,7 +24,7 @@
             v-if="!store.realTime"
             :disabled="timeDisplay === 1 || store.realTime"
             quaternary
-            class="text-white opacity-60 !bg-[#ffffff4d] w-min"
+            class=" opacity-60 !bg-[#ffffff4d] w-min"
             @click="decreaseTimelapse"
           >
             <Icon icon="solar:skip-previous-line-duotone" />
@@ -46,7 +46,7 @@
             v-if="!store.realTime"
             :disabled="store.realTime"
             quaternary
-            class="text-white opacity-60 !bg-[#ffffff4d] w-min"
+            class=" opacity-60 !bg-[#ffffff4d] w-min"
             @click="increaseTimelapse"
           >
             <Icon icon="solar:skip-next-line-duotone" />
@@ -65,70 +65,83 @@
 
   <!-- PLANETS NAV -->
   <div class="absolute top-0 left-0 z-10">
-    <div
-      :class="`m-2  transition-all duration-200
-       ${showPlanetList ? 'w-[20vw]' : 'w-0'}`"
-    >
-      <div class="flex items-center justify-between mb-1">
-        <div
-          class="tracking-widest text-white uppercase truncate transition-all duration-100 cursor-pointer text-bold opacity-60"
-        >
-          {{ t("view.solar_system.planet_nav.title") }}
-        </div>
-        <div>
-          <n-button
-            size="small"
-            ghost
-            class="bg-[#39393c99] text-white opacity-60"
-            @click="showPlanetList = !showPlanetList"
-          >
-            <Icon
-              :icon="
-                showPlanetList
-                  ? 'ic:baseline-keyboard-double-arrow-left'
-                  : 'ic:baseline-keyboard-double-arrow-right'
-              "
-            />
-          </n-button>
-        </div>
-      </div>
+    <div class="flex">
       <div
-        class="overflow-y-auto overflow-x-hidden space-y-1 planet-list pb-1 pr-1 max-h-[70vh]"
+        :class="`m-2  transition-all duration-200
+       ${showPlanetList ? 'w-[20vw]' : 'w-0'}`"
       >
+        <div class="flex items-center justify-between mb-1">
+          <div
+            class="tracking-widest  uppercase truncate transition-all duration-100 cursor-pointer text-bold opacity-60"
+          >
+            {{ t("view.solar_system.planet_nav.title") }}
+          </div>
+          <div>
+            <n-button
+              size="small"
+              ghost
+              class="bg-[#39393c99]  opacity-60"
+              @click="showPlanetList = !showPlanetList"
+            >
+              <Icon
+                :icon="
+                  showPlanetList
+                    ? 'ic:baseline-keyboard-double-arrow-left'
+                    : 'ic:baseline-keyboard-double-arrow-right'
+                "
+              />
+            </n-button>
+          </div>
+        </div>
         <div
-          v-for="(item, index) in store.planets"
-          :key="index"
-          class="bg-[#3a3a3d99] h-[7vh] hover:bg-[#39393c99] transition-all duration-100 rounded-sm opacity-40 hover:opacity-100"
+          class="overflow-y-auto overflow-x-hidden space-y-1 planet-list pb-1 pr-1 max-h-[70vh]"
         >
-          <div class="flex justify-between h-full">
-            <div class="mx-3 my-1 flex flex-col justify-between">
-              <div class="tracking-widest text-white cursor-pointer text-bold">
-                {{ item.raw.name }}
-              </div>
-              <div class="flex space-x-2 mb-1 text-white">
-                <Icon
-                  class="cursor-pointer"
-                  :icon="
-                    store.selectedPlanet
-                      ? store.selectedPlanet.planetData.key === item.raw.key
-                        ? 'solar:pin-bold'
+          <div
+            v-for="(item, index) in store.planets"
+            :key="index"
+            class="bg-[#3a3a3d99] h-[7vh] hover:bg-[#39393c99] transition-all duration-100 rounded-sm opacity-40 hover:opacity-100 cursor-pointer"
+            @click="panToPlanet(item)"
+          >
+            <div class="flex justify-between h-full">
+              <div class="mx-3 my-1 flex flex-col justify-between">
+                <div
+                  class="tracking-widest  cursor-pointer text-bold"
+                >
+                  {{ item.raw.name }}
+                </div>
+                <div class="flex space-x-2 mb-1 ">
+                  <Icon
+                    class="cursor-pointer"
+                    :icon="
+                      store.selectedPlanet
+                        ? store.selectedPlanet.planetData.key === item.raw.key
+                          ? 'solar:pin-bold'
+                          : 'solar:pin-broken'
                         : 'solar:pin-broken'
-                      : 'solar:pin-broken'
-                  "
-                  @click="pinPlanet(item)"
-                />
-                <Icon
-                  class="cursor-pointer"
-                  icon="solar:info-square-outline"
-                  @click="displayPlanetInfo(item)"
-                />
+                    "
+                    @click="pinPlanet(item)"
+                  />
+                  <Icon
+                    class="cursor-pointer"
+                    icon="solar:satellite-linear"
+                    @click="displayPlanetInfo($event, item)"
+                  />
+                </div>
               </div>
-            </div>
-            <div class="translate-x-1/3">
-              <img :src="item.raw.logo" class="h-full" />
+              <div class="translate-x-1/3">
+                <img :src="item.raw.logo" class="h-full" />
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      <div
+        v-if="store.selectedPlanetMission"
+        :class="`${
+          showPlanetList ? (showMission ? 'w-[50vw]' : 'w-0') : 'w-0'
+        } h-[inherit] transition-all duration-100 `"
+      >
+        <PlanetMission @close="handleClose" />
       </div>
     </div>
   </div>
@@ -137,7 +150,7 @@
     <div class="m-2 space-y-1">
       <div class="text-right">
         <h3
-          class="tracking-widest text-white uppercase cursor-pointer text-bold opacity-60"
+          class="tracking-widest  uppercase cursor-pointer text-bold opacity-60"
         >
           Option
         </h3>
@@ -146,7 +159,7 @@
         :class="`p-2 cursor-pointer  ${
           store.displayPath
             ? 'bg-[#ffffffb0] text-black'
-            : 'bg-[#ffffff33] text-white'
+            : 'bg-[#ffffff33] '
         }`"
         @click="store.displayPath = !store.displayPath"
       >
@@ -160,7 +173,7 @@
         :class="`p-2 cursor-pointer  ${
           store.displayGridHelper
             ? 'bg-[#ffffffb0] text-black'
-            : 'bg-[#ffffff33] text-white'
+            : 'bg-[#ffffff33] '
         }`"
         @click="store.displayGridHelper = !store.displayGridHelper"
       >
@@ -170,7 +183,7 @@
         :class="`p-2 cursor-pointer  ${
           store.isRealScale
             ? 'bg-[#ffffffb0] text-black'
-            : 'bg-[#ffffff33] text-white'
+            : 'bg-[#ffffff33] '
         }`"
         @click="store.isRealScale = !store.isRealScale"
       >
@@ -183,15 +196,8 @@
 
   <!-- FOOTER -->
   <div class="absolute z-10 bottom-1 left-1">
-    <div class="opacity-50">
-      <span class="mr-1 text-white"> Inspired by </span>
-      <a
-        class="text-blue-400 underline"
-        href="https://eyes.nasa.gov/apps/solar-system/#/home"
-        target="_blank"
-      >
-        Nasa solar model
-      </a>
+    <div class="opacity-30 italic ">
+      Real time position is not supported
     </div>
   </div>
 </template>
@@ -203,11 +209,12 @@
   import { ref, watchEffect } from "vue";
   import emitter from "/@/utils/helper/emitter";
   import { Planet } from "/@/interface/solarSystem";
-  import PlanetDetail from './planetDetail.vue'
+  import PlanetMission from "./planetMission.vue";
   const { t } = useI18n();
 
   const store = useSolarSystem();
 
+  const showMission = ref(false);
   const timelapseUnit = ref("minute(s)");
   const timelapseOptions = [
     {
@@ -253,17 +260,30 @@
       if (store.selectedPlanet.planetData.key === data.raw.key) {
         store.selectedPlanet = null;
       } else {
-        emitter.emit("move-to-planet", {
+        emitter.emit("pin-planet", {
           object3d: data.bodySystem,
           planetData: data.raw,
         });
       }
     } else {
-      emitter.emit("move-to-planet", {
+      emitter.emit("pin-planet", {
         object3d: data.bodySystem,
         planetData: data.raw,
       });
     }
+  }
+
+  function panToPlanet(data: {
+    raw: Planet;
+    bodySystemObj: any;
+    bodySystem: any;
+    body: any;
+    path: any;
+  }) {
+    emitter.emit("move-to-planet", {
+      object3d: data.bodySystem,
+      planetData: data.raw,
+    });
   }
 
   function increaseTimelapse() {
@@ -323,8 +343,14 @@
     store.realTime = !store.realTime;
   }
 
-  function displayPlanetInfo(data: any) {
-    console.log(data);
+  function displayPlanetInfo(event: MouseEvent, data: any) {
+    event.stopPropagation();
+    showMission.value = true;
+    store.selectedPlanetMission = data.raw;
+  }
+
+  function handleClose() {
+    showMission.value = !showMission.value;
   }
 </script>
 
