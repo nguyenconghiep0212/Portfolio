@@ -1,39 +1,75 @@
 <template>
   <div class="rounded w-full h-full bg-[#39393c3a] relative">
-    <div class="absolute top-1 left-1">
-      <n-button class="opacity-60 bg-black" secondary @click="returnToHomepage">
-        <Icon icon="material-symbols:arrow-back" />
-      </n-button>
+    <div class="absolute top-1 left-1 flex flex-col space-y-1">
+      <div class="flex justify-start w-min">
+        <n-button
+          class="opacity-60 bg-black"
+          secondary
+          @click="returnToHomepage"
+        >
+          <Icon icon="material-symbols:arrow-back" />
+        </n-button>
+      </div>
+      <div
+        v-if="selectedModel"
+        class="bg-opacity-50 bg-black p-2 rounded w-[30vw] h-[60vh] flex justify-start"
+      >
+        <div class="flex justify-between w-full h-min items-center">
+          <div class="tracking-widest text-lg text-bold opacity-60">
+            {{ selectedModel.raw.name }}
+          </div>
+          <div>
+            <Icon
+              class="cursor-pointer opacity-60"
+              icon="material-symbols:close-rounded"
+              @click="handleCloseDetail"
+            />
+          </div>
+        </div>
+      </div>
     </div>
     <div class="absolute top-2 left-1/2 -translate-x-1/2">
-      <div class="tracking-widest text-lg text-bold opacity-60">
-        BUILDING MODEL
-      </div>
+      <div class="tracking-widest text-lg text-bold opacity-60">TOWN MODEL</div>
     </div>
     <div class="absolute top-1 right-1">
       <n-button-group vertical>
         <n-button class="opacity-60 bg-black" secondary @click="toggleAxis">
-          <Icon icon="lucide:axis-3d" />
+          <Icon
+            :class="axisDisplay ? 'text-red-400' : 'text-white'"
+            icon="lucide:axis-3d"
+          />
         </n-button>
         <n-button class="opacity-60 bg-black" secondary @click="toggleGrid">
-          <Icon icon="teenyicons:view-grid-outline" />
+          <Icon
+            :class="gridDisplay ? 'text-red-400' : 'text-white'"
+            icon="teenyicons:view-grid-outline"
+          />
         </n-button>
         <n-button
           class="opacity-60 bg-black"
           secondary
           @click="toggleWireframe"
         >
-          <Icon icon="iconoir:xray-view" />
+          <Icon
+            :class="wireframeDisplay ? 'text-red-400' : 'text-white'"
+            icon="iconoir:xray-view"
+          />
         </n-button>
         <n-button class="opacity-60 bg-black" secondary @click="toggleLight">
-          <Icon icon="solar:sun-bold-duotone" />
+          <Icon
+            :class="lightDirectionDisplay ? 'text-red-400' : 'text-white'"
+            icon="solar:sun-bold-duotone"
+          />
         </n-button>
         <n-button
           class="opacity-60 bg-black"
           secondary
           @click="toggleLightHelper"
         >
-          <Icon icon="ph:headlights-bold" />
+          <Icon
+            :class="lightHelperDisplay ? 'text-red-400' : 'text-white'"
+            icon="ph:headlights-bold"
+          />
         </n-button>
       </n-button-group>
       <Icon icon="" />
@@ -49,9 +85,11 @@
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   import { Icon } from "/@/uikits/Icon";
   import { useRouter } from "vue-router";
+  import { gsap } from "gsap";
 
   const router = useRouter();
-
+  const mouse = new THREE.Vector2();
+  const raycaster = new THREE.Raycaster();
   const el = ref<any>(null);
   const scene = new THREE.Scene();
   let camera: any;
@@ -63,6 +101,7 @@
   const lightDirectionDisplay = ref(false);
   const axesHelper = new THREE.AxesHelper(1_000);
 
+  const selectedModel = ref<any>(null);
   const models = ref<any>([]);
 
   const renderer = new THREE.WebGLRenderer({
@@ -78,7 +117,7 @@
   );
   const groundGeo = new THREE.PlaneGeometry(1_000, 1_000, 32, 32);
   const groundMat = new THREE.MeshStandardMaterial({
-    color: 0xe6e6e6,
+    color: 0xffffff,
     side: THREE.DoubleSide,
     map: groundTexture,
   });
@@ -92,7 +131,7 @@
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
   scene.add(ambientLight);
   const directionalLight = new THREE.DirectionalLight(0xffffff, 4);
-  directionalLight.position.set(200, 400, 400);
+  directionalLight.position.set(200, 400, 100);
   directionalLight.castShadow = true;
   const d = 1_000;
   const r = 20;
@@ -109,17 +148,16 @@
   directionalLight.shadow.camera.visible = true;
   const lightHelper = new THREE.DirectionalLightHelper(directionalLight, 1);
   scene.add(directionalLight);
-  // const shadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-  // scene.add(shadowHelper);
+  const shadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
 
   onMounted(() => {
     scene.background = new THREE.Color("black");
     if (el.value) {
       const { width, height } = el.value.getBoundingClientRect();
       camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1_000_000);
-      camera.position.setZ(100);
-      camera.position.setY(60);
-      camera.position.setX(60);
+      camera.position.setZ(300);
+      camera.position.setY(400);
+      camera.position.setX(200);
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(width, height);
       el.value.appendChild(renderer.domElement);
@@ -131,12 +169,11 @@
       orbitControls.minPolarAngle = 0.5;
       orbitControls.maxPolarAngle = 1.5;
     }
-
+    renderer.domElement.addEventListener("click", onMouseOverObject, false);
     animate();
     getModelSrc();
-    simulateHouses();
+    // simulateHouses();
   });
-
   function render(scene: any, camera: any) {
     renderer.render(scene, camera);
   }
@@ -146,73 +183,110 @@
     render(scene, camera);
   }
 
+  // MOUSE EVENT
+  function onMouseOverObject(event: MouseEvent) {
+    event.preventDefault();
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObject(scene, true);
+    if (intersects.length > 0) {
+      const object = intersects[0].object;
+      if (ground.id != object.id) {
+        scene.traverse((e: any) => {
+          if (e.isMesh) e.material.color.set(0xffffff);
+        });
+        object.material.color.set(0xff9b9b);
+        selectedModel.value = models.value.find((e: any) =>
+          e.model.children.some((f: any) => f.id === object.id)
+        );
+        exploreAnimation(selectedModel.value);
+      }
+    }
+    render(scene, camera);
+  }
+  function exploreAnimation(target: any) {
+    const { x, y, z } = target.model.position;
+    gsap.to(camera.position, {
+      x: x + 20,
+      y: y + 100,
+      z: z + 20,
+      duration: 2,
+      ease: "power3.inOut",
+      onComplete: () => {
+        console.log("complete");
+      },
+    });
+  }
+
+  // GENERATE OBJECT
   function getModelSrc() {
     // call api action here
     const modelSrc = [
       {
         raw: {
-          name: "Main Tower",
-          key: "main-tower",
+          name: "Office building 2",
+          key: "office-building-2",
           rotate: 45,
           position: {
-            x: 120,
+            x: 115,
             y: 0,
-            z: 150,
+            z: 145,
           },
         },
-        object3D: "src/assets/3DModels/building_01.gltf",
+        object3D: "src/assets/3DModels/building_01.glb",
       },
       {
         raw: {
           name: "Office building 1",
           key: "office-building-1",
-          rotate: 140,
+          rotate: 45,
           position: {
-            x: 0,
+            x: 80,
             y: 0,
-            z: 0,
+            z: 110,
           },
         },
-        object3D: "src/assets/3DModels/building_02.gltf",
+        object3D: "src/assets/3DModels/building_02.glb",
       },
       {
         raw: {
-          name: "Office building 2",
-          key: "office-building-2",
-          rotate: 60,
+          name: "Main building",
+          key: "main-building",
+          rotate: 315,
           position: {
-            x: 0,
+            x: 60,
             y: 0,
-            z: 0,
+            z: 200,
           },
         },
-        object3D: "src/assets/3DModels/building_03.gltf",
+        object3D: "src/assets/3DModels/building_03.glb",
       },
       {
         raw: {
           name: "Resident tower 1",
           key: "resident-tower-1",
-          rotate: 150,
+          rotate: 45,
           position: {
-            x: 0,
+            x: -60,
             y: 0,
-            z: 0,
+            z: -35,
           },
         },
-        object3D: "src/assets/3DModels/building_04.gltf",
+        object3D: "src/assets/3DModels/building_04.glb",
       },
       {
         raw: {
           name: "Resident tower 2",
           key: "resident-tower-2",
-          rotate: 230,
+          rotate: 135,
           position: {
-            x: 0,
+            x: -125,
             y: 0,
-            z: 0,
+            z: 60,
           },
         },
-        object3D: "src/assets/3DModels/building_05.gltf",
+        object3D: "src/assets/3DModels/building_05.glb",
       },
     ];
     modelSrc.forEach((item: any) => {
@@ -246,8 +320,6 @@
           src.raw.position.z
         );
         model.rotateY(src.raw.rotate * (Math.PI / 180));
-        model.rotateX(Math.PI / 2);
-        model.scale.set(0.03, 0.03, 0.03);
         scene.add(model);
       },
       undefined,
@@ -256,18 +328,26 @@
       }
     );
   }
+  // function simulateHouses() {
+  //   const geometry = new THREE.BoxGeometry(30, 40, 40);
+  //   const material = new THREE.MeshStandardMaterial({ color: 0xff00ff });
+  //   const cube = new THREE.Mesh(geometry, material);
+  //   cube.position.set(-140, 0, 70);
+  //   cube.rotateY(135 * (Math.PI / 180));
+  //   cube.castShadow = true;
+  //   cube.receiveShadow = true;
+  //   scene.add(cube);
+  // }
 
-  function simulateHouses() {
-    const geometry = new THREE.BoxGeometry(30, 40, 40);
-    const material = new THREE.MeshStandardMaterial({ color: 0xff00ff });
-    const cube = new THREE.Mesh(geometry, material);
-    cube.position.set(-140, 0, 70);
-    cube.rotateY(135 * (Math.PI / 180));
-    cube.castShadow = true;
-    cube.receiveShadow = true;
-    scene.add(cube);
+  // BUILDING DETAIL
+  function handleCloseDetail() {
+    selectedModel.value = null;
+    scene.traverse((e: any) => {
+      if (e.isMesh) e.material.color.set(0xffffff);
+    });
   }
 
+  // OPTION
   function toggleAxis() {
     axisDisplay.value = !axisDisplay.value;
     if (axisDisplay.value) {
@@ -297,8 +377,10 @@
     lightHelperDisplay.value = !lightHelperDisplay.value;
     if (lightHelperDisplay.value) {
       scene.add(lightHelper);
+      scene.add(shadowHelper);
     } else {
       scene.remove(lightHelper);
+      scene.remove(shadowHelper);
     }
   }
   function returnToHomepage() {
