@@ -5,7 +5,7 @@ import { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/interactive-map/",
+  base: "/Portfolio/",
   server: {
     port: 4001,
   },
