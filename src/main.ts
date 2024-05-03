@@ -17,6 +17,8 @@ import {
   NSwitch,
   NDivider,
   NTooltip,
+  NSlider,
+  NIconWrapper,
 } from "naive-ui";
 
 async function bootstrap() {
@@ -31,6 +33,8 @@ async function bootstrap() {
       NSwitch,
       NDivider,
       NTooltip,
+      NSlider,
+      NIconWrapper,
     ],
   });
   const app = createApp(App)
