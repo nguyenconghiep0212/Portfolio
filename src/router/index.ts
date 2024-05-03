@@ -70,7 +70,7 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const routers = createRouter({
-  history: createWebHashHistory("/interactive-map/"),
+  history: createWebHashHistory("/Portfolio/"),
   routes,
 });
 

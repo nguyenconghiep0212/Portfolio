@@ -5,7 +5,7 @@
 
 **HTTPS**
 ```
-git clone https://github.com/nguyenconghiep0212/interactive-map.git
+git clone https://github.com/nguyenconghiep0212/Portfolio.git
 ```
 
 ### :two: Install dependencies
