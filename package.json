@@ -17,6 +17,8 @@
     "@tresjs/cientos": "3.7.0",
     "@tresjs/core": "3.6.0",
     "axios": "^0.24.0",
+    "cannon-es": "^0.20.0",
+    "cannon-es-debugger": "^1.0.0",
     "gsap": "^3.12.5",
     "less": "^4.2.0",
     "lodash-es": "^4.17.21",
