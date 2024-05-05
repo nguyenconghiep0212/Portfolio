@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { fetchSolarSystemTextureMaps } from "/@/api/solarSystem";
+import { fetchTextureMaps } from "/@/api/solarSystem";
 
 export default async function getStarfield({ numStars = 10_000 } = {}) {
   function randomSpherePoint() {
@@ -42,7 +42,7 @@ export default async function getStarfield({ numStars = 10_000 } = {}) {
       },
     ],
   };
-  const res = await fetchSolarSystemTextureMaps(params);
+  const res = await fetchTextureMaps(params);
   if (res) {
     const mat = new THREE.PointsMaterial({
       size: 0.2,

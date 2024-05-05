@@ -5,7 +5,7 @@ interface Filter {
   value: string;
 }
 
-export const fetchSolarSystemTextureMaps = (filter: { filter: Filter[] }) => {
+export const fetchTextureMaps = (filter: { filter: Filter[] }) => {
   return http.post(
     { url: "/api/texture-map/list-all", data: filter },
     { isTransformResponse: false, joinParamsToUrl: false }

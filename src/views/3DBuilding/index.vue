@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded w-full h-full bg-[#39393c3a] relative">
+  <div class="w-full h-full bg-[#39393c3a] relative">
     <div class="absolute top-1 left-1 flex flex-col space-y-1">
       <div class="flex justify-start w-min">
         <n-button
@@ -10,13 +10,15 @@
           <Icon icon="material-symbols:arrow-back" />
         </n-button>
       </div>
+
+      <!-- BUILDING DETAIL -->
       <div
         v-if="selectedModel"
-        class="bg-opacity-50 bg-black p-2 rounded w-[30vw] h-[60vh] flex justify-start"
+        class="bg-opacity-50 bg-black p-2 rounded w-[30vw] h-[60vh] flex flex-col justify-start items-start"
       >
         <div class="flex justify-between w-full h-min items-center">
           <div class="tracking-widest text-lg text-bold opacity-60">
-            {{ selectedModel.raw.name }}
+            {{ selectedModel.data.name }}
           </div>
           <div>
             <Icon
@@ -26,8 +28,41 @@
             />
           </div>
         </div>
+
+        <div class="flex flex-col h-full overflow-y-auto floor-list">
+          <div v-for="(item, index) in floors" :key="index">
+            <div
+              class="py-2 pr-1 w-full flex justify-between items-center"
+              style="border-top: 1px solid #37373787"
+            >
+              <div
+                class="tracking-widest text-lg uppercase text- text-bold opacity-80"
+              >
+                {{ item }}
+              </div>
+              <div>
+                <n-button secondary @click="handleViewFloor(item)">
+                  <Icon icon="mdi:rotate-3d" />
+                </n-button>
+              </div>
+            </div>
+            <div class="text-left">
+              <span class="tracking-widest text-lg text-bold opacity-60">
+                Description:
+              </span>
+              <span class="opacity-70">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat</span
+              >
+            </div>
+          </div>
+        </div>
       </div>
+      <!--  -->
     </div>
+
     <div class="absolute top-2 left-1/2 -translate-x-1/2">
       <div class="tracking-widest text-lg text-bold opacity-60">TOWN MODEL</div>
     </div>
@@ -116,7 +151,8 @@
   import { Icon } from "/@/uikits/Icon";
   import { useRouter } from "vue-router";
   import { gsap } from "gsap";
-  import { mock, housesPosition } from "./mock";
+  import { housesPosition, floors } from "./mock";
+  import { fetchBuildings } from "/@/api/building";
 
   const router = useRouter();
   const mouse = new THREE.Vector2();
@@ -127,7 +163,7 @@
   const cameraDefaultTarget = { x: 0, y: 0, z: 0 };
   let camera: any;
   let orbitControls: any;
-
+  let modelSrc: any[] = [];
   // OPTION
   const gridDisplay = ref(false);
   const axisDisplay = ref(false);
@@ -307,9 +343,8 @@
   }
 
   // GENERATE OBJECT
-  function getModelSrc() {
-    // call api action here
-    const modelSrc = mock;
+  async function getModelSrc() {
+    await fetchBuilding();
     modelSrc.forEach((item: any) => {
       loadModel(item);
     });
@@ -326,7 +361,7 @@
         model.position.x -= center.x * 0.03;
 
         models.value.push({
-          raw: src.raw,
+          data: src.data,
           model: model,
         });
         model.traverse((child: any) => {
@@ -336,11 +371,11 @@
           }
         });
         model.position.set(
-          src.raw.position.x,
-          src.raw.position.y,
-          src.raw.position.z
+          src.data.position.x,
+          src.data.position.y,
+          src.data.position.z
         );
-        model.rotateY(src.raw.rotate * (Math.PI / 180));
+        model.rotateY(src.data.rotate * (Math.PI / 180));
         scene.add(model);
       },
       undefined,
@@ -365,6 +400,15 @@
       cube.receiveShadow = true;
       scene.add(cube);
     });
+  }
+  async function fetchBuilding() {
+    const params = {
+      filter: [],
+    };
+    const res = await fetchBuildings(params);
+    if (res) {
+      modelSrc = res.data;
+    }
   }
 
   // BUILDING DETAIL
@@ -445,4 +489,32 @@
       "_self"
     );
   }
+  function handleViewFloor(floor: string) {
+    window.open(
+      router.resolve({
+        name: "showroom",
+        query: {
+          floor: floor,
+        },
+      }).href,
+      "_self"
+    );
+  }
 </script>
+
+<style>
+  .floor-list::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+  }
+
+  .floor-list::-webkit-scrollbar-track {
+    background: #25252599;
+    border-radius: 12px;
+  }
+
+  .floor-list::-webkit-scrollbar-thumb {
+    border-radius: 12px;
+    background: rgb(75, 75, 75);
+  }
+</style>

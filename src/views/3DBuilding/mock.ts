@@ -1,69 +1,13 @@
-export const mock = [
-  {
-    raw: {
-      name: "Office building 2",
-      key: "office-building-2",
-      rotate: 45,
-      position: {
-        x: 115,
-        y: 0,
-        z: 145,
-      },
-    },
-    object3D: "https://res.cloudinary.com/dc7jd2eeu/image/upload/v1714763236/TownModel/vvahmbplpotqkuqlawqi.glb",
-  },
-  {
-    raw: {
-      name: "Office building 1",
-      key: "office-building-1",
-      rotate: 45,
-      position: {
-        x: 80,
-        y: 0,
-        z: 110,
-      },
-    },
-    object3D: "https://res.cloudinary.com/dc7jd2eeu/image/upload/v1714763254/TownModel/ayryzgt0gcxo8f1ql0vh.glb",
-  },
-  {
-    raw: {
-      name: "Main building",
-      key: "main-building",
-      rotate: 315,
-      position: {
-        x: 60,
-        y: 0,
-        z: 200,
-      },
-    },
-    object3D: "https://res.cloudinary.com/dc7jd2eeu/image/upload/v1714763214/TownModel/ou15oibgxo2ejdp9ajkq.glb",
-  },
-  {
-    raw: {
-      name: "Resident tower 1",
-      key: "resident-tower-1",
-      rotate: 45,
-      position: {
-        x: -60,
-        y: 0,
-        z: -35,
-      },
-    },
-    object3D: "https://res.cloudinary.com/dc7jd2eeu/image/upload/v1714763284/TownModel/va8xpg9nk2wmuqosvbjq.glb",
-  },
-  {
-    raw: {
-      name: "Resident tower 2",
-      key: "resident-tower-2",
-      rotate: 135,
-      position: {
-        x: -125,
-        y: 0,
-        z: 60,
-      },
-    },
-    object3D: "https://res.cloudinary.com/dc7jd2eeu/image/upload/v1714763277/TownModel/hxajwqytvty19kjkmkdj.glb",
-  },
+export const floors = [
+  "Garage 2",
+  "Garage 1",
+  "Reception",
+  "floor 1",
+  "floor 2",
+  "floor 3",
+  "floor 4",
+  "floor 5",
+  "floor 6",
 ];
 
 export const housesPosition = [

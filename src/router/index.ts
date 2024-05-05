@@ -59,6 +59,14 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: "/showroom",
+    name: "showroom",
+    component: () => import("../views/Showroom/index.vue"),
+    meta: {
+      title: "Showroom",
+    },
+  },
+  {
     path: "/:pathMatch(.*)*",
     name: "error",
     component: () => import("../views/error.vue"),
