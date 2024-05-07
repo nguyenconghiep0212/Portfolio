@@ -1,9 +1,9 @@
 <template>
   <div class="w-full h-full bg-[#39393c3a] relative">
-    <div class="absolute top-1 left-1 flex flex-col space-y-1">
+    <div class="absolute flex flex-col space-y-1 top-1 left-1">
       <div class="flex justify-start w-min">
         <n-button
-          class="opacity-60 bg-black"
+          class="bg-black opacity-60"
           secondary
           @click="returnToHomepage"
         >
@@ -16,8 +16,8 @@
         v-if="selectedModel"
         class="bg-opacity-50 bg-black p-2 rounded w-[30vw] h-[60vh] flex flex-col justify-start items-start"
       >
-        <div class="flex justify-between w-full h-min items-center">
-          <div class="tracking-widest text-lg text-bold opacity-60">
+        <div class="flex items-center justify-between w-full h-min">
+          <div class="text-lg tracking-widest text-bold opacity-60">
             {{ selectedModel.data.name }}
           </div>
           <div>
@@ -32,11 +32,11 @@
         <div class="flex flex-col h-full overflow-y-auto floor-list">
           <div v-for="(item, index) in floors" :key="index">
             <div
-              class="py-2 pr-1 w-full flex justify-between items-center"
+              class="flex items-center justify-between w-full py-2 pr-1"
               style="border-top: 1px solid #37373787"
             >
               <div
-                class="tracking-widest text-lg uppercase text- text-bold opacity-80"
+                class="text-lg tracking-widest uppercase text- text-bold opacity-80"
               >
                 {{ item }}
               </div>
@@ -47,7 +47,7 @@
               </div>
             </div>
             <div class="text-left">
-              <span class="tracking-widest text-lg text-bold opacity-60">
+              <span class="text-lg tracking-widest text-bold opacity-60">
                 Description:
               </span>
               <span class="opacity-70">
@@ -63,25 +63,25 @@
       <!--  -->
     </div>
 
-    <div class="absolute top-2 left-1/2 -translate-x-1/2">
-      <div class="tracking-widest text-lg text-bold opacity-60">TOWN MODEL</div>
+    <div class="absolute -translate-x-1/2 top-2 left-1/2">
+      <div class="text-lg tracking-widest text-bold opacity-60">TOWN MODEL</div>
     </div>
     <div class="absolute top-1 right-1">
       <div class="flex flex-col items-end space-y-0.5">
-        <n-button class="opacity-60 bg-black" secondary @click="toggleAxis">
+        <n-button class="bg-black opacity-60" secondary @click="toggleAxis">
           <Icon
             :class="axisDisplay ? 'text-red-400' : 'text-white'"
             icon="lucide:axis-3d"
           />
         </n-button>
-        <n-button class="opacity-60 bg-black" secondary @click="toggleGrid">
+        <n-button class="bg-black opacity-60" secondary @click="toggleGrid">
           <Icon
             :class="gridDisplay ? 'text-red-400' : 'text-white'"
             icon="teenyicons:view-grid-outline"
           />
         </n-button>
         <n-button
-          class="opacity-60 bg-black"
+          class="bg-black opacity-60"
           secondary
           @click="toggleWireframe"
         >
@@ -116,7 +116,7 @@
               </template>
             </n-slider>
           </div>
-          <n-button class="opacity-60 bg-black" secondary @click="toggleLight">
+          <n-button class="bg-black opacity-60" secondary @click="toggleLight">
             <Icon
               :class="lightDirectionDisplay ? 'text-red-400' : 'text-white'"
               icon="solar:sun-bold-duotone"
@@ -124,7 +124,7 @@
           </n-button>
         </div>
         <n-button
-          class="opacity-60 bg-black"
+          class="bg-black opacity-60"
           secondary
           @click="toggleLightHelper"
         >
@@ -133,7 +133,7 @@
             icon="ph:headlights-bold"
           />
         </n-button>
-        <n-button class="opacity-60 bg-black" secondary @click="resetCamera">
+        <n-button class="bg-black opacity-60" secondary @click="resetCamera">
           <Icon icon="mdi:eye-refresh-outline" />
         </n-button>
       </div>
@@ -354,12 +354,7 @@
     loader.load(
       src.object3D,
       function (gltf: any) {
-        const model = gltf.scene;
-
-        const box = new THREE.Box3().setFromObject(model);
-        const center = box.getCenter(new THREE.Vector3());
-        model.position.x -= center.x * 0.03;
-
+        const model = gltf.scene; 
         models.value.push({
           data: src.data,
           model: model,
