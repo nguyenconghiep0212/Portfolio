@@ -153,12 +153,15 @@
   import { gsap } from "gsap";
   import { housesPosition, floors } from "./mock";
   import { fetchBuildings } from "/@/api/building";
+  import Stats from "three/addons/libs/stats.module.js";
 
   const router = useRouter();
   const mouse = new THREE.Vector2();
   const raycaster = new THREE.Raycaster();
   const el = ref<any>(null);
   const scene = new THREE.Scene();
+  const stats = new Stats();
+  document.body.appendChild(stats.dom);
   const cameraDefaultPos = { x: 0, y: 200, z: 300 };
   const cameraDefaultTarget = { x: 0, y: 0, z: 0 };
   let camera: any;
@@ -276,6 +279,7 @@
     requestAnimationFrame(animate);
     orbitControls.update();
     render(scene, camera);
+    stats.update()
   }
 
   // MOUSE EVENT
@@ -354,7 +358,7 @@
     loader.load(
       src.object3D,
       function (gltf: any) {
-        const model = gltf.scene; 
+        const model = gltf.scene;
         models.value.push({
           data: src.data,
           model: model,
