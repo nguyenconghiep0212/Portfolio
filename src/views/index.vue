@@ -5,13 +5,13 @@
     <div class="flex justify-between items-center h-[50vh]"></div>
 
     <!-- SKILL -->
-    <div class="tracking-widest text-lg text-bold opacity-60">SKILLS</div>
+    <div class="text-lg tracking-widest text-bold opacity-60">SKILLS</div>
     <div class="flex justify-center">
-      <div class="grid grid-cols-5 gap-3 w-1/2">
+      <div class="grid w-1/2 grid-cols-5 gap-3">
         <div
           v-for="(item, index) in skills"
           :key="index"
-          class="rounded-lg bg-white bg-opacity-10 aspect-square flex flex-col justify-center items-center"
+          class="flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square"
         >
           <img :src="item.url" class="w-5 h-5" />
           <div class="tracking-widest truncate text-bold opacity-60">
@@ -21,8 +21,43 @@
       </div>
     </div>
 
-    <!-- PROJECT -->
-    <div class="tracking-widest text-lg text-bold opacity-60">DEMO</div>
+<!-- LIBRARY -->
+ <div class="text-lg tracking-widest text-bold opacity-60">LIBRARIES</div>
+    <div class="flex justify-center">
+      <div class="grid w-1/2 grid-cols-5 gap-3">
+        <div
+          v-for="(item, index) in libaries"
+          :key="index"
+          class="flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square"
+        >
+          <img :src="item.url" class="w-5 h-5" />
+          <div class="tracking-widest truncate text-bold opacity-60">
+            {{ item.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- PROJECT -->
+<div class="text-lg tracking-widest text-bold opacity-60">PROJECTS</div>
+    <div class="flex justify-center">
+      <div class="grid w-1/2 grid-cols-5 gap-3">
+        <div
+          v-for="(item, index) in projects"
+          :key="index"
+          class="flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square"
+        >
+          <img :src="item.url" class="w-5 h-5" />
+          <div class="tracking-widest truncate text-bold opacity-60">
+            {{ item.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- DEMO -->
+    <div class="text-lg tracking-widest text-bold opacity-60">DEMO</div>
     <div class="grid grid-cols-2 gap-2">
       <div
         v-for="(item, index) in menu"
@@ -38,7 +73,7 @@
 
 <script lang="ts" setup>
   import { useRouter } from "vue-router";
-
+import {libaries,projects,skills} from './mock'
   import { useI18n } from "/@/hooks/useI18n";
   import { computed } from "vue";
 
@@ -56,33 +91,7 @@
         }
       })
       .filter((f) => f);
-  });
-  const skills = [
-    {
-      name: "Javascript",
-      url: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
-    },
-    {
-      name: "Javascript",
-      url: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
-    },
-    {
-      name: "Javascript",
-      url: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
-    },
-    {
-      name: "Javascript",
-      url: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
-    },
-    {
-      name: "Javascript",
-      url: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
-    },
-    {
-      name: "Javascript",
-      url: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
-    },
-  ];
+  }); 
 
   function redirect(to: string) {
     window.open(

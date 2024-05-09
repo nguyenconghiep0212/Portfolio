@@ -39,6 +39,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "solarSystemTest",
     component: () => import("../views/solarSystem_test.vue"),
     meta: {
+      hidden: true,
       title: "Solar system test",
     },
   },
