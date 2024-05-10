@@ -11,7 +11,7 @@
         <div
           v-for="(item, index) in skills"
           :key="index"
-          class="flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square"
+          :class="`flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square ${}`"
         >
           <img :src="item.url" class="w-5 h-5" />
           <div class="tracking-widest truncate text-bold opacity-60">
@@ -26,7 +26,7 @@
     <div class="flex justify-center">
       <div class="grid w-1/2 grid-cols-5 gap-3">
         <div
-          v-for="(item, index) in libaries"
+          v-for="(item, index) in libraries"
           :key="index"
           class="flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square"
         >
@@ -73,12 +73,14 @@
 
 <script lang="ts" setup>
   import { useRouter } from "vue-router";
-import {libaries,projects,skills} from './mock'
-  import { useI18n } from "/@/hooks/useI18n";
-  import { computed } from "vue";
+   import { useI18n } from "/@/hooks/useI18n";
+  import { computed, ref } from "vue";
+  import {fetchTextureMaps} from '/@/api/solarSystem'
 
   const { t } = useI18n();
-
+const libraries = ref([])
+const projects = ref([])
+const skills = ref([])
   const router = useRouter();
   const menu = computed(() => {
     return router.options.routes
@@ -93,6 +95,52 @@ import {libaries,projects,skills} from './mock'
       .filter((f) => f);
   }); 
 
+  fetchSkills()
+  fetchLibraries()
+async function fetchSkills(){
+  const params = {
+    filter:[
+      {
+        key:'folder',
+        value:'Skills'
+      }
+    ]
+  }
+  const res = await fetchTextureMaps(params)
+  if(res){
+    res.data.forEach((e: any) => {
+      if(['js','ts','vue'].includes(e.key)){
+        e.priority = 2
+      }
+      if(e.key === 'nodejs'){
+ e.priority = 0
+      }
+    })
+    skills.value = res.data
+  }
+}
+async function fetchLibraries(){
+  const params = {
+    filter:[
+      {
+        key:'folder',
+        value:'Libraries'
+      }
+    ]
+  }
+  const res = await fetchTextureMaps(params)
+  if(res){
+     res.data.forEach((e: any) => {
+      if(['pinia','tailwind','axios','antd'].includes(e.key)){
+        e.priority = 2
+      }
+      if(e.key === 'bootstrap'){
+ e.priority = 0
+      }
+    })
+    libraries.value = res.data
+  }
+}
   function redirect(to: string) {
     window.open(
       router.resolve({
