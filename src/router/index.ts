@@ -10,7 +10,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "index",
-    component: () => import("../views/index.vue"),
+    component: () => import("../views/Homepage/index.vue"),
     meta: {
       hidden: true,
       title: "Trang chủ",

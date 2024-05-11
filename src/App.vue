@@ -1,10 +1,10 @@
 <template>
   <n-config-provider :theme="darkTheme">
     <div class="main flex flex-col h-screen relative">
-      <div class="fixed w-full">
+      <div class="w-full">
         <Header />
       </div>
-      <div class="flex-1">
+      <div class="flex-1 overflow-y-auto">
         <router-view />
       </div>
     </div>

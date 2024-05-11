@@ -19,6 +19,7 @@ import {
   NTooltip,
   NSlider,
   NIconWrapper,
+  NSkeleton,
 } from "naive-ui";
 
 async function bootstrap() {
@@ -35,6 +36,7 @@ async function bootstrap() {
       NTooltip,
       NSlider,
       NIconWrapper,
+      NSkeleton,
     ],
   });
   const app = createApp(App)
