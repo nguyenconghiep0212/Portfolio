@@ -6,7 +6,9 @@
       <AboutMe />
 
       <!-- EXPERIENCES -->
-      <Experiences />
+      <div class="pr-4 overflow-y-auto experiences">
+        <Experiences />
+      </div>
     </div>
   </div>
 </template>
@@ -18,3 +20,20 @@
 
   const { t } = useI18n();
 </script>
+
+<style>
+  .experiences::-webkit-scrollbar {
+    height: 2px;
+    width: 2px;
+    /* display: none; */
+  }
+  .experiences::-webkit-scrollbar-track {
+    background: #000000;
+    border-radius: 12px;
+  }
+
+  .experiences::-webkit-scrollbar-thumb {
+    background: #49494964;
+    border-radius: 12px;
+  }
+</style>

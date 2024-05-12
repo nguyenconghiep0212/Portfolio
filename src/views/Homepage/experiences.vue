@@ -8,7 +8,7 @@
           Experiences
         </span>
       </div>
-      <div class="flex flex-col mt-10 space-y-4">
+      <div class="flex flex-col mt-8 space-y-4">
         <div
           v-for="(item, index) in companies"
           :key="index"
@@ -21,10 +21,7 @@
               {{ item.dateOfService[0] }} - {{ item.dateOfService[1] }}
             </div>
             <div
-              :ref="getComNameRef"
-              class="flex items-center justify-end col-span-3 space-x-2 text-right cursor-pointer hover:text-sky-400"
-              @mouseover="handleMouseOverCompany(index)"
-              @mouseout="handleMouseOutCompany(index)"
+              class="flex items-center justify-end col-span-3 space-x-2 text-right cursor-pointer group hover:text-sky-400"
             >
               <n-tag
                 v-if="item.isStartUp"
@@ -43,7 +40,7 @@
                 </span>
               </a>
               <Icon
-                class="transition-all duration-150 opacity-40"
+                class="transition-all duration-150 opacity-40 group-hover:-rotate-45 group-hover:opacity-80 group-hover:pl-1"
                 icon="solar:map-arrow-right-bold-duotone"
               />
             </div>
@@ -94,17 +91,58 @@
     </div>
 
     <!-- DEMO -->
-    <!-- <div class="text-lg font-bold tracking-widest opacity-60">DEMO</div>
-    <div class="grid grid-cols-2 gap-2">
-      <div
-        v-for="(item, index) in menu"
-        :key="index"
-        class="px-4 py-2 rounded-sm cursor-pointer bg-slate-400"
-        @click="redirect(item.to)"
-      >
-        {{ item.title }}
+    <div class="flex flex-col mt-12">
+      <div class="flex items-center justify-end space-x-2">
+        <span class="h-[1px] bg-white opacity-60 w-1/2"></span>
+        <span class="text-2xl font-bold tracking-widest uppercase opacity-60">
+          Demo
+        </span>
       </div>
-    </div> -->
+      <div class="flex flex-col mt-8 space-y-4">
+        <div
+          v-for="(item, index) in menu"
+          :key="index"
+          class="px-4 py-2 transition-all duration-150 rounded-sm cursor-pointer group hover:bg-slate-800/50 hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)]"
+          @click="redirect(item.to)"
+        >
+          <div class="flex flex-col items-end col-span-3 py-2">
+            <div class="flex items-center space-x-2">
+              <span
+                class="text-lg font-bold tracking-widest truncate transition-all duration-150 font-inter group-hover:text-sky-400"
+              >
+                {{ item.title }}
+              </span>
+              <Icon
+                class="transition-transform duration-1000 opacity-70 group-hover:opacity-100 group-hover:text-sky-400 group-hover:rotate-[360deg]"
+                :icon="
+                  index === 0
+                    ? 'solar:black-hole-3-bold-duotone'
+                    : index === 1
+                    ? 'solar:buildings-2-bold-duotone'
+                    : 'solar:armchair-2-bold'
+                "
+              />
+            </div>
+            <div class="flex flex-col items-end mr-6">
+              <div class="opacity-50 text-end">
+                {{ item.description }}
+              </div>
+              <div class="space-x-1 space-y-1 text-end">
+                <n-tag
+                  v-for="(item2, index2) in item.skills"
+                  :key="index2"
+                  round
+                  :bordered="false"
+                  type="info"
+                >
+                  {{ getSKillName(item2) }}
+                </n-tag>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -118,7 +156,6 @@
   const store = useHomePage();
   const { t } = useI18n();
   const router = useRouter();
-  const comNameRefs = ref<Ref[]>([]);
   const menu = computed<any>(() => {
     return router.options.routes
       .map((e: any) => {
@@ -132,21 +169,6 @@
       .filter((f) => f);
   });
 
-  function getComNameRef(event: Ref) {
-    comNameRefs.value.push(event);
-  }
-  function handleMouseOverCompany(index: number) {
-    const childRef = comNameRefs.value[index].children;
-    childRef[childRef.length - 1].classList.add("-rotate-45");
-    childRef[childRef.length - 1].classList.add("opacity-80");
-    childRef[childRef.length - 1].classList.add("pl-1");
-  }
-  function handleMouseOutCompany(index: number) {
-    const childRef = comNameRefs.value[index].children;
-    childRef[childRef.length - 1].classList.remove("-rotate-45");
-    childRef[childRef.length - 1].classList.remove("opacity-80");
-    childRef[childRef.length - 1].classList.remove("pl-1");
-  }
   function getSKillName(key: string): string {
     let found: any = store.skills.find((e: any) => e.key === key);
     if (!found) {
