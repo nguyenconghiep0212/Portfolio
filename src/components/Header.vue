@@ -1,7 +1,10 @@
 <template>
   <div class="flex justify-between py-1 mx-[15vw] h-[5vh] items-center">
-    <div class="h-full flex items-center">
-      <div class="flex space-x-1 text-lg tracking-widest  truncate text-bold opacity-60">
+    <div class="flex items-center h-full">
+      <div
+        class="flex space-x-1 text-lg font-bold tracking-widest truncate cursor-pointer opacity-60"
+        @click="returnToHomepage"
+      >
         <span>MY PORTFOLIO</span>
       </div>
       <!-- <img :src="logo" class="w-12 cursor-pointer" @click="returnToHomepage" /> -->
@@ -11,7 +14,7 @@
       <n-divider class="!bg-white opacity-40" vertical />
       <n-tooltip trigger="hover">
         <template #trigger>
-          <div class=" opacity-40 flex items-center">
+          <div class="flex items-center opacity-40">
             <Icon class="scale-150 cursor-pointer" icon="solar:list-bold" />
           </div>
         </template>
@@ -25,7 +28,6 @@
   import Language from "/@/components/ChangeLanguage.vue";
   // import logo from "/public/favicon.ico";
   import { useRouter } from "vue-router";
-  import { Icon } from "/@/uikits/Icon";
 
   const router = useRouter();
   const options = [

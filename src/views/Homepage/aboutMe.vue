@@ -3,10 +3,10 @@
     <div>
       <!-- INTRODUCTION -->
       <div class="space-y-1 text-left">
-        <div class="text-4xl font-bold tracking-tight my-name">
+        <div class="text-4xl font-bold tracking-tight font-inter">
           {{ aboutMe.name }}
         </div>
-        <div class="text-xl font-medium tracking-tight my-title">
+        <div class="text-xl font-medium tracking-tight font-inter">
           {{ aboutMe.title }}
         </div>
         <div class="py-2 text-lg text-left opacity-60">
@@ -17,44 +17,50 @@
       <!-- SKILL -->
       <div class="mt-6 text-left">
         <div class="flex items-center space-x-2">
-          <span class="text-lg tracking-widest uppercase text-bold opacity-60">
+          <span class="text-lg font-bold tracking-widest uppercase opacity-60">
             Language & frameworks
           </span>
           <span class="h-[1px] bg-white opacity-60 w-32"></span>
         </div>
-        <div v-if="skills.length" class="mt-3 space-y-2">
+        <div v-if="store.skills.length" class="mt-3 space-y-2">
           <div class="flex flex-wrap">
             <div
-              v-for="(item, index) in skills.filter((e) => e.priority === 2)"
+              v-for="(item, index) in store.skills.filter(
+                (e) => e.priority === 2
+              )"
               :key="index"
-              class="mr-2 w-20 flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square border-2 border-solid border-[gold]"
+              class="flex flex-col items-center justify-center w-20 mr-2 bg-white border-2 border-solid rounded-lg bg-opacity-10 aspect-square border-cyan-400"
             >
               <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-xs tracking-widest text-bold opacity-60">
+              <div class="text-xs font-bold tracking-widest opacity-60">
                 {{ item.customName }}
               </div>
             </div>
           </div>
           <div class="flex flex-wrap">
             <div
-              v-for="(item, index) in skills.filter((e) => e.priority === 1)"
+              v-for="(item, index) in store.skills.filter(
+                (e) => e.priority === 1
+              )"
               :key="index"
               class="mr-2 w-20 flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square border-2 border-solid border-[silver]"
             >
               <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-xs tracking-widest text-bold opacity-60">
+              <div class="text-xs font-bold tracking-widest opacity-60">
                 {{ item.customName }}
               </div>
             </div>
           </div>
           <div class="flex flex-wrap">
             <div
-              v-for="(item, index) in skills.filter((e) => e.priority === 0)"
+              v-for="(item, index) in store.skills.filter(
+                (e) => e.priority === 0
+              )"
               :key="index"
-              class="mr-2 w-20 flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square border-2 border-solid border-[saddlebrown]"
+              class="flex flex-col items-center justify-center w-20 mr-2 bg-white border-2 border-solid rounded-lg bg-opacity-10 aspect-square border-slate-700"
             >
               <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-xs tracking-widest text-bold opacity-60">
+              <div class="text-xs font-bold tracking-widest opacity-60">
                 {{ item.customName }}
               </div>
             </div>
@@ -69,44 +75,50 @@
       <!-- LIBRARY -->
       <div class="mt-6 text-left">
         <div class="flex items-center space-x-2">
-          <span class="text-lg tracking-widest uppercase text-bold opacity-60">
+          <span class="text-lg font-bold tracking-widest uppercase opacity-60">
             Libraries
           </span>
           <span class="h-[1px] bg-white opacity-60 w-32"></span>
         </div>
-        <div v-if="libraries.length" class="mt-3 space-y-2">
+        <div v-if="store.libraries.length" class="mt-3 space-y-2">
           <div class="flex flex-wrap">
             <div
-              v-for="(item, index) in libraries.filter((e) => e.priority === 2)"
+              v-for="(item, index) in store.libraries.filter(
+                (e) => e.priority === 2
+              )"
               :key="index"
-              class="mr-2 w-20 flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square border-2 border-solid border-[gold]"
+              class="flex flex-col items-center justify-center w-20 mr-2 bg-white border-2 border-solid rounded-lg bg-opacity-10 aspect-square border-cyan-400"
             >
               <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="flex text-xs tracking-widest text-bold opacity-60">
+              <div class="flex text-xs font-bold tracking-widest opacity-60">
                 {{ item.customName }}
               </div>
             </div>
           </div>
           <div class="flex flex-wrap">
             <div
-              v-for="(item, index) in libraries.filter((e) => e.priority === 1)"
+              v-for="(item, index) in store.libraries.filter(
+                (e) => e.priority === 1
+              )"
               :key="index"
               class="mr-2 w-20 flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square border-2 border-solid border-[silver]"
             >
               <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-xs tracking-widest text-bold opacity-60">
+              <div class="text-xs font-bold tracking-widest opacity-60">
                 {{ item.customName }}
               </div>
             </div>
           </div>
           <div class="flex flex-wrap">
             <div
-              v-for="(item, index) in libraries.filter((e) => e.priority === 0)"
+              v-for="(item, index) in store.libraries.filter(
+                (e) => e.priority === 0
+              )"
               :key="index"
-              class="mr-2 w-20 flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square border-2 border-solid border-[saddlebrown]"
+              class="flex flex-col items-center justify-center w-20 mr-2 bg-white border-2 border-solid rounded-lg bg-opacity-10 aspect-square border-slate-700"
             >
               <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-xs tracking-widest text-bold opacity-60">
+              <div class="text-xs font-bold tracking-widest opacity-60">
                 {{ item.customName }}
               </div>
             </div>
@@ -138,10 +150,10 @@
   import { ref } from "vue";
   import { aboutMe } from "./mock";
   import { fetchTextureMaps } from "/@/api/solarSystem";
+  import { useHomePage } from "/@/store/homepage";
 
+  const store = useHomePage();
   const { t } = useI18n();
-  const libraries = ref<any>([]);
-  const skills = ref<any>([]);
 
   fetchSkills();
   fetchLibraries();
@@ -164,7 +176,7 @@
           e.priority = 0;
         } else e.priority = 1;
       });
-      skills.value = res.data;
+      store.skills = res.data;
     }
   }
   async function fetchLibraries() {
@@ -186,16 +198,7 @@
           e.priority = 0;
         } else e.priority = 1;
       });
-      libraries.value = res.data;
+      store.libraries = res.data;
     }
   }
 </script>
-
-<style scoped>
-  .my-name {
-    font-family: "Inter", sans-serif;
-  }
-  .my-title {
-    font-family: "Inter", sans-serif;
-  }
-</style>

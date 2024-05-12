@@ -1,3 +1,8 @@
+/*
+ *
+ * PUSH TO DB LATER YOU LAZY BASTARD !!!!
+ *
+ * */
 export const aboutMe: any = {
   name: "Nguyễn Công Hiệp",
   title: "Junior Web Developer",
@@ -31,47 +36,67 @@ export const aboutMe: any = {
   ],
 };
 
-export const projects: any = [
+export const companies: any = [
   {
-    name: "Quản lý đô thị thông minh",
-    key: "smartcity",
-    skills: ["ts", "vue", "pinia", "axios", "tailwind", "antd"],
-    priority: 2,
-  },
-  {
-    name: "Huấn luyện trinh sát ảo",
-    key: "avatar",
-    skills: ["ts", "vue", "pinia", "axios", "bootstrap", "el"],
-    priority: 2,
-  },
-  {
-    name: "Trợ lý ảo",
-    key: "chatbox",
-    skills: ["js", "vue", "vuex", "axios", "bootstrap", "el"],
-    priority: 2,
-  },
-  {
-    name: "Quản lý thiết bị giám sát",
-    key: "hawkice",
-    skills: ["js", "vue", "vuex", "axios", "bootstrap", "el"],
-    priority: 2,
-  },
-  {
-    name: "Giám sát đối tượng ",
-    key: "immint",
-    skills: ["js", "vue", "vuex", "axios", "bootstrap", "el"],
-    priority: 2,
-  },
-  {
-    name: "Chrome Extension",
-    key: "ext",
-    skills: ["js", "jq"],
-    priority: 1,
+    name: "ICOMM Media & Tech., Jsc",
+    dateOfService: ["05/2022", "Present"],
+    url: "https://icomm.vn",
+    roles: "Junior Front-End Developer",
+    isStartUp: false,
+    projects: [
+      {
+        name: "Quản lý đô thị thông minh",
+        key: "smartcity",
+        skills: ["ts", "vue", "pinia", "axios", "tailwind", "antd"],
+        priority: 2,
+      },
+      {
+        name: "Huấn luyện trinh sát ảo",
+        key: "avatar",
+        skills: ["ts", "vue", "pinia", "axios", "bootstrap", "el"],
+        priority: 2,
+      },
+      {
+        name: "Trợ lý ảo",
+        key: "chatbox",
+        skills: ["js", "vue", "axios", "bootstrap", "el"],
+        priority: 2,
+      },
+      {
+        name: "Quản lý thiết bị giám sát",
+        key: "hawkice",
+        skills: ["js", "vue", "axios", "bootstrap", "el"],
+        priority: 2,
+      },
+      {
+        name: "Giám sát đối tượng",
+        key: "imint",
+        skills: ["js", "vue", "axios", "bootstrap", "el"],
+        priority: 2,
+      },
+      {
+        name: "Automation Extension",
+        key: "ext",
+        skills: ["js", "jq"],
+        priority: 1,
+      },
+    ],
   },
   {
     name: "On The Desk",
-    key: "onthedesk",
-    skills: ["js", "react", "recoil", "tailwind", "axios", "antd"],
-    priority: 0,
+    url: "https://onthedesk.vn",
+    dateOfService: ["09/2023", "02/2024"],
+    roles: "Fullstack",
+    isStartUp: true,
+    projects: [
+      {
+        name: "On The Desk",
+        key: "onthedesk",
+        skills: ["js", "react", "recoil", "tailwind", "axios", "antd"],
+        description:
+          "Thẻ thông minh hàng đầu Việt Nam kết nối và tối ưu cho từng cá nhân và doanh nghiệp một cách nhanh chóng dễ dàng.",
+        priority: 2,
+      },
+    ],
   },
 ];

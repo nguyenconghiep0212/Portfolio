@@ -17,7 +17,7 @@
         class="bg-opacity-50 bg-black p-2 rounded w-[30vw] h-[60vh] flex flex-col justify-start items-start"
       >
         <div class="flex items-center justify-between w-full h-min">
-          <div class="text-lg tracking-widest text-bold opacity-60">
+          <div class="text-lg tracking-widest font-bold opacity-60">
             {{ selectedModel.data.name }}
           </div>
           <div>
@@ -36,7 +36,7 @@
               style="border-top: 1px solid #37373787"
             >
               <div
-                class="text-lg tracking-widest uppercase text- text-bold opacity-80"
+                class="text-lg tracking-widest uppercase text- font-bold opacity-80"
               >
                 {{ item }}
               </div>
@@ -47,7 +47,7 @@
               </div>
             </div>
             <div class="text-left">
-              <span class="text-lg tracking-widest text-bold opacity-60">
+              <span class="text-lg tracking-widest font-bold opacity-60">
                 Description:
               </span>
               <span class="opacity-70">
@@ -64,7 +64,7 @@
     </div>
 
     <div class="absolute -translate-x-1/2 top-2 left-1/2">
-      <div class="text-lg tracking-widest text-bold opacity-60">TOWN MODEL</div>
+      <div class="text-lg tracking-widest font-bold opacity-60">TOWN MODEL</div>
     </div>
     <div class="absolute top-1 right-1">
       <div class="flex flex-col items-end space-y-0.5">
@@ -148,7 +148,7 @@
   import { onMounted, ref, watchEffect } from "vue";
   import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-  import { Icon } from "/@/uikits/Icon";
+
   import { useRouter } from "vue-router";
   import { gsap } from "gsap";
   import { housesPosition, floors } from "./mock";

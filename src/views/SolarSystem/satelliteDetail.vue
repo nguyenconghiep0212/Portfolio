@@ -26,7 +26,7 @@
   import { onMounted, ref, watchEffect } from "vue";
   import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-  import { Icon } from "/@/uikits/Icon";
+
 
   const planetDetailRef = ref(null);
   const scene = new THREE.Scene();

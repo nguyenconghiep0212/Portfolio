@@ -1,16 +1,19 @@
 <template>
   <n-dropdown trigger="hover" :options="localeList" @select="toggleLocale">
-    <div class=" opacity-40">
-      <span class="flex items-center cursor-pointer space-x-1">
+    <div class="opacity-40">
+      <span class="flex items-center space-x-1 cursor-pointer">
         <Icon icon="ion:language-sharp" />
-        <div class="tracking-widest  truncate transition-all duration-100 text-bold">{{ getLocaleText }}</div>
+        <div
+          class="font-bold tracking-widest truncate transition-all duration-100"
+        >
+          {{ getLocaleText }}
+        </div>
       </span>
     </div>
   </n-dropdown>
 </template>
 <script lang="ts" setup>
   import type { LocaleType } from "/#/config";
-  import { Icon } from "/@/uikits/Icon";
   import { useLocale } from "/@/locales/useLocale";
   import { computed, ref, unref } from "vue";
 

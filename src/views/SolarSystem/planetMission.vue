@@ -3,7 +3,7 @@
     <div class="mx-3 py-1">
       <div class="flex justify-between items-center truncate">
         <div
-          class="tracking-[8px] uppercase  truncate transition-all duration-100 text-bold opacity-60"
+          class="tracking-[8px] uppercase  truncate transition-all duration-100 font-bold opacity-60"
         >
           {{ store.selectedPlanetMission.name }}'s Missions
         </div>
@@ -22,7 +22,7 @@
 <script lang="ts" setup>
   import { defineEmits } from "vue";
   import { useSolarSystem } from "/@/store/solarSystem";
-  import { Icon } from "/@/uikits/Icon";
+
 
   const store = useSolarSystem();
   const emit = defineEmits(["close"]);

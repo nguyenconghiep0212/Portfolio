@@ -7,7 +7,7 @@
 <script lang="ts" setup>
   import * as THREE from "three";
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-  import { Icon } from "/@/uikits/Icon";
+
   import { onMounted, ref } from "vue";
 
   const el = ref<any>(null);

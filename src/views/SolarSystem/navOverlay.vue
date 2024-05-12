@@ -4,7 +4,7 @@
     <div class="-translate-x-1/2 w-max space-y-1">
       <div
         v-if="!store.realTime"
-        class="flex justify-center tracking-widest  truncate transition-all duration-100 text-bold opacity-60 space-x-1"
+        class="flex justify-center tracking-widest  truncate transition-all duration-100 font-bold opacity-60 space-x-1"
       >
         <span class="mr-1">1 year =</span>
         <span class="text-green-400">
@@ -56,7 +56,7 @@
       <div
         :class="`tracking-widest text-[16px] uppercase ${
           store.realTime ? 'text-green-600' : 'text-blue-600'
-        } font-thin truncate transition-all duration-100 text-bold opacity-60`"
+        } font-thin truncate transition-all duration-100 font-bold opacity-60`"
       >
         {{ store.realTime ? "Real time" : "Relative time" }}
       </div>
@@ -72,7 +72,7 @@
       >
         <div class="flex items-center justify-between mb-1">
           <div
-            class="tracking-widest  uppercase truncate transition-all duration-100 cursor-pointer text-bold opacity-60"
+            class="tracking-widest  uppercase truncate transition-all duration-100 cursor-pointer font-bold opacity-60"
           >
             {{ t("view.solar_system.planet_nav.title") }}
           </div>
@@ -105,7 +105,7 @@
             <div class="flex justify-between h-full">
               <div class="mx-3 my-1 flex flex-col justify-between">
                 <div
-                  class="tracking-widest  cursor-pointer text-bold"
+                  class="tracking-widest  cursor-pointer font-bold"
                 >
                   {{ item.raw.name }}
                 </div>
@@ -150,7 +150,7 @@
     <div class="m-2 space-y-1">
       <div class="text-right">
         <h3
-          class="tracking-widest  uppercase cursor-pointer text-bold opacity-60"
+          class="tracking-widest  uppercase cursor-pointer font-bold opacity-60"
         >
           Option
         </h3>
@@ -205,7 +205,7 @@
 <script lang="ts" setup>
   import { useSolarSystem } from "/@/store/solarSystem";
   import { useI18n } from "/@/hooks/useI18n";
-  import { Icon } from "/@/uikits/Icon";
+
   import { ref, watchEffect } from "vue";
   import emitter from "/@/utils/helper/emitter";
   import { Planet } from "/@/interface/solarSystem";

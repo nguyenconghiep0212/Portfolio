@@ -113,7 +113,7 @@ export function planet_generator(planet_data: Planet) {
 
 function addLabel(planet: any, planetSystem: any, planet_data: Planet) {
   const labelDiv = document.createElement("div");
-  labelDiv.className = `${planet_data.key} tracking-widest  uppercase cursor-pointer text-bold opacity-60`;
+  labelDiv.className = `${planet_data.key} tracking-widest  uppercase cursor-pointer font-bold opacity-60`;
   labelDiv.innerText = planet_data.name;
   labelDiv.addEventListener("pointerdown", () => {
     emitter.emit("pin-planet", {
