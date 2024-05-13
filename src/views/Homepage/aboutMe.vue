@@ -14,6 +14,25 @@
         </div>
       </div>
 
+<!-- STUDY -->
+  <div class="mt-6 text-left">
+        <div class="flex items-center space-x-2">
+          <span class="text-lg font-bold tracking-widest uppercase opacity-60">
+            Academic
+          </span>
+          <span class="h-[1px] bg-white opacity-60 w-32"></span>
+        </div>
+        <div class="mt-2">
+ <div class="text-xs tracking-wide uppercase opacity-60">
+          {{aboutMe.study.dateOfService[0]}} - {{aboutMe.study.dateOfService[1]}}
+        </div>
+        <div class="font-semibold tracking-widest truncate font-inter opacity-70">
+          {{aboutMe.study.university}}
+        </div>
+        </div>
+       
+  </div>
+
       <!-- SKILL -->
       <div class="mt-6 text-left">
         <div class="flex items-center space-x-2">

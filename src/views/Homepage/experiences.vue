@@ -21,7 +21,7 @@
               {{ item.dateOfService[0] }} - {{ item.dateOfService[1] }}
             </div>
             <div
-              class="flex items-center justify-end col-span-3 space-x-2 text-right cursor-pointer group hover:text-sky-400"
+              class="flex items-start justify-end col-span-3 space-x-2 text-right cursor-pointer group hover:text-sky-400"
             >
               <n-tag
                 v-if="item.isStartUp"
@@ -33,14 +33,20 @@
                 startup
               </n-tag>
               <a :href="item.url" target="_blank">
-                <span
+                <div class="flex flex-col">
+  <div
                   class="text-lg font-bold tracking-widest truncate font-inter"
                 >
                   {{ item.name }}
-                </span>
+                </div>
+                <div class="opacity-70">
+                  {{item.roles}}
+                </div>
+                </div>
+              
               </a>
               <Icon
-                class="transition-all duration-150 opacity-40 group-hover:-rotate-45 group-hover:opacity-80 group-hover:pl-1"
+                class="mt-[7px] transition-all duration-150 opacity-40 group-hover:-rotate-45 group-hover:opacity-80 group-hover:pl-1"
                 icon="solar:map-arrow-right-bold-duotone"
               />
             </div>
@@ -95,7 +101,7 @@
       <div class="flex items-center justify-end space-x-2">
         <span class="h-[1px] bg-white opacity-60 w-1/2"></span>
         <span class="text-2xl font-bold tracking-widest uppercase opacity-60">
-          Demo
+          Demo Three.js
         </span>
       </div>
       <div class="flex flex-col mt-8 space-y-4">
@@ -112,15 +118,9 @@
               >
                 {{ item.title }}
               </span>
-              <Icon
+             <Icon
                 class="transition-transform duration-1000 opacity-70 group-hover:opacity-100 group-hover:text-sky-400 group-hover:rotate-[360deg]"
-                :icon="
-                  index === 0
-                    ? 'solar:black-hole-3-bold-duotone'
-                    : index === 1
-                    ? 'solar:buildings-2-bold-duotone'
-                    : 'solar:armchair-2-bold'
-                "
+                :icon="item.icon"
               />
             </div>
             <div class="flex flex-col items-end mr-6">
@@ -149,7 +149,7 @@
 <script lang="ts" setup>
   import { useRouter } from "vue-router";
   import { useI18n } from "/@/hooks/useI18n";
-  import { computed, Ref, ref } from "vue";
+  import { computed } from "vue";
   import { companies } from "./mock";
   import { useHomePage } from "/@/store/homepage";
 
@@ -161,6 +161,7 @@
       .map((e: any) => {
         if (!e.meta.hidden) {
           return {
+            icon: e.meta.icon, 
             title: e.meta ? e.meta.title : e.name,
             to: e.name,
           };

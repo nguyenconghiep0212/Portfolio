@@ -8,7 +8,11 @@ export const aboutMe: any = {
   title: "Junior Web Developer",
   description:
     "I'm engaged in innovating, designing and building a quality online experiences",
-  contacts: [
+  study: {
+    dateOfService: ['09/2018','05/2022'],
+    university:'FPT University'
+  },
+    contacts: [
     {
       label: "Facebook",
       url: "https://www.facebook.com/profile.php?id=100007686062232",
@@ -45,38 +49,44 @@ export const companies: any = [
     isStartUp: false,
     projects: [
       {
-        name: "Quản lý đô thị thông minh",
+        name: "Smart City",
         key: "smartcity",
-        skills: ["ts", "vue", "pinia", "axios", "tailwind", "antd"],
+        description: "",
+        skills: ["ts", "vue", "pinia", "axios", "tailwind", "antd",'signalr','ggmap'],
         priority: 2,
       },
       {
-        name: "Huấn luyện trinh sát ảo",
+        name: "Digital Farm Controller",
         key: "avatar",
-        skills: ["ts", "vue", "pinia", "axios", "bootstrap", "el"],
+        description: "",
+        skills: ["ts", "vue", "pinia", "axios", "bootstrap", "el",'signalr'],
         priority: 2,
       },
       {
-        name: "Trợ lý ảo",
-        key: "chatbox",
+        name: "Chatbot",
+        key: "chatbot",
+        description: "",
         skills: ["js", "vue", "axios", "bootstrap", "el"],
         priority: 2,
       },
       {
-        name: "Quản lý thiết bị giám sát",
+        name: "CCTV Center",
         key: "hawkice",
+        description: "",
         skills: ["js", "vue", "axios", "bootstrap", "el"],
         priority: 2,
       },
       {
-        name: "Giám sát đối tượng",
+        name: "Target Tracker",
         key: "imint",
+        description: "",
         skills: ["js", "vue", "axios", "bootstrap", "el"],
         priority: 2,
       },
       {
         name: "Automation Extension",
         key: "ext",
+        description: "",
         skills: ["js", "jq"],
         priority: 1,
       },
@@ -85,7 +95,7 @@ export const companies: any = [
   {
     name: "On The Desk",
     url: "https://onthedesk.vn",
-    dateOfService: ["09/2023", "02/2024"],
+    dateOfService: ["01/2022", "05/2022"],
     roles: "Fullstack",
     isStartUp: true,
     projects: [
@@ -93,8 +103,7 @@ export const companies: any = [
         name: "On The Desk",
         key: "onthedesk",
         skills: ["js", "react", "recoil", "tailwind", "axios", "antd"],
-        description:
-          "Thẻ thông minh hàng đầu Việt Nam kết nối và tối ưu cho từng cá nhân và doanh nghiệp một cách nhanh chóng dễ dàng.",
+        description: "Custom built smart business card with integrated nfc technology, design your own card with your own style",
         priority: 2,
       },
     ],

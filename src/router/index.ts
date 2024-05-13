@@ -48,6 +48,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "solarSystem",
     component: () => import("../views/SolarSystem/index.vue"),
     meta: {
+      icon: "solar:black-hole-3-bold-duotone",
       title: "Solar system",
     },
   },
@@ -56,7 +57,8 @@ const routes: Array<RouteRecordRaw> = [
     name: "3dBuilding",
     component: () => import("../views/3DBuilding/index.vue"),
     meta: {
-      title: "3D Building",
+      icon: "solar:buildings-2-bold-duotone",
+      title: "City block",
     },
   },
   {
@@ -64,6 +66,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "showroom",
     component: () => import("../views/Showroom/index.vue"),
     meta: {
+      icon: "solar:armchair-2-bold",
       title: "Showroom",
     },
   },
