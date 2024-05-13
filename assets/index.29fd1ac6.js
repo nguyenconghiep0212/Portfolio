@@ -1,0 +1,1 @@
+import{b as o,ai as s,j as n,R as t,e as r,aj as c,u as l,o as a}from"./vendor.289a3f5a.js";const i=o({__name:"index",setup(m){const e=s();return console.log(e.params),(p,u)=>(a(),n("div",null,[t(" HALLO "),(a(),r(c(l(e).params.key)))]))}});export{i as default};
