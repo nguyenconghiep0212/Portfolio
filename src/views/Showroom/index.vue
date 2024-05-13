@@ -13,7 +13,7 @@
 <script lang="ts" setup>
   import * as THREE from "three";
   import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-  import { onMounted, ref } from "vue";
+  import { onBeforeUnmount, onMounted, ref } from "vue";
   import * as CANNON from "cannon-es";
   import CannonDebugger from "cannon-es-debugger";
   import { PointerLockControlsCannon } from "./PointerLockControlCamera";
@@ -151,6 +151,11 @@
     // initCrosshair();
     initPointerLock(camera);
     animate();
+  });
+
+  onBeforeUnmount(() => {
+    el.value.removeChild(renderer.domElement);
+    document.body.removeChild(stats.dom);
   });
   function render(scene: any, camera: any) {
     renderer.render(scene, camera);

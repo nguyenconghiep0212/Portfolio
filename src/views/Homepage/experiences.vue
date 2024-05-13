@@ -34,19 +34,18 @@
               </n-tag>
               <a :href="item.url" target="_blank">
                 <div class="flex flex-col">
-  <div
-                  class="text-lg font-bold tracking-widest truncate font-inter"
-                >
-                  {{ item.name }}
+                  <div
+                    class="text-lg font-bold tracking-widest truncate font-inter"
+                  >
+                    {{ item.name }}
+                  </div>
+                  <div class="opacity-70">
+                    {{ item.roles }}
+                  </div>
                 </div>
-                <div class="opacity-70">
-                  {{item.roles}}
-                </div>
-                </div>
-              
               </a>
               <Icon
-                class="mt-[7px] transition-all duration-150 opacity-40  group-hover:-rotate-45 group-hover:opacity-80 group-hover:pl-1"
+                class="mt-[7px] transition-all duration-150 opacity-40 group-hover:-rotate-45 group-hover:opacity-80 group-hover:pl-1"
                 icon="solar:map-arrow-right-bold-duotone"
               />
             </div>
@@ -54,35 +53,39 @@
           <div
             v-for="(item2, index2) in item.projects"
             :key="index2"
-            class="group grid w-full grid-cols-4 gap-4 mb-2 px-2 transition-all duration-150 cursor-pointer rounded hover:bg-slate-800/50 hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)]"
-          @click="goToApps(item2)"
+            class="group grid w-full grid-cols-4 gap-4 mb-4 p-2 transition-all duration-150 cursor-pointer rounded hover:bg-slate-800/50 hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)]"
+            @click="goToApps(item2)"
           >
             <div class="w-[inherit]"></div>
 
             <div class="flex flex-col items-end col-span-3 py-2">
-              <div class="flex items-center space-x-2 ">
-                 <n-tooltip v-if="item2.isKeyMem" trigger="hover">
+              <div class="flex items-center">
+                <n-tooltip v-if="item2.isKeyMem" trigger="hover">
                   <template #trigger>
-                    <Icon  class="text-yellow-300 " icon="solar:star-bold-duotone"/>
+                    <Icon
+                      class="mr-2 text-yellow-300"
+                      icon="solar:star-bold-duotone"
+                    />
                   </template>
                   Key Member
                 </n-tooltip>
                 <span
                   class="font-semibold tracking-widest truncate group-hover:opacity-100 group-hover:text-sky-400 font-inter opacity-70"
-                  >
+                >
                   {{ item2.name }}
-                  </span  >
-                  <div class="flex items-center invisible w-0 truncate transition-all duration-150 text-sky-400 group-hover:w-6 group-hover:visible">
-                <Icon  icon="solar:arrow-right-broken"/>
-
-                  </div>
+                </span>
+                <div
+                  class="flex items-center invisible w-0 truncate transition-all duration-150 text-sky-400 group-hover:w-4 group-hover:ml-2 group-hover:visible"
+                >
+                  <Icon icon="solar:arrow-right-broken" />
+                </div>
               </div>
-              <div class="flex flex-col items-end ">
+              <div class="flex flex-col items-end space-y-2">
                 <div class="opacity-50 text-end">
                   {{ item2.description }}
                 </div>
-                <div class="space-x-1 space-y-1 text-end">
-                  <n-tag
+                <div class="flex space-x-2 text-end">
+                  <!-- <n-tag
                     v-for="(item3, index3) in item2.skills"
                     :key="index3"
                     round
@@ -91,7 +94,13 @@
                     type="info"
                   >
                     {{ getSKillName(item3) }}
-                  </n-tag>
+                  </n-tag> -->
+                  <img
+                    v-for="(item3, index3) in item2.skills"
+                    :key="index3"
+                    class="w-4 h-4 mr-1 transition-all duration-150 opacity-40 group-hover:w-5 group-hover:h-5 group-hover:opacity-100"
+                    :src="getSKillImg(item3)"
+                  />
                 </div>
               </div>
             </div>
@@ -122,26 +131,10 @@
               >
                 {{ item.title }}
               </span>
-             <Icon
+              <Icon
                 class="transition-transform duration-1000 opacity-70 group-hover:opacity-100 group-hover:text-sky-400 group-hover:rotate-[360deg]"
                 :icon="item.icon"
               />
-            </div>
-            <div class="flex flex-col items-end mr-6">
-              <div class="opacity-50 text-end">
-                {{ item.description }}
-              </div>
-              <div class="space-x-1 space-y-1 text-end">
-                <n-tag
-                  v-for="(item2, index2) in item.skills"
-                  :key="index2"
-                  round
-                  :bordered="false"
-                  type="info"
-                >
-                  {{ getSKillName(item2) }}
-                </n-tag>
-              </div>
             </div>
           </div>
         </div>
@@ -165,7 +158,7 @@
       .map((e: any) => {
         if (!e.meta.hidden) {
           return {
-            icon: e.meta.icon, 
+            icon: e.meta.icon,
             title: e.meta ? e.meta.title : e.name,
             to: e.name,
           };
@@ -174,31 +167,22 @@
       .filter((f) => f);
   });
 
-  function getSKillName(key: string): string {
-    let found: any = store.skills.find((e: any) => e.key === key);
-    if (!found) {
-      found = store.libraries.find((e: any) => e.key === key);
-    }
-    return found ? found.customName : "N/A";
-  }
-  function getSKillPriority(key: string): string {
-    let found: any = store.skills.find((e: any) => e.key === key);
-    if (!found) {
-      found = store.libraries.find((e: any) => e.key === key);
-    }
-    return found ? found.priority : 0;
-  }
+  // function getSKillName(key: string): string {
+  //   let found: any = store.skills.find((e: any) => e.key === key);
+  //   if (!found) {
+  //     found = store.libraries.find((e: any) => e.key === key);
+  //   }
+  //   return found ? found.customName : "N/A";
+  // }
 
-  function goToApps(data: any){
-    if(data.key === "onthedesk"){
-window.open('https://onthedesk.vn','_blank');
-
-    }else{
-  
-       router.push({
-        name: 'projects',
-        params: {key:data.key}
-      }) 
+  function goToApps(data: any) {
+    if (data.key === "onthedesk") {
+      window.open("https://onthedesk.vn", "_blank");
+    } else {
+      router.push({
+        name: "projects",
+        params: { key: data.key },
+      });
     }
   }
 
@@ -209,6 +193,13 @@ window.open('https://onthedesk.vn','_blank');
       }).href,
       "_self"
     );
+  }
+  function getSKillImg(key: string): string {
+    let found: any = store.skills.find((e: any) => e.key === key);
+    if (!found) {
+      found = store.libraries.find((e: any) => e.key === key);
+    }
+    return found ? found.url : "N/A";
   }
 </script>
 

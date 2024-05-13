@@ -52,7 +52,8 @@ export const companies: any = [
         name: "Smart City",
         key: "smartcity",
         isKeyMem: true,
-        description: "General purpose city monitoring and managing system. Monitor incidents, dispatch first responder, tracking target..v.v.",
+        description:
+          "General purpose city monitoring and managing system. Monitor incidents, dispatch first responder, tracking target..etc.",
         skills: [
           "ts",
           "vue",
@@ -62,6 +63,7 @@ export const companies: any = [
           "antd",
           "signalr",
           "ggmap",
+          "openlayer",
         ],
         priority: 2,
       },
@@ -69,7 +71,8 @@ export const companies: any = [
         name: "Digital Farm Controller",
         isKeyMem: true,
         key: "avatar",
-        description: "Monitor and control clones and virtual devices. Support fast and intuitive campaign design, launch campaign en mass.",
+        description:
+          "Monitor and control clones and virtual devices. Support fast and intuitive campaign design, launch campaign en mass.",
         skills: [
           "ts",
           "vue",
@@ -86,7 +89,8 @@ export const companies: any = [
         name: "Chatbot",
         isKeyMem: true,
         key: "chatbot",
-        description: "Simple AI powered chat bot to support quick information searching.",
+        description:
+          "Simple AI powered chat bot to support quick information searching.",
         skills: ["js", "vue", "pinia", "axios", "bootstrap", "el"],
         priority: 2,
       },
@@ -94,7 +98,8 @@ export const companies: any = [
         name: "CCTV Center",
         isKeyMem: true,
         key: "hawkice",
-        description: "Monitor huge array of CCTV. Detect object with customizable attributes, support smart segment for easy and accurate detection.",
+        description:
+          "Monitor huge array of CCTV. Detect object with customizable attributes, support smart segment for easy and accurate detection.",
         skills: ["js", "vue", "pinia", "axios", "bootstrap", "el"],
         priority: 2,
       },
@@ -110,7 +115,8 @@ export const companies: any = [
         name: "Automation Extension",
         isKeyMem: false,
         key: "ext",
-        description: "Chrome extension helps with crawling social media platforms data, perform user-emulating actions.",
+        description:
+          "Chrome extension helps with crawling social media platforms data, perform user-emulating actions.",
         skills: ["js", "jq"],
         priority: 1,
       },
@@ -127,7 +133,16 @@ export const companies: any = [
         name: "On The Desk",
         isKeyMem: true,
         key: "onthedesk",
-        skills: ["js", "react", "recoil", "tailwind", "axios", "antd", 'nodejs','nestjs'],
+        skills: [
+          "js",
+          "react",
+          "recoil",
+          "tailwind",
+          "axios",
+          "antd",
+          "nodejs",
+          "nestjs",
+        ],
         description:
           "Custom built smart business card with integrated nfc technology, design your own card with your own style",
         priority: 2,

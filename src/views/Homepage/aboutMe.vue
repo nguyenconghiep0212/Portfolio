@@ -3,10 +3,14 @@
     <div>
       <!-- INTRODUCTION -->
       <div class="space-y-1 text-left">
-        <div class="text-4xl font-bold tracking-tight font-inter">
+        <div
+          class="px-2 py-2 text-4xl font-bold tracking-tight transition-all duration-150 w-[21rem] font-inter hover:w-full bg-sky-500 mix-blend-screen"
+        >
           {{ aboutMe.name }}
         </div>
-        <div class="text-xl font-medium tracking-tight font-inter">
+        <div
+          class="pt-3 px-4 pb-1 !-ml-2 !-mt-3 text-xl font-medium tracking-tight transition-all duration-150 font-inter w-60 hover:w-80 bg-[darkcyan] mix-blend-screen"
+        >
           {{ aboutMe.title }}
         </div>
         <div class="py-2 text-lg text-left opacity-60">
@@ -14,8 +18,8 @@
         </div>
       </div>
 
-<!-- STUDY -->
-  <div class="mt-6 text-left">
+      <!-- STUDY -->
+      <div class="mt-6 text-left">
         <div class="flex items-center space-x-2">
           <span class="text-lg font-bold tracking-widest uppercase opacity-60">
             Academic
@@ -23,15 +27,17 @@
           <span class="h-[1px] bg-white opacity-60 w-32"></span>
         </div>
         <div class="mt-2">
- <div class="text-xs tracking-wide uppercase opacity-60">
-          {{aboutMe.study.dateOfService[0]}} - {{aboutMe.study.dateOfService[1]}}
+          <div class="text-xs tracking-wide uppercase opacity-60">
+            {{ aboutMe.study.dateOfService[0] }} -
+            {{ aboutMe.study.dateOfService[1] }}
+          </div>
+          <div
+            class="font-semibold tracking-widest truncate font-inter opacity-70"
+          >
+            {{ aboutMe.study.university }}
+          </div>
         </div>
-        <div class="font-semibold tracking-widest truncate font-inter opacity-70">
-          {{aboutMe.study.university}}
-        </div>
-        </div>
-       
-  </div>
+      </div>
 
       <!-- SKILL -->
       <div class="mt-6 text-left">
@@ -149,16 +155,30 @@
         </div>
       </div>
     </div>
-    <div class="flex mb-4 space-x-5">
-      <div v-for="(item, index) in aboutMe.contacts" :key="index" class="">
-        <a :href="item.url" target="_blank">
-          <img
-            :src="item.url_img"
-            :class="`
+    <div class="flex flex-col items-start mb-4 space-y-1">
+      <div class="flex space-x-5">
+        <div v-for="(item, index) in aboutMe.contacts" :key="index" class="">
+          <a :href="item.url" target="_blank">
+            <img
+              :src="item.url_img"
+              :class="`
               ${item.label === 'Github' ? 'invert' : ''}
                w-9 h-9 mb-1 grayscale opacity-40 hover:opacity-100 transition-all duration-150`"
-          />
-        </a>
+            />
+          </a>
+        </div>
+      </div>
+      <span class="h-[1px] bg-white opacity-30 w-full"></span>
+      <div class="flex pt-3 space-x-2">
+        <span class="text-xs font-bold tracking-widest opacity-50">
+          Powered by
+        </span>
+        <img
+          v-for="(item, index) in languages"
+          :key="index"
+          class="w-4 h-4 mr-1 opacity-50"
+          :src="getSKillImg(item)"
+        />
       </div>
     </div>
   </div>
@@ -173,7 +193,15 @@
 
   const store = useHomePage();
   const { t } = useI18n();
-
+  const languages = [
+    "vue",
+    "ts",
+    "tailwind",
+    "pinia",
+    "nestjs",
+    "three",
+    "naive",
+  ];
   fetchSkills();
   fetchLibraries();
   async function fetchSkills() {
@@ -191,7 +219,7 @@
         // MAKE A TABLE LATER YOU LAZY BASTARD
         if (["js", "ts", "vue"].includes(e.key)) {
           e.priority = 2;
-        } else if (["nodejs", "three"].includes(e.key)) {
+        } else if (["nodejs", "three", "nestjs"].includes(e.key)) {
           e.priority = 0;
         } else e.priority = 1;
       });
@@ -219,5 +247,13 @@
       });
       store.libraries = res.data;
     }
+  }
+
+  function getSKillImg(key: string): string {
+    let found: any = store.skills.find((e: any) => e.key === key);
+    if (!found) {
+      found = store.libraries.find((e: any) => e.key === key);
+    }
+    return found ? found.url : "N/A";
   }
 </script>

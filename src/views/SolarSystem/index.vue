@@ -99,15 +99,9 @@
     window.addEventListener("resize", windowResize);
   });
 
-  // onBeforeUnmount(() => {
-  //   document.body.removeChild(labelRenderer.domElement);
-  //   while (scene.children.length > 0) {
-  //     scene.remove(scene.children[0]);
-  //   }
-  // });
-
   onBeforeUnmount(() => {
-    location.reload();
+    el.value.removeChild(renderer.domElement);
+    document.body.removeChild(labelRenderer.domElement);
   });
 
   emitter.on("pin-planet", (data: any) => {
@@ -218,7 +212,8 @@
     if (store.planets.length) {
       store.planets.forEach((e) => {
         if (e.raw.key !== "sun") {
-          e.body.rotateY( // Rotates by x radian per frame (degree × π/180 = rad) (rad × 180/π = degree)
+          e.body.rotateY(
+            // Rotates by x radian per frame (degree × π/180 = rad) (rad × 180/π = degree)
             store.realTime
               ? 1 / (e.raw.synodic_rotation_period * 84_600)
               : 1 /
