@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-[-webkit-fill-available] space-y-2 mb-3 mt-[5vh]"
+    class="h-[-webkit-fill-available] space-y-2 mb-3 mt-2"
     @mousemove="onMouseHighlight"
   >
     <!-- <div>{{ t("view.test") }}</div> -->
