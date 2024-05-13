@@ -46,7 +46,7 @@
               
               </a>
               <Icon
-                class="mt-[7px] transition-all duration-150 opacity-40 group-hover:-rotate-45 group-hover:opacity-80 group-hover:pl-1"
+                class="mt-[7px] transition-all duration-150 opacity-40  group-hover:-rotate-45 group-hover:opacity-80 group-hover:pl-1"
                 icon="solar:map-arrow-right-bold-duotone"
               />
             </div>
@@ -54,27 +54,30 @@
           <div
             v-for="(item2, index2) in item.projects"
             :key="index2"
-            class="grid w-full grid-cols-4 gap-4 mb-2"
+            class="group grid w-full grid-cols-4 gap-4 mb-2 px-2 transition-all duration-150 cursor-pointer rounded hover:bg-slate-800/50 hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)]"
+          @click="goToApps(item2)"
           >
             <div class="w-[inherit]"></div>
 
             <div class="flex flex-col items-end col-span-3 py-2">
-              <div class="flex items-center space-x-2">
-                <span
-                  class="font-semibold tracking-widest truncate font-inter opacity-70"
-                  >{{ item2.name }}</span
-                >
-                <n-tooltip trigger="hover">
+              <div class="flex items-center space-x-2 ">
+                 <n-tooltip v-if="item2.isKeyMem" trigger="hover">
                   <template #trigger>
-                    <Icon
-                      class="transition-all duration-150 cursor-pointer opacity-70 hover:text-sky-400"
-                      icon="solar:question-square-bold-duotone"
-                    />
+                    <Icon  class="text-yellow-300 " icon="solar:star-bold-duotone"/>
                   </template>
-                  What've i done ?
+                  Key Member
                 </n-tooltip>
+                <span
+                  class="font-semibold tracking-widest truncate group-hover:opacity-100 group-hover:text-sky-400 font-inter opacity-70"
+                  >
+                  {{ item2.name }}
+                  </span  >
+                  <div class="flex items-center invisible w-0 truncate transition-all duration-150 text-sky-400 group-hover:w-6 group-hover:visible">
+                <Icon  icon="solar:arrow-right-broken"/>
+
+                  </div>
               </div>
-              <div class="flex flex-col items-end mr-6">
+              <div class="flex flex-col items-end ">
                 <div class="opacity-50 text-end">
                   {{ item2.description }}
                 </div>
@@ -83,6 +86,7 @@
                     v-for="(item3, index3) in item2.skills"
                     :key="index3"
                     round
+                    size="small"
                     :bordered="false"
                     type="info"
                   >
@@ -177,6 +181,27 @@
     }
     return found ? found.customName : "N/A";
   }
+  function getSKillPriority(key: string): string {
+    let found: any = store.skills.find((e: any) => e.key === key);
+    if (!found) {
+      found = store.libraries.find((e: any) => e.key === key);
+    }
+    return found ? found.priority : 0;
+  }
+
+  function goToApps(data: any){
+    if(data.key === "onthedesk"){
+window.open('https://onthedesk.vn','_blank');
+
+    }else{
+  
+       router.push({
+        name: 'projects',
+        params: {key:data.key}
+      }) 
+    }
+  }
+
   function redirect(to: string) {
     window.open(
       router.resolve({

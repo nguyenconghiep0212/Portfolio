@@ -4,7 +4,8 @@ import router from "./router";
 import { setupI18n } from "/@/locales/setupI18n";
 import { createPinia } from "pinia";
 import "./assets/css/app.scss";
-import { Icon } from "/@/uikits/Icon";
+import { registerGlobalComp } from "./utils/registerGlobalComp";
+
 import {
   // create naive ui
   create,
@@ -46,9 +47,12 @@ async function bootstrap() {
     .use(router)
     .use(createPinia())
     .use(naive)
-    .component("Icon", Icon)
-    .mount("#app");
+    
+
+     registerGlobalComp(app)
 
   await setupI18n(app);
+
+  app.mount("#app");
 }
 bootstrap();

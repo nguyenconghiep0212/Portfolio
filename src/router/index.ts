@@ -44,6 +44,15 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: "/projects",
+    name: "projects",
+    component: () => import("../views/Projects/index.vue"),
+    meta: {
+      hidden: true,
+      title: "Projects",
+    },
+  },
+  {
     path: "/solarSystem",
     name: "solarSystem",
     component: () => import("../views/SolarSystem/index.vue"),
