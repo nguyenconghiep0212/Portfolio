@@ -136,6 +136,9 @@
                 :icon="item.icon"
               />
             </div>
+            <div class="opacity-50 text-end">
+              {{item.description}}
+            </div>
           </div>
         </div>
       </div>
@@ -159,6 +162,7 @@
         if (!e.meta.hidden) {
           return {
             icon: e.meta.icon,
+            description: e.meta.description,
             title: e.meta ? e.meta.title : e.name,
             to: e.name,
           };

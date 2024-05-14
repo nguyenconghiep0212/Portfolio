@@ -10,3 +10,29 @@ body {
 .font-inter {
   font-family: "Inter", sans-serif;
 }
+::-moz-selection { /* Code for Firefox */
+  opacity: 100;
+  color: white;
+  background: darkcyan;
+}
+
+::selection {
+  opacity: 100;
+  color: white;
+  background: darkcyan;
+}
+
+::-webkit-scrollbar {
+  height: 2px;
+  width: 2px;
+  /* display: none; */
+}
+::-webkit-scrollbar-track { 
+  background: #000000;
+  border-radius: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #49494964;
+  border-radius: 12px;
+}

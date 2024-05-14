@@ -8,10 +8,8 @@
         <router-view />
       </div>
       <div class="absolute bottom-4 right-4">
-        <n-button size="large" secondary circle type="info" @click="viewSrcCode">
-
-            <Icon icon="solar:code-outline" />
-
+        <n-button size="large" secondary circle type="info" @click="viewSrcCode"> 
+            <Icon icon="solar:code-outline" /> 
         </n-button>
       </div>
     </div>

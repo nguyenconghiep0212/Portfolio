@@ -4,12 +4,12 @@
       <!-- INTRODUCTION -->
       <div class="space-y-1 text-left">
         <div
-          class="px-2 py-2 text-4xl font-bold tracking-tight transition-all duration-150 w-[21rem] font-inter hover:w-full bg-sky-500 mix-blend-screen"
+          class="text-4xl font-bold tracking-tight uppercase transition-all duration-150 font-inter"
         >
           {{ aboutMe.name }}
         </div>
         <div
-          class="pt-3 px-4 pb-1 !-ml-2 !-mt-3 text-xl font-medium tracking-tight transition-all duration-150 font-inter w-60 hover:w-80 bg-[darkcyan] mix-blend-screen"
+          class="text-xl font-medium tracking-tight transition-all duration-150 font-inter w-60"
         >
           {{ aboutMe.title }}
         </div>
@@ -47,17 +47,17 @@
           </span>
           <span class="h-[1px] bg-white opacity-60 w-32"></span>
         </div>
-        <div v-if="store.skills.length" class="mt-3 space-y-2">
+        <div v-if="store.skills.length" class="mt-3 ">
           <div class="flex flex-wrap">
             <div
               v-for="(item, index) in store.skills.filter(
                 (e) => e.priority === 2
               )"
               :key="index"
-              class="flex flex-col items-center justify-center w-20 mr-2 bg-white border-2 border-solid rounded-lg bg-opacity-10 aspect-square border-cyan-400"
+              class="flex flex-col items-center justify-center w-20 mt-2 mr-2 bg-white border-2 border-solid rounded-lg bg-opacity-10 aspect-square border-[#ffd70085]"
             >
               <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-xs font-bold tracking-widest opacity-60">
+              <div class="text-[11px] tracking-widest opacity-60">
                 {{ item.customName }}
               </div>
             </div>
@@ -68,10 +68,10 @@
                 (e) => e.priority === 1
               )"
               :key="index"
-              class="mr-2 w-20 flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square border-2 border-solid border-[silver]"
+              class="mt-2 mr-2 w-20 flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square border-2 border-solid border-[#c0c0c0a6]"
             >
               <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-xs font-bold tracking-widest opacity-60">
+              <div class="text-[11px]  tracking-widest opacity-60">
                 {{ item.customName }}
               </div>
             </div>
@@ -82,10 +82,10 @@
                 (e) => e.priority === 0
               )"
               :key="index"
-              class="flex flex-col items-center justify-center w-20 mr-2 bg-white border-2 border-solid rounded-lg bg-opacity-10 aspect-square border-slate-700"
+              class="flex flex-col items-center justify-center w-20 mt-2 mr-2 bg-white rounded-lg bg-opacity-10 aspect-square "
             >
               <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-xs font-bold tracking-widest opacity-60">
+              <div class="text-[11px]  tracking-widest opacity-60">
                 {{ item.customName }}
               </div>
             </div>
@@ -105,17 +105,17 @@
           </span>
           <span class="h-[1px] bg-white opacity-60 w-32"></span>
         </div>
-        <div v-if="store.libraries.length" class="mt-3 space-y-2">
-          <div class="flex flex-wrap">
+        <div v-if="store.libraries.length" class="mt-3 ">
+          <div class="flex flex-wrap ">
             <div
               v-for="(item, index) in store.libraries.filter(
                 (e) => e.priority === 2
               )"
               :key="index"
-              class="flex flex-col items-center justify-center w-20 mr-2 bg-white border-2 border-solid rounded-lg bg-opacity-10 aspect-square border-cyan-400"
+              class="flex flex-col items-center justify-center w-20 mt-2 mr-2 bg-white border-2 border-solid rounded-lg bg-opacity-10 aspect-square border-[#ffd70085]"
             >
               <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="flex text-xs font-bold tracking-widest opacity-60">
+              <div class="flex text-[11px]  tracking-widest opacity-60">
                 {{ item.customName }}
               </div>
             </div>
@@ -126,10 +126,10 @@
                 (e) => e.priority === 1
               )"
               :key="index"
-              class="mr-2 w-20 flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square border-2 border-solid border-[silver]"
+              class="mt-2 mr-2 w-20 flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square border-2 border-solid border-[#c0c0c0a6]"
             >
               <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-xs font-bold tracking-widest opacity-60">
+              <div class="text-[11px]  tracking-widest opacity-60">
                 {{ item.customName }}
               </div>
             </div>
@@ -140,10 +140,10 @@
                 (e) => e.priority === 0
               )"
               :key="index"
-              class="flex flex-col items-center justify-center w-20 mr-2 bg-white border-2 border-solid rounded-lg bg-opacity-10 aspect-square border-slate-700"
+              class="flex flex-col items-center justify-center w-20 mt-2 mr-2 bg-white rounded-lg bg-opacity-10 aspect-square "
             >
               <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-xs font-bold tracking-widest opacity-60">
+              <div class="text-[11px]  tracking-widest opacity-60">
                 {{ item.customName }}
               </div>
             </div>
@@ -155,7 +155,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col items-start mb-4 space-y-1">
+    <div class="flex flex-col items-start my-4 space-y-1">
       <div class="flex space-x-5">
         <div v-for="(item, index) in aboutMe.contacts" :key="index" class="">
           <a :href="item.url" target="_blank">
