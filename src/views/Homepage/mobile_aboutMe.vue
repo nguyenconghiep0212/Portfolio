@@ -22,7 +22,7 @@
       <div class="mt-6 text-left">
         <div class="flex items-center space-x-4">
           <span
-            class="text-lg font-bold tracking-widest uppercase w-36 px-2 py-1 bg-[darkcyan]"
+            class="text-lg font-bold tracking-widest uppercase w-max whitespace-nowrap px-2 py-1 bg-[darkcyan]"
           >
             <span class="opacity-80">{{ t("view.homepage.academic") }}</span>
           </span>
@@ -45,7 +45,7 @@
       <div class="mt-6 text-left">
         <div class="flex items-center space-x-2">
           <div
-            class="text-lg font-bold tracking-widest uppercase w-[32rem] px-2 py-1 bg-[darkcyan]"
+            class="text-lg font-bold tracking-widest uppercase w-max whitespace-nowrap px-2 py-1 bg-[darkcyan]"
           >
             <span class="opacity-80">
               {{ t("view.homepage.languages") }} &
@@ -108,10 +108,9 @@
       <div class="mt-6 text-left">
         <div class="flex items-center space-x-2">
           <span
-            class="text-lg font-bold tracking-widest uppercase w-32 px-2 py-1 bg-[darkcyan]"
+            class="text-lg font-bold tracking-widest uppercase w-max whitespace-nowrap px-2 py-1 bg-[darkcyan]"
           >
-          <span class="opacity-80">{{ t("view.homepage.libraries") }}</span>
-
+            <span class="opacity-80">{{ t("view.homepage.libraries") }}</span>
           </span>
           <span class="h-[1px] bg-white opacity-60 w-32"></span>
         </div>

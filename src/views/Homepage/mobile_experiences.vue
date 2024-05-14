@@ -4,7 +4,7 @@
     <div class="flex flex-col">
       <div class="flex items-center justify-start space-x-4">
         <span
-          class="text-2xl font-bold tracking-widest uppercase w-72 px-2 py-1 bg-[darkcyan]"
+          class="text-2xl font-bold tracking-widest uppercase w-max whitespace-nowrap px-2 py-1 bg-[darkcyan]"
         >
           <span class="opacity-80">{{ t("view.homepage.experiences") }} </span>
         </span>
@@ -108,9 +108,9 @@
     <div class="flex flex-col mt-12">
       <div class="flex items-center justify-start space-x-2">
         <span
-          class="text-2xl font-bold tracking-widest uppercase w-max px-2 py-1 bg-[darkcyan]"
+          class="text-2xl font-bold tracking-widest uppercase w-max whitespace-nowrap px-2 py-1 bg-[darkcyan]"
         >
-          <span class="opacity-80">Three.js</span>
+          <span class="opacity-80">Demo Three.js</span>
         </span>
         <span class="h-[1px] bg-white opacity-60 w-full"></span>
       </div>
