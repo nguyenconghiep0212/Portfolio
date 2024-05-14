@@ -2,17 +2,13 @@
   <div>
     <!-- PROJECT -->
     <div class="flex flex-col">
-      <div class="flex items-center justify-end space-x-2">
-        <span class="h-[1px] bg-white opacity-60 w-1/2"></span>
+      <div class="flex items-center justify-start space-x-4">
         <span
-          class="group text-2xl text-right font-bold tracking-widest uppercase w-56 transition-all duration-150 hover:w-72 px-2 py-1 bg-[darkcyan]"
+          class="text-2xl font-bold tracking-widest uppercase w-72 px-2 py-1 bg-[darkcyan]"
         >
-          <span
-            class="transition-all duration-150 opacity-80 group-hover:opacity-100"
-          >
-            {{ t('view.homepage.experiences') }}
-          </span>
+          <span class="opacity-80">{{ t("view.homepage.experiences") }} </span>
         </span>
+        <span class="h-[1px] bg-white opacity-60 w-full"></span>
       </div>
       <div class="flex flex-col mt-8 space-y-4">
         <div
@@ -22,73 +18,64 @@
         >
           <div class="grid items-center w-full grid-cols-4 gap-4 mb-4">
             <div
-              class="flex items-start h-full col-span-1 mt-4 text-xs tracking-wide text-right uppercase opacity-60"
+              class="flex items-start justify-start col-span-3 px-2 py-1 -ml-2 space-x-2 text-right truncate bg-opacity-50 cursor-pointer group hover:text-sky-400 bg-sky-500"
             >
-              {{ item.dateOfService[0] }} - {{ item.dateOfService[1] }}
-            </div>
-            <div
-              class="flex items-start justify-end col-span-3 py-1 pr-2 -mr-2 space-x-2 text-right transition-all duration-150 cursor-pointer group bg-opacity-60 hover:text-sky-400 bg-sky-500 hover:bg-opacity-20"
-            >
-              <n-tag
-                v-if="item.isStartUp"
-                :bordered="false"
-                round
-                size="small"
-                type="primary"
-                class="mt-[2px] mr-2"
-              >
-                startup
-              </n-tag>
               <a :href="item.url" target="_blank">
                 <div class="flex flex-col">
-                  <div
-                    class="text-lg font-bold tracking-widest truncate font-inter"
-                  >
+                  <div class="text-lg font-bold tracking-widest font-inter">
                     {{ item.name }}
                   </div>
-                  <div class="opacity-70">
+                  <div class="text-left opacity-70">
                     {{ item.roles }}
                   </div>
                 </div>
               </a>
+              <n-tag
+                v-if="item.isStartUp"
+                :bordered="false"
+                round
+                type="primary"
+                size="small"
+                class="mr-2 mt-[2px]"
+              >
+                startup
+              </n-tag>
               <Icon
                 class="mt-[7px] transition-all duration-150 opacity-40 group-hover:-rotate-45 group-hover:opacity-80 group-hover:pl-1"
                 icon="solar:map-arrow-right-bold-duotone"
               />
             </div>
+            <div
+              class="flex items-start justify-end h-full col-span-1 text-xs tracking-wide text-right uppercase opacity-60"
+            >
+              {{ item.dateOfService[0] }} - {{ item.dateOfService[1] }}
+            </div>
           </div>
           <div
             v-for="(item2, index2) in item.projects"
             :key="index2"
-            class="group grid w-full grid-cols-4 gap-4 mb-4 p-2 transition-all duration-150 cursor-pointer rounded hover:bg-slate-800/50 hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)]"
+            class="group grid w-full grid-cols-4 gap-4 mb-4 py-2 transition-all duration-150 cursor-pointer rounded hover:bg-slate-800/50 hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)]"
             @click="goToApps(item2)"
           >
-            <div class="w-[inherit]"></div>
-
-            <div class="flex flex-col items-end col-span-3 py-2">
+            <div class="flex flex-col items-start col-span-3 py-2">
               <div class="flex items-center">
-                <n-tooltip v-if="item2.isKeyMem" trigger="hover">
-                  <template #trigger>
-                    <Icon
-                      class="mr-2 text-yellow-300"
-                      icon="solar:star-bold-duotone"
-                    />
-                  </template>
-                  Key Member
-                </n-tooltip>
                 <span
                   class="font-semibold tracking-widest truncate group-hover:opacity-100 group-hover:text-sky-400 font-inter opacity-70"
                 >
                   {{ item2.name }}
                 </span>
-                <div
-                  class="flex items-center invisible w-0 truncate transition-all duration-150 text-sky-400 group-hover:w-4 group-hover:ml-2 group-hover:visible"
-                >
-                  <Icon icon="solar:arrow-right-broken" />
-                </div>
+                <n-tooltip v-if="item2.isKeyMem" trigger="hover">
+                  <template #trigger>
+                    <Icon
+                      class="ml-2 mb-[2px] text-yellow-300"
+                      icon="solar:star-bold-duotone"
+                    />
+                  </template>
+                  Key Member
+                </n-tooltip>
               </div>
-              <div class="flex flex-col items-end space-y-2">
-                <div class="opacity-50 text-end">
+              <div class="flex flex-col items-start space-y-2">
+                <div class="opacity-50 text-start">
                   {{ item2.description }}
                 </div>
                 <div class="flex space-x-2 text-end">
@@ -111,6 +98,7 @@
                 </div>
               </div>
             </div>
+            <div class="w-[inherit]"></div>
           </div>
         </div>
       </div>
@@ -118,26 +106,22 @@
 
     <!-- DEMO -->
     <div class="flex flex-col mt-12">
-      <div class="flex items-center justify-end space-x-2">
-        <span class="h-[1px] bg-white opacity-60 w-1/2"></span>
+      <div class="flex items-center justify-start space-x-2">
         <span
-          class="group text-2xl text-right font-bold tracking-widest uppercase w-64 transition-all duration-150 hover:w-96 px-2 py-1 bg-[darkcyan]"
+          class="text-2xl font-bold tracking-widest uppercase w-max px-2 py-1 bg-[darkcyan]"
         >
-          <span
-            class="transition-all duration-150 opacity-80 group-hover:opacity-100"
-          >
-            Demo Three.js
-          </span>
+          <span class="opacity-80">Three.js</span>
         </span>
+        <span class="h-[1px] bg-white opacity-60 w-full"></span>
       </div>
       <div class="flex flex-col mt-8 space-y-4">
         <div
           v-for="(item, index) in menu"
           :key="index"
-          class="px-4 py-2 transition-all duration-150 rounded-sm cursor-pointer group hover:bg-slate-800/50 hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)]"
+          class="py-2 transition-all duration-150 rounded-sm cursor-pointer group hover:bg-slate-800/50 hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)]"
           @click="redirect(item.to)"
         >
-          <div class="flex flex-col items-end col-span-3 py-2">
+          <div class="flex flex-col items-start col-span-3 py-2">
             <div class="flex items-center space-x-2">
               <span
                 class="text-lg font-bold tracking-widest truncate transition-all duration-150 font-inter group-hover:text-sky-400"
@@ -149,12 +133,24 @@
                 :icon="item.icon"
               />
             </div>
-            <div class="opacity-50 text-end">
+            <div class="opacity-50 text-start">
               {{ item.description }}
             </div>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="flex justify-end pt-3 space-x-2">
+      <span class="text-xs font-bold tracking-widest opacity-50">
+        Powered by
+      </span>
+      <img
+        v-for="(item, index) in languages"
+        :key="index"
+        class="w-4 h-4 mr-1 opacity-50"
+        :src="getSKillImg(item)"
+      />
     </div>
   </div>
 </template>
@@ -168,6 +164,15 @@
 
   const store = useHomePage();
   const { t } = useI18n();
+  const languages = [
+    "vue",
+    "ts",
+    "tailwind",
+    "pinia",
+    "nestjs",
+    "three",
+    "naive",
+  ];
   const router = useRouter();
   const menu = computed<any>(() => {
     return router.options.routes

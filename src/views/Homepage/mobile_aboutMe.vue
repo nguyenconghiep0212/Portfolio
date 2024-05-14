@@ -1,15 +1,15 @@
 <template>
   <div class="flex flex-col items-start justify-between h-full">
-    <div>
+    <div class="w-full">
       <!-- INTRODUCTION -->
       <div class="space-y-1 text-left">
         <div
-          class="px-2 py-2 text-4xl font-bold tracking-tight uppercase transition-all duration-150 w-96 font-inter hover:w-full bg-sky-500 mix-blend-screen"
+          class="px-4 py-3 text-5xl font-bold tracking-tight uppercase transition-all duration-150 font-inter w-max bg-sky-500 mix-blend-screen"
         >
           {{ aboutMe.name }}
         </div>
         <div
-          class="pt-3 px-4 pb-1 !-ml-2 !-mt-3 text-xl font-medium tracking-tight transition-all duration-150 font-inter w-60 hover:w-80 bg-[darkcyan] mix-blend-screen"
+          class="pt-3 px-4 pb-1 !-ml-2 !-mt-3 bg-[darkcyan] mix-blend-screen w-max text-2xl font-medium tracking-tight transition-all duration-150 font-inter"
         >
           {{ aboutMe.title }}
         </div>
@@ -20,17 +20,13 @@
 
       <!-- STUDY -->
       <div class="mt-6 text-left">
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-4">
           <span
-            class="group px-2 py-1 text-lg font-bold tracking-widest uppercase transition-all duration-150 w-32 hover:w-52 bg-[darkcyan]"
+            class="text-lg font-bold tracking-widest uppercase w-36 px-2 py-1 bg-[darkcyan]"
           >
-            <span
-              class="transition-all duration-150 opacity-80 group-hover:opacity-100"
-            >
-              {{ t("view.homepage.academic") }}
-            </span>
+            <span class="opacity-80">{{ t("view.homepage.academic") }}</span>
           </span>
-          <span class="h-[1px] bg-white opacity-60 w-32"></span>
+          <span class="h-[1px] bg-white opacity-60 w-full"></span>
         </div>
         <div class="mt-2">
           <div class="text-xs tracking-wide uppercase opacity-60">
@@ -48,17 +44,15 @@
       <!-- SKILL -->
       <div class="mt-6 text-left">
         <div class="flex items-center space-x-2">
-          <span
-            class="text-lg font-bold tracking-widest uppercase group w-[22rem] transition-all duration-150 hover:w-96 px-2 py-1 bg-[darkcyan]"
+          <div
+            class="text-lg font-bold tracking-widest uppercase w-[32rem] px-2 py-1 bg-[darkcyan]"
           >
-            <span
-              class="transition-all duration-150 opacity-80 group-hover:opacity-100"
-            >
+            <span class="opacity-80">
               {{ t("view.homepage.languages") }} &
               {{ t("view.homepage.frameworks") }}
             </span>
-          </span>
-          <span class="h-[1px] bg-white opacity-60 w-32"></span>
+          </div>
+          <span class="h-[1px] bg-white opacity-60 w-full"></span>
         </div>
         <div v-if="store.skills.length" class="mt-3">
           <div class="flex flex-wrap">
@@ -114,13 +108,10 @@
       <div class="mt-6 text-left">
         <div class="flex items-center space-x-2">
           <span
-            class="text-lg font-bold tracking-widest uppercase group w-32 transition-all duration-150 hover:w-48 px-2 py-1 bg-[darkcyan]"
+            class="text-lg font-bold tracking-widest uppercase w-32 px-2 py-1 bg-[darkcyan]"
           >
-            <span
-              class="transition-all duration-150 opacity-80 group-hover:opacity-100"
-            >
-              {{ t("view.homepage.libraries") }}
-            </span>
+          <span class="opacity-80">{{ t("view.homepage.libraries") }}</span>
+
           </span>
           <span class="h-[1px] bg-white opacity-60 w-32"></span>
         </div>
@@ -174,7 +165,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col items-start mt-6 mb-4 space-y-1">
+    <div class="flex flex-col items-start mt-8 space-y-1">
       <div class="flex space-x-5">
         <div v-for="(item, index) in aboutMe.contacts" :key="index" class="">
           <a :href="item.url" target="_blank">
@@ -186,18 +177,6 @@
             />
           </a>
         </div>
-      </div>
-      <span class="h-[1px] bg-white opacity-30 w-full"></span>
-      <div class="flex pt-3 space-x-2">
-        <span class="text-xs font-bold tracking-widest opacity-50">
-          Powered by
-        </span>
-        <img
-          v-for="(item, index) in languages"
-          :key="index"
-          class="w-4 h-4 mr-1 opacity-50"
-          :src="getSKillImg(item)"
-        />
       </div>
     </div>
   </div>
@@ -212,15 +191,7 @@
 
   const store = useHomePage();
   const { t } = useI18n();
-  const languages = [
-    "vue",
-    "ts",
-    "tailwind",
-    "pinia",
-    "nestjs",
-    "three",
-    "naive",
-  ];
+
   fetchSkills();
   fetchLibraries();
   async function fetchSkills() {

@@ -8,13 +8,18 @@
       ref="mouseHighlight"
       class="fixed inset-0 z-30 transition duration-300 pointer-events-none"
     ></div>
-    <div class="grid h-full mx-[15vw] grid-cols-2 gap-1 mt-30">
-      <!-- ABOUT ME -->
+    <div class="hidden xl:grid h-full mx-[15vw] grid-cols-2 gap-1">
       <AboutMe />
-
-      <!-- EXPERIENCES -->
       <div class="pr-4 overflow-y-auto experiences">
         <Experiences />
+      </div>
+    </div>
+
+    <!-- MOBILE -->
+    <div class="xl:hidden flex flex-col h-max mx-[15vw] !mt-20 space-y-10 !pb-4">
+      <MobileAboutMe />
+      <div class="experiences">
+        <MobileExperiences />
       </div>
     </div>
   </div>
@@ -24,6 +29,8 @@
   import { useI18n } from "/@/hooks/useI18n";
   import AboutMe from "./aboutMe.vue";
   import Experiences from "./experiences.vue";
+  import MobileAboutMe from "./mobile_aboutMe.vue";
+  import MobileExperiences from "./mobile_experiences.vue";
   import { ref } from "vue";
 
   const { t } = useI18n();

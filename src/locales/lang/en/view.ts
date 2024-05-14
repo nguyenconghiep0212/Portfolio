@@ -9,4 +9,11 @@ export default {
       hide_orbit: "Hide orbital path",
     },
   },
+  homepage: {
+    academic: "Academic",
+    languages: "Languages",
+    frameworks: "Frameworks",
+    libraries: "Libraries",
+    experiences: "Experiences",
+  },
 };
