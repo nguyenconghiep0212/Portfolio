@@ -16,33 +16,7 @@ const routes: Array<RouteRecordRaw> = [
       title: "Trang chủ",
     },
   },
-  {
-    path: "/tresjs",
-    name: "tresjs",
-    component: () => import("../views/tresjs.vue"),
-    meta: {
-      hidden: true,
-      title: "Tresjs",
-    },
-  },
-  {
-    path: "/playground",
-    name: "playground",
-    component: () => import("../views/playground.vue"),
-    meta: {
-      hidden: true,
-      title: "playground",
-    },
-  },
-  {
-    path: "/solarSystem-test",
-    name: "solarSystemTest",
-    component: () => import("../views/solarSystem_test.vue"),
-    meta: {
-      hidden: true,
-      title: "Solar system test",
-    },
-  },
+
   {
     path: "/projects/:key",
     name: "projects",
@@ -59,7 +33,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       icon: "solar:black-hole-3-bold-duotone",
       title: "Solar system",
-      description:'Super-simplify model of our star system. Inspired by NASA\'s Eyes on the Solar System'
+      description:
+        "Super-simplify model of our star system. Inspired by NASA's Eyes on the Solar System",
     },
   },
   {
@@ -69,7 +44,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       icon: "solar:buildings-2-bold-duotone",
       title: "City block",
-      description:'Just a simple simulation of a city block'
+      description: "Just a simple simulation of a city block",
     },
   },
   {
@@ -79,7 +54,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       icon: "solar:armchair-2-bold",
       title: "Showroom",
-      description:'A simple test room for physic engine cannon-es. Currently building...'
+      description:
+        "A simple test room for physic engine cannon-es. Currently building...",
     },
   },
   {
