@@ -56,46 +56,13 @@
         </div>
         <div v-if="store.skills.length" class="mt-3">
           <div class="flex flex-wrap">
-            <div
-              v-for="(item, index) in store.skills.filter(
-                (e) => e.priority === 2
-              )"
-              :key="index"
-              class="flex flex-col items-center justify-center w-20 mt-2 mr-2 bg-white border-2 border-solid rounded-lg bg-opacity-10 aspect-square border-[#ffd70085]"
-            >
-              <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-[11px] tracking-widest opacity-60">
-                {{ item.customName }}
-              </div>
-            </div>
+            <SkillBox :array="store.skills.filter((e) => e.priority === 2)" />
           </div>
           <div class="flex flex-wrap">
-            <div
-              v-for="(item, index) in store.skills.filter(
-                (e) => e.priority === 1
-              )"
-              :key="index"
-              class="mt-2 mr-2 w-20 flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square border-2 border-solid border-[#c0c0c0a6]"
-            >
-              <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-[11px] tracking-widest opacity-60">
-                {{ item.customName }}
-              </div>
-            </div>
+            <SkillBox :array="store.skills.filter((e) => e.priority === 1)" />
           </div>
           <div class="flex flex-wrap">
-            <div
-              v-for="(item, index) in store.skills.filter(
-                (e) => e.priority === 0
-              )"
-              :key="index"
-              class="flex flex-col items-center justify-center w-20 mt-2 mr-2 bg-white rounded-lg bg-opacity-10 aspect-square"
-            >
-              <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-[11px] tracking-widest opacity-60">
-                {{ item.customName }}
-              </div>
-            </div>
+            <SkillBox :array="store.skills.filter((e) => e.priority === 0)" />
           </div>
         </div>
         <div v-else>
@@ -116,46 +83,19 @@
         </div>
         <div v-if="store.libraries.length" class="mt-3">
           <div class="flex flex-wrap">
-            <div
-              v-for="(item, index) in store.libraries.filter(
-                (e) => e.priority === 2
-              )"
-              :key="index"
-              class="flex flex-col items-center justify-center w-20 mt-2 mr-2 bg-white border-2 border-solid rounded-lg bg-opacity-10 aspect-square border-[#ffd70085]"
-            >
-              <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="flex text-[11px] tracking-widest opacity-60">
-                {{ item.customName }}
-              </div>
-            </div>
+            <SkillBox
+              :array="store.libraries.filter((e) => e.priority === 2)"
+            />
           </div>
           <div class="flex flex-wrap">
-            <div
-              v-for="(item, index) in store.libraries.filter(
-                (e) => e.priority === 1
-              )"
-              :key="index"
-              class="mt-2 mr-2 w-20 flex flex-col items-center justify-center bg-white rounded-lg bg-opacity-10 aspect-square border-2 border-solid border-[#c0c0c0a6]"
-            >
-              <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-[11px] tracking-widest opacity-60">
-                {{ item.customName }}
-              </div>
-            </div>
+            <SkillBox
+              :array="store.libraries.filter((e) => e.priority === 1)"
+            />
           </div>
           <div class="flex flex-wrap">
-            <div
-              v-for="(item, index) in store.libraries.filter(
-                (e) => e.priority === 0
-              )"
-              :key="index"
-              class="flex flex-col items-center justify-center w-20 mt-2 mr-2 bg-white rounded-lg bg-opacity-10 aspect-square"
-            >
-              <img :src="item.url" class="w-5 h-5 mb-1" />
-              <div class="text-[11px] tracking-widest opacity-60">
-                {{ item.customName }}
-              </div>
-            </div>
+            <SkillBox
+              :array="store.libraries.filter((e) => e.priority === 0)"
+            />
           </div>
         </div>
         <div v-else>
@@ -167,7 +107,7 @@
     <div class="flex flex-col items-start mt-8 space-y-1">
       <div class="flex space-x-5">
         <div v-for="(item, index) in aboutMe.contacts" :key="index" class="">
-          <a v-if="item.label !== 'Email'" :href="item.url" target="_blank">
+          <a :href="item.url" target="_blank">
             <img
               :src="item.url_img"
               :class="`
@@ -175,21 +115,17 @@
                w-9 h-9 mb-1 grayscale opacity-40 hover:opacity-100 transition-all duration-150`"
             />
           </a>
-          <div v-else>
+          <!-- <div v-else>
             <n-popover trigger="click">
               <template #trigger>
                 <img
                   :src="item.url_img"
-                  class="mb-1 transition-all duration-150 w-9 h-9 grayscale opacity-40 hover:opacity-100"
+                  class="mb-1 transition-all duration-150 cursor-pointer w-9 h-9 grayscale opacity-40 hover:opacity-100"
                 />
               </template>
-              <div class="flex flex-col p-1 space-y-1">
-                <n-input v-model="mailForm.company" placeholder="Company's name" />
-                <n-input v-model="mailForm.companyUrl" placeholder="Company's homepage / Recruiting url" />
-                <n-input v-model="mailForm.content" type="area" placeholder="Mail's content" />
-              </div>
+              <MailForm />
             </n-popover>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -197,71 +133,68 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from "/@/hooks/useI18n";
-import { ref } from "vue";
-import { aboutMe } from "./mock";
-import { fetchTextureMaps } from "/@/api/solarSystem";
-import { useHomePage } from "/@/store/homepage";
+  import { useI18n } from "/@/hooks/useI18n";
+  import { ref } from "vue";
+  import { aboutMe } from "./mock";
+  import { fetchTextureMaps } from "/@/api/solarSystem";
+  import { useHomePage } from "/@/store/homepage";
+  import MailForm from "./mailForm.vue";
+  import SkillBox from "./skillBox.vue";
+  const store = useHomePage();
+  const { t } = useI18n();
 
-const store = useHomePage();
-const { t } = useI18n();
-const mailForm = ref<{ company: string; companyUrl: string; content: string }>({
-  company: "",
-  companyUrl: "",
-  content: "Let keep in touch !!",
-});
-fetchSkills();
-fetchLibraries();
-async function fetchSkills() {
-  const params = {
-    filter: [
-      {
-        key: "folder",
-        value: "Skills",
-      },
-    ],
-  };
-  const res = await fetchTextureMaps(params);
-  if (res) {
-    res.data.forEach((e: any) => {
-      // MAKE A TABLE LATER YOU LAZY BASTARD
-      if (["js", "ts", "vue"].includes(e.key)) {
-        e.priority = 2;
-      } else if (["nodejs", "three", "nestjs"].includes(e.key)) {
-        e.priority = 0;
-      } else e.priority = 1;
-    });
-    store.skills = res.data;
+  fetchSkills();
+  fetchLibraries();
+  async function fetchSkills() {
+    const params = {
+      filter: [
+        {
+          key: "folder",
+          value: "Skills",
+        },
+      ],
+    };
+    const res = await fetchTextureMaps(params);
+    if (res) {
+      res.data.forEach((e: any) => {
+        // MAKE A TABLE LATER YOU LAZY BASTARD
+        if (["js", "ts", "vue"].includes(e.key)) {
+          e.priority = 2;
+        } else if (["nodejs", "three", "nestjs"].includes(e.key)) {
+          e.priority = 0;
+        } else e.priority = 1;
+      });
+      store.skills = res.data;
+    }
   }
-}
-async function fetchLibraries() {
-  const params = {
-    filter: [
-      {
-        key: "folder",
-        value: "Libraries",
-      },
-    ],
-  };
-  const res = await fetchTextureMaps(params);
-  if (res) {
-    res.data.forEach((e: any) => {
-      // MAKE A TABLE LATER YOU LAZY BASTARD
-      if (["pinia", "tailwind", "antd", "el"].includes(e.key)) {
-        e.priority = 2;
-      } else if (["bootstrap", "recoil"].includes(e.key)) {
-        e.priority = 0;
-      } else e.priority = 1;
-    });
-    store.libraries = res.data;
+  async function fetchLibraries() {
+    const params = {
+      filter: [
+        {
+          key: "folder",
+          value: "Libraries",
+        },
+      ],
+    };
+    const res = await fetchTextureMaps(params);
+    if (res) {
+      res.data.forEach((e: any) => {
+        // MAKE A TABLE LATER YOU LAZY BASTARD
+        if (["pinia", "tailwind", "antd", "el"].includes(e.key)) {
+          e.priority = 2;
+        } else if (["bootstrap", "recoil"].includes(e.key)) {
+          e.priority = 0;
+        } else e.priority = 1;
+      });
+      store.libraries = res.data;
+    }
   }
-}
 
-function getSKillImg(key: string): string {
-  let found: any = store.skills.find((e: any) => e.key === key);
-  if (!found) {
-    found = store.libraries.find((e: any) => e.key === key);
+  function getSKillImg(key: string): string {
+    let found: any = store.skills.find((e: any) => e.key === key);
+    if (!found) {
+      found = store.libraries.find((e: any) => e.key === key);
+    }
+    return found ? found.url : "N/A";
   }
-  return found ? found.url : "N/A";
-}
 </script>

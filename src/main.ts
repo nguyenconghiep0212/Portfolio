@@ -24,6 +24,7 @@ import {
   NSkeleton,
   NTag,
   NPopover,
+  NNotificationProvider,
 } from "naive-ui";
 
 async function bootstrap() {
@@ -43,13 +44,14 @@ async function bootstrap() {
       NIconWrapper,
       NSkeleton,
       NTag,
+      NNotificationProvider
     ],
   });
   const app = createApp(App)
     .use(router)
     .use(createPinia())
     .use(naive)
-    
+
 
      registerGlobalComp(app)
 

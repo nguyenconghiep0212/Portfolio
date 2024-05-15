@@ -33,7 +33,7 @@ export const aboutMe: any = {
     },
     {
       label: "Email",
-      url: "mailto:nguyenconghiep0212@gmail.com?subject=Greeting&body=Let keep contact !!!",
+      url: "mailto:nguyenconghiep0212@gmail.com?subject=Greeting&body=Let keep in touch !!",
       url_img:
         "https://res.cloudinary.com/dc7jd2eeu/image/upload/v1715451670/Contacts/egxecjvy5cwwu28fkanz.png",
     },
