@@ -64,6 +64,7 @@ export const companies: any = [
           "signalr",
           "ggmap",
           "openlayer",
+          "echart"
         ],
         priority: 2,
       },
@@ -100,7 +101,7 @@ export const companies: any = [
         key: "hawkice",
         description:
           "Monitor huge array of CCTV. Detect object with customizable attributes, support smart segment for easy and accurate detection.",
-        skills: ["js", "vue", "pinia", "axios", "bootstrap", "el"],
+        skills: ["js", "vue", "pinia", "axios", "bootstrap", "el","echart"],
         priority: 2,
       },
       {
@@ -126,7 +127,7 @@ export const companies: any = [
     name: "On The Desk",
     url: "https://onthedesk.vn",
     dateOfService: ["01/2022", "05/2022"],
-    roles: "Fullstack",
+    roles: "Fullstack Developer",
     isStartUp: true,
     projects: [
       {

@@ -6,7 +6,7 @@
     ></div>
 
     <!-- TEMP -->
-    <div class="flex flex-col items-center justify-center w-full h-full">
+    <!-- <div class="flex flex-col items-center justify-center w-full h-full">
       <Icon
         class="!text-9xl opacity-60 animate-bounce"
         icon="solar:sledgehammer-bold-duotone"
@@ -20,8 +20,8 @@
       >
         let's head back
       </div>
-    </div>
-    <!-- <component :is="route.params.key" /> -->
+    </div> -->
+    <component :is="route.params.key" />
   </div>
 </template>
 

@@ -59,7 +59,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       icon: "solar:black-hole-3-bold-duotone",
       title: "Solar system",
-      description:'Super-simplify version our star system. Inspired by NASA\'s Eyes on the Solar System'
+      description:'Super-simplify model of our star system. Inspired by NASA\'s Eyes on the Solar System'
     },
   },
   {
@@ -69,7 +69,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       icon: "solar:buildings-2-bold-duotone",
       title: "City block",
-      description:'Just a simple simulation a city block'
+      description:'Just a simple simulation of a city block'
     },
   },
   {

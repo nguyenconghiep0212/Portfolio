@@ -54,29 +54,4 @@ export default async function getStarfield({ numStars = 10_000 } = {}) {
   }
 }
 
-// import { Star } from "./star";
 
-// export default function getStarfield(scene: any, { numStars = 5000 } = {}) {
-//   function randomSpherePoint() {
-//     const radius = Math.random() *  25 + 50_000_000 ;
-//     const u = Math.random();
-//     const v = Math.random();
-//     const theta = 2 * Math.PI * u;
-//     const phi = Math.acos(2 * v - 1);
-//     const x = radius * Math.sin(phi) * Math.cos(theta);
-//     const y = radius * Math.sin(phi) * Math.sin(theta);
-//     const z = radius * Math.cos(phi);
-
-//     return {
-//       pos: new THREE.Vector3(x, y, z),
-//       hue: 0.6,
-//       minDist: radius,
-//     };
-//   }
-//   for (let i = 0; i < numStars; i += 1) {
-//     const p = randomSpherePoint();
-//     const { pos } = p;
-//     const star = new Star(pos);
-//     star.toThreeObject(scene);
-//   }
-// }

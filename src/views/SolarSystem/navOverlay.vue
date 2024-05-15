@@ -1,10 +1,10 @@
 <template>
   <!-- TIME LAPSE -->
-  <div class="absolute bottom-10 left-1/2 z-10">
-    <div class="-translate-x-1/2 w-max space-y-1">
+  <div class="absolute z-10 bottom-10 left-1/2">
+    <div class="space-y-1 -translate-x-1/2 w-max">
       <div
         v-if="!store.realTime"
-        class="flex justify-center tracking-widest  truncate transition-all duration-100 font-bold opacity-60 space-x-1"
+        class="flex justify-center space-x-1 font-bold tracking-widest truncate transition-all duration-100 opacity-60"
       >
         <span class="mr-1">1 year =</span>
         <span class="text-green-400">
@@ -24,14 +24,14 @@
             v-if="!store.realTime"
             :disabled="timeDisplay === 1 || store.realTime"
             quaternary
-            class=" opacity-60 !bg-[#ffffff4d] w-min"
+            class="opacity-60 !bg-[#ffffff4d] w-min"
             @click="decreaseTimelapse"
           >
             <Icon icon="solar:skip-previous-line-duotone" />
           </n-button>
         </div>
 
-        <div class="flex justify-center items-center">
+        <div class="flex items-center justify-center">
           <div
             :class="`${
               store.realTime
@@ -46,7 +46,7 @@
             v-if="!store.realTime"
             :disabled="store.realTime"
             quaternary
-            class=" opacity-60 !bg-[#ffffff4d] w-min"
+            class="opacity-60 !bg-[#ffffff4d] w-min"
             @click="increaseTimelapse"
           >
             <Icon icon="solar:skip-next-line-duotone" />
@@ -56,7 +56,7 @@
       <div
         :class="`tracking-widest text-[16px] uppercase ${
           store.realTime ? 'text-green-600' : 'text-blue-600'
-        } font-thin truncate transition-all duration-100 font-bold opacity-60`"
+        }   truncate transition-all duration-100 font-bold opacity-60`"
       >
         {{ store.realTime ? "Real time" : "Relative time" }}
       </div>
@@ -72,7 +72,7 @@
       >
         <div class="flex items-center justify-between mb-1">
           <div
-            class="tracking-widest  uppercase truncate transition-all duration-100 cursor-pointer font-bold opacity-60"
+            class="font-bold tracking-widest uppercase truncate transition-all duration-100 cursor-pointer opacity-60"
           >
             {{ t("view.solar_system.planet_nav.title") }}
           </div>
@@ -80,7 +80,7 @@
             <n-button
               size="small"
               ghost
-              class="bg-[#39393c99]  opacity-60"
+              class="bg-[#39393c99] opacity-60"
               @click="showPlanetList = !showPlanetList"
             >
               <Icon
@@ -103,13 +103,11 @@
             @click="panToPlanet(item)"
           >
             <div class="flex justify-between h-full">
-              <div class="mx-3 my-1 flex flex-col justify-between">
-                <div
-                  class="tracking-widest  cursor-pointer font-bold"
-                >
+              <div class="flex flex-col justify-between mx-3 my-1">
+                <div class="font-bold tracking-widest cursor-pointer">
                   {{ item.raw.name }}
                 </div>
-                <div class="flex space-x-2 mb-1 ">
+                <div class="flex mb-1 space-x-2">
                   <Icon
                     class="cursor-pointer"
                     :icon="
@@ -150,16 +148,14 @@
     <div class="m-2 space-y-1">
       <div class="text-right">
         <h3
-          class="tracking-widest  uppercase cursor-pointer font-bold opacity-60"
+          class="font-bold tracking-widest uppercase cursor-pointer opacity-60"
         >
           Option
         </h3>
       </div>
       <div
         :class="`p-2 cursor-pointer  ${
-          store.displayPath
-            ? 'bg-[#ffffffb0] text-black'
-            : 'bg-[#ffffff33] '
+          store.displayPath ? 'bg-[#ffffffb0] text-black' : 'bg-[#ffffff33] '
         }`"
         @click="store.displayPath = !store.displayPath"
       >
@@ -181,9 +177,7 @@
       </div>
       <div
         :class="`p-2 cursor-pointer  ${
-          store.isRealScale
-            ? 'bg-[#ffffffb0] text-black'
-            : 'bg-[#ffffff33] '
+          store.isRealScale ? 'bg-[#ffffffb0] text-black' : 'bg-[#ffffff33] '
         }`"
         @click="store.isRealScale = !store.isRealScale"
       >
@@ -196,177 +190,175 @@
 
   <!-- FOOTER -->
   <div class="absolute z-10 bottom-1 left-1">
-    <div class="opacity-30 italic ">
-      Real time position is not supported
-    </div>
+    <div class="italic opacity-30">Real time position is not supported</div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { useSolarSystem } from "/@/store/solarSystem";
-  import { useI18n } from "/@/hooks/useI18n";
+import { useSolarSystem } from "/@/store/solarSystem";
+import { useI18n } from "/@/hooks/useI18n";
 
-  import { ref, watchEffect } from "vue";
-  import emitter from "/@/utils/helper/emitter";
-  import { Planet } from "/@/interface/solarSystem";
-  import PlanetMission from "./planetMission.vue";
-  const { t } = useI18n();
+import { ref, watchEffect } from "vue";
+import emitter from "/@/utils/helper/emitter";
+import { Planet } from "/@/interface/solarSystem";
+import PlanetMission from "./planetMission.vue";
+const { t } = useI18n();
 
-  const store = useSolarSystem();
+const store = useSolarSystem();
 
-  const showMission = ref(false);
-  const timelapseUnit = ref("minute(s)");
-  const timelapseOptions = [
-    {
-      key: "second(s)",
-      label: "second",
-    },
-    {
-      key: "minute(s)",
-      label: "minute",
-    },
-    {
-      key: "hour(s)",
-      label: "hour",
-    },
-    {
-      key: "day(s)",
-      label: "day",
-    },
-  ];
-  const showPlanetList = ref(true);
-  const timeDisplay = ref(0);
+const showMission = ref(false);
+const timelapseUnit = ref("minute(s)");
+const timelapseOptions = [
+  {
+    key: "second(s)",
+    label: "second",
+  },
+  {
+    key: "minute(s)",
+    label: "minute",
+  },
+  {
+    key: "hour(s)",
+    label: "hour",
+  },
+  {
+    key: "day(s)",
+    label: "day",
+  },
+];
+const showPlanetList = ref(true);
+const timeDisplay = ref(0);
 
-  watchEffect(() => {
-    if (timelapseUnit.value === "minute(s)") {
-      timeDisplay.value = store.timelapseMultiply / 60;
-    } else if (timelapseUnit.value === "hour(s)") {
-      timeDisplay.value = store.timelapseMultiply / (60 * 60);
-    } else if (timelapseUnit.value === "day(s)") {
-      timeDisplay.value = store.timelapseMultiply / (60 * 60 * 24);
-    } else {
-      timeDisplay.value = store.timelapseMultiply;
-    }
-  });
+watchEffect(() => {
+  if (timelapseUnit.value === "minute(s)") {
+    timeDisplay.value = store.timelapseMultiply / 60;
+  } else if (timelapseUnit.value === "hour(s)") {
+    timeDisplay.value = store.timelapseMultiply / (60 * 60);
+  } else if (timelapseUnit.value === "day(s)") {
+    timeDisplay.value = store.timelapseMultiply / (60 * 60 * 24);
+  } else {
+    timeDisplay.value = store.timelapseMultiply;
+  }
+});
 
-  function pinPlanet(data: {
-    raw: Planet;
-    bodySystemObj: any;
-    bodySystem: any;
-    body: any;
-    path: any;
-  }) {
-    if (store.selectedPlanet) {
-      if (store.selectedPlanet.planetData.key === data.raw.key) {
-        store.selectedPlanet = null;
-      } else {
-        emitter.emit("pin-planet", {
-          object3d: data.bodySystem,
-          planetData: data.raw,
-        });
-      }
+function pinPlanet(data: {
+  raw: Planet;
+  bodySystemObj: any;
+  bodySystem: any;
+  body: any;
+  path: any;
+}) {
+  if (store.selectedPlanet) {
+    if (store.selectedPlanet.planetData.key === data.raw.key) {
+      store.selectedPlanet = null;
     } else {
       emitter.emit("pin-planet", {
         object3d: data.bodySystem,
         planetData: data.raw,
       });
     }
-  }
-
-  function panToPlanet(data: {
-    raw: Planet;
-    bodySystemObj: any;
-    bodySystem: any;
-    body: any;
-    path: any;
-  }) {
-    emitter.emit("move-to-planet", {
+  } else {
+    emitter.emit("pin-planet", {
       object3d: data.bodySystem,
       planetData: data.raw,
     });
   }
+}
 
-  function increaseTimelapse() {
+function panToPlanet(data: {
+  raw: Planet;
+  bodySystemObj: any;
+  bodySystem: any;
+  body: any;
+  path: any;
+}) {
+  emitter.emit("move-to-planet", {
+    object3d: data.bodySystem,
+    planetData: data.raw,
+  });
+}
+
+function increaseTimelapse() {
+  switch (timelapseUnit.value) {
+    case "minute(s)":
+      store.timelapseMultiply = store.timelapseMultiply + 60;
+      break;
+    case "hour(s)":
+      store.timelapseMultiply = store.timelapseMultiply + 60 * 60;
+      break;
+    case "day(s)":
+      store.timelapseMultiply = store.timelapseMultiply + 60 * 60 * 24;
+      break;
+    default:
+      ++store.timelapseMultiply;
+      break;
+  }
+}
+function decreaseTimelapse() {
+  if (store.timelapseMultiply > 0) {
     switch (timelapseUnit.value) {
       case "minute(s)":
-        store.timelapseMultiply = store.timelapseMultiply + 60;
+        store.timelapseMultiply = store.timelapseMultiply - 60;
         break;
       case "hour(s)":
-        store.timelapseMultiply = store.timelapseMultiply + 60 * 60;
+        store.timelapseMultiply = store.timelapseMultiply - 60 * 60;
         break;
       case "day(s)":
-        store.timelapseMultiply = store.timelapseMultiply + 60 * 60 * 24;
+        store.timelapseMultiply = store.timelapseMultiply - 60 * 60 * 24;
         break;
       default:
-        ++store.timelapseMultiply;
+        --store.timelapseMultiply;
         break;
     }
   }
-  function decreaseTimelapse() {
-    if (store.timelapseMultiply > 0) {
-      switch (timelapseUnit.value) {
-        case "minute(s)":
-          store.timelapseMultiply = store.timelapseMultiply - 60;
-          break;
-        case "hour(s)":
-          store.timelapseMultiply = store.timelapseMultiply - 60 * 60;
-          break;
-        case "day(s)":
-          store.timelapseMultiply = store.timelapseMultiply - 60 * 60 * 24;
-          break;
-        default:
-          --store.timelapseMultiply;
-          break;
-      }
-    }
-  }
+}
 
-  function timelapseUnitChange(event: string) {
-    timelapseUnit.value = event;
-    switch (timelapseUnit.value) {
-      case "minute(s)":
-        store.timelapseMultiply = timeDisplay.value * 60;
-        break;
-      case "hour(s)":
-        store.timelapseMultiply = timeDisplay.value * 60 * 60;
-        break;
-      case "day(s)":
-        store.timelapseMultiply = timeDisplay.value * 60 * 60 * 24;
-        break;
-      default:
-        store.timelapseMultiply = timeDisplay.value;
-        break;
-    }
+function timelapseUnitChange(event: string) {
+  timelapseUnit.value = event;
+  switch (timelapseUnit.value) {
+    case "minute(s)":
+      store.timelapseMultiply = timeDisplay.value * 60;
+      break;
+    case "hour(s)":
+      store.timelapseMultiply = timeDisplay.value * 60 * 60;
+      break;
+    case "day(s)":
+      store.timelapseMultiply = timeDisplay.value * 60 * 60 * 24;
+      break;
+    default:
+      store.timelapseMultiply = timeDisplay.value;
+      break;
   }
+}
 
-  function handleChangeTime() {
-    store.realTime = !store.realTime;
-  }
+function handleChangeTime() {
+  store.realTime = !store.realTime;
+}
 
-  function displayPlanetInfo(event: MouseEvent, data: any) {
-    event.stopPropagation();
-    showMission.value = true;
-    store.selectedPlanetMission = data.raw;
-  }
+function displayPlanetInfo(event: MouseEvent, data: any) {
+  event.stopPropagation();
+  showMission.value = true;
+  store.selectedPlanetMission = data.raw;
+}
 
-  function handleClose() {
-    showMission.value = !showMission.value;
-  }
+function handleClose() {
+  showMission.value = !showMission.value;
+}
 </script>
 
 <style>
-  .planet-list::-webkit-scrollbar {
-    height: 4px;
-    width: 4px;
-  }
+.planet-list::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
 
-  .planet-list::-webkit-scrollbar-track {
-    background: #25252599;
-    border-radius: 12px;
-  }
+.planet-list::-webkit-scrollbar-track {
+  background: #25252599;
+  border-radius: 12px;
+}
 
-  .planet-list::-webkit-scrollbar-thumb {
-    border-radius: 12px;
-    background: rgb(75, 75, 75);
-  }
+.planet-list::-webkit-scrollbar-thumb {
+  border-radius: 12px;
+  background: rgb(75, 75, 75);
+}
 </style>
