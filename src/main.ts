@@ -23,6 +23,7 @@ import {
   NIconWrapper,
   NSkeleton,
   NTag,
+  NPopover,
 } from "naive-ui";
 
 async function bootstrap() {
@@ -37,6 +38,7 @@ async function bootstrap() {
       NSwitch,
       NDivider,
       NTooltip,
+      NPopover,
       NSlider,
       NIconWrapper,
       NSkeleton,

@@ -177,7 +177,7 @@
     <div class="flex flex-col items-start mt-6 mb-4 space-y-1">
       <div class="flex space-x-5">
         <div v-for="(item, index) in aboutMe.contacts" :key="index" class="">
-          <a :href="item.url" target="_blank">
+          <a v-if="item.label !== 'Email'" :href="item.url" target="_blank">
             <img
               :src="item.url_img"
               :class="`
@@ -185,6 +185,12 @@
                w-9 h-9 mb-1 grayscale opacity-40 hover:opacity-100 transition-all duration-150`"
             />
           </a>
+          <div v-else>
+            <img
+              :src="item.url_img"
+              class="mb-1 transition-all duration-150 w-9 h-9 grayscale opacity-40 hover:opacity-100"
+            />
+          </div>
         </div>
       </div>
       <span class="h-[1px] bg-white opacity-30 w-full"></span>
@@ -204,75 +210,75 @@
 </template>
 
 <script lang="ts" setup>
-  import { useI18n } from "/@/hooks/useI18n";
-  import { ref } from "vue";
-  import { aboutMe } from "./mock";
-  import { fetchTextureMaps } from "/@/api/solarSystem";
-  import { useHomePage } from "/@/store/homepage";
+import { useI18n } from "/@/hooks/useI18n";
+import { ref } from "vue";
+import { aboutMe } from "./mock";
+import { fetchTextureMaps } from "/@/api/solarSystem";
+import { useHomePage } from "/@/store/homepage";
 
-  const store = useHomePage();
-  const { t } = useI18n();
-  const languages = [
-    "vue",
-    "ts",
-    "tailwind",
-    "pinia",
-    "nestjs",
-    "three",
-    "naive",
-  ];
-  fetchSkills();
-  fetchLibraries();
-  async function fetchSkills() {
-    const params = {
-      filter: [
-        {
-          key: "folder",
-          value: "Skills",
-        },
-      ],
-    };
-    const res = await fetchTextureMaps(params);
-    if (res) {
-      res.data.forEach((e: any) => {
-        // MAKE A TABLE LATER YOU LAZY BASTARD
-        if (["js", "ts", "vue"].includes(e.key)) {
-          e.priority = 2;
-        } else if (["nodejs", "three", "nestjs"].includes(e.key)) {
-          e.priority = 0;
-        } else e.priority = 1;
-      });
-      store.skills = res.data;
-    }
+const store = useHomePage();
+const { t } = useI18n();
+const languages = [
+  "vue",
+  "ts",
+  "tailwind",
+  "pinia",
+  "nestjs",
+  "three",
+  "naive",
+];
+fetchSkills();
+fetchLibraries();
+async function fetchSkills() {
+  const params = {
+    filter: [
+      {
+        key: "folder",
+        value: "Skills",
+      },
+    ],
+  };
+  const res = await fetchTextureMaps(params);
+  if (res) {
+    res.data.forEach((e: any) => {
+      // MAKE A TABLE LATER YOU LAZY BASTARD
+      if (["js", "ts", "vue"].includes(e.key)) {
+        e.priority = 2;
+      } else if (["nodejs", "three", "nestjs"].includes(e.key)) {
+        e.priority = 0;
+      } else e.priority = 1;
+    });
+    store.skills = res.data;
   }
-  async function fetchLibraries() {
-    const params = {
-      filter: [
-        {
-          key: "folder",
-          value: "Libraries",
-        },
-      ],
-    };
-    const res = await fetchTextureMaps(params);
-    if (res) {
-      res.data.forEach((e: any) => {
-        // MAKE A TABLE LATER YOU LAZY BASTARD
-        if (["pinia", "tailwind", "antd", "el"].includes(e.key)) {
-          e.priority = 2;
-        } else if (["bootstrap", "recoil"].includes(e.key)) {
-          e.priority = 0;
-        } else e.priority = 1;
-      });
-      store.libraries = res.data;
-    }
+}
+async function fetchLibraries() {
+  const params = {
+    filter: [
+      {
+        key: "folder",
+        value: "Libraries",
+      },
+    ],
+  };
+  const res = await fetchTextureMaps(params);
+  if (res) {
+    res.data.forEach((e: any) => {
+      // MAKE A TABLE LATER YOU LAZY BASTARD
+      if (["pinia", "tailwind", "antd", "el"].includes(e.key)) {
+        e.priority = 2;
+      } else if (["bootstrap", "recoil"].includes(e.key)) {
+        e.priority = 0;
+      } else e.priority = 1;
+    });
+    store.libraries = res.data;
   }
+}
 
-  function getSKillImg(key: string): string {
-    let found: any = store.skills.find((e: any) => e.key === key);
-    if (!found) {
-      found = store.libraries.find((e: any) => e.key === key);
-    }
-    return found ? found.url : "N/A";
+function getSKillImg(key: string): string {
+  let found: any = store.skills.find((e: any) => e.key === key);
+  if (!found) {
+    found = store.libraries.find((e: any) => e.key === key);
   }
+  return found ? found.url : "N/A";
+}
 </script>

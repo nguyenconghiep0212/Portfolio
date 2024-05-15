@@ -167,7 +167,7 @@
     <div class="flex flex-col items-start mt-8 space-y-1">
       <div class="flex space-x-5">
         <div v-for="(item, index) in aboutMe.contacts" :key="index" class="">
-          <a :href="item.url" target="_blank">
+          <a v-if="item.label !== 'Email'" :href="item.url" target="_blank">
             <img
               :src="item.url_img"
               :class="`
@@ -175,6 +175,21 @@
                w-9 h-9 mb-1 grayscale opacity-40 hover:opacity-100 transition-all duration-150`"
             />
           </a>
+          <div v-else>
+            <n-popover trigger="click">
+              <template #trigger>
+                <img
+                  :src="item.url_img"
+                  class="mb-1 transition-all duration-150 w-9 h-9 grayscale opacity-40 hover:opacity-100"
+                />
+              </template>
+              <div class="flex flex-col p-1 space-y-1">
+                <n-input v-model="mailForm.company" placeholder="Company's name" />
+                <n-input v-model="mailForm.companyUrl" placeholder="Company's homepage / Recruiting url" />
+                <n-input v-model="mailForm.content" type="area" placeholder="Mail's content" />
+              </div>
+            </n-popover>
+          </div>
         </div>
       </div>
     </div>
@@ -182,67 +197,71 @@
 </template>
 
 <script lang="ts" setup>
-  import { useI18n } from "/@/hooks/useI18n";
-  import { ref } from "vue";
-  import { aboutMe } from "./mock";
-  import { fetchTextureMaps } from "/@/api/solarSystem";
-  import { useHomePage } from "/@/store/homepage";
+import { useI18n } from "/@/hooks/useI18n";
+import { ref } from "vue";
+import { aboutMe } from "./mock";
+import { fetchTextureMaps } from "/@/api/solarSystem";
+import { useHomePage } from "/@/store/homepage";
 
-  const store = useHomePage();
-  const { t } = useI18n();
+const store = useHomePage();
+const { t } = useI18n();
+const mailForm = ref<{ company: string; companyUrl: string; content: string }>({
+  company: "",
+  companyUrl: "",
+  content: "Let keep in touch !!",
+});
+fetchSkills();
+fetchLibraries();
+async function fetchSkills() {
+  const params = {
+    filter: [
+      {
+        key: "folder",
+        value: "Skills",
+      },
+    ],
+  };
+  const res = await fetchTextureMaps(params);
+  if (res) {
+    res.data.forEach((e: any) => {
+      // MAKE A TABLE LATER YOU LAZY BASTARD
+      if (["js", "ts", "vue"].includes(e.key)) {
+        e.priority = 2;
+      } else if (["nodejs", "three", "nestjs"].includes(e.key)) {
+        e.priority = 0;
+      } else e.priority = 1;
+    });
+    store.skills = res.data;
+  }
+}
+async function fetchLibraries() {
+  const params = {
+    filter: [
+      {
+        key: "folder",
+        value: "Libraries",
+      },
+    ],
+  };
+  const res = await fetchTextureMaps(params);
+  if (res) {
+    res.data.forEach((e: any) => {
+      // MAKE A TABLE LATER YOU LAZY BASTARD
+      if (["pinia", "tailwind", "antd", "el"].includes(e.key)) {
+        e.priority = 2;
+      } else if (["bootstrap", "recoil"].includes(e.key)) {
+        e.priority = 0;
+      } else e.priority = 1;
+    });
+    store.libraries = res.data;
+  }
+}
 
-  fetchSkills();
-  fetchLibraries();
-  async function fetchSkills() {
-    const params = {
-      filter: [
-        {
-          key: "folder",
-          value: "Skills",
-        },
-      ],
-    };
-    const res = await fetchTextureMaps(params);
-    if (res) {
-      res.data.forEach((e: any) => {
-        // MAKE A TABLE LATER YOU LAZY BASTARD
-        if (["js", "ts", "vue"].includes(e.key)) {
-          e.priority = 2;
-        } else if (["nodejs", "three", "nestjs"].includes(e.key)) {
-          e.priority = 0;
-        } else e.priority = 1;
-      });
-      store.skills = res.data;
-    }
+function getSKillImg(key: string): string {
+  let found: any = store.skills.find((e: any) => e.key === key);
+  if (!found) {
+    found = store.libraries.find((e: any) => e.key === key);
   }
-  async function fetchLibraries() {
-    const params = {
-      filter: [
-        {
-          key: "folder",
-          value: "Libraries",
-        },
-      ],
-    };
-    const res = await fetchTextureMaps(params);
-    if (res) {
-      res.data.forEach((e: any) => {
-        // MAKE A TABLE LATER YOU LAZY BASTARD
-        if (["pinia", "tailwind", "antd", "el"].includes(e.key)) {
-          e.priority = 2;
-        } else if (["bootstrap", "recoil"].includes(e.key)) {
-          e.priority = 0;
-        } else e.priority = 1;
-      });
-      store.libraries = res.data;
-    }
-  }
-
-  function getSKillImg(key: string): string {
-    let found: any = store.skills.find((e: any) => e.key === key);
-    if (!found) {
-      found = store.libraries.find((e: any) => e.key === key);
-    }
-    return found ? found.url : "N/A";
-  }
+  return found ? found.url : "N/A";
+}
 </script>

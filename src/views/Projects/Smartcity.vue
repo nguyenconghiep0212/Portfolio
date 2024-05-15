@@ -1,36 +1,38 @@
 <template>
-  <div class="relative">
-    <div class="px-[20%] mt-[20vh]">
+  <div class="relative w-full h-full">
+    <div class="px-40 pt-[20vh]">
       <BaseFrame>
-        <div class="relative w-full h-full">
-          <img
-            class="w-full h-full opacity-60"
-            src="https://res.cloudinary.com/dc7jd2eeu/image/upload/v1714763167/TownModel/b36sgcjfwfseo6awdcjm.jpg"
-          />
-        </div>
+        <template v-slot:content>
+          <div class="relative w-full h-full">
+            <img class="w-full h-full opacity-60" :src="smct" />
+          </div>
+        </template>
+        <template v-slot:annotation>
+          <div ref="point2ref" class="rounded-full anchor top-40 left-20"></div>
+        </template>
       </BaseFrame>
     </div>
-
-    <!-- ANNOTATION -->
     <div class="absolute top-0 left-0 z-50 w-full h-full">
-      <div id="content">
-        <div ref="point1ref" class="top-0 rounded-full anchor left-10"></div>
-        <div ref="point2ref" class="rounded-full anchor top-40 left-20"></div>
-        <div id="line" class="bg-cyan-500"></div>
+      <div ref="point1ref" class="top-0 !w-max !h-max p-1 anchor left-0">
+        test
       </div>
+      <div id="line" class="bg-cyan-500"></div>
     </div>
   </div>
 </template>
+      
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import { adjustLine } from "/@/utils/helper/connectDivs";
+import smct from "/@/assets/images/smct.png";
 import BaseFrame from "./BaseFrame.vue";
 
 const point1ref = ref(null);
 const point2ref = ref(null);
 
 onMounted(() => {
+  console.log(point2ref.value);
   adjustLine(point1ref.value, point2ref.value, document.getElementById("line"));
 });
 </script>

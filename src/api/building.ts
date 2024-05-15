@@ -11,3 +11,4 @@ export const fetchBuildings = (filter: {
     { isTransformResponse: false, joinParamsToUrl: false }
   );
 };
+ 
