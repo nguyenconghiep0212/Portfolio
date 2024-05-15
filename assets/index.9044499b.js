@@ -1,4 +1,4 @@
-import{b as c,i as l,ai as r,r as u,j as d,g as t,h as p,f,o as h}from"./vendor.d3e60839.js";const m={class:"flex flex-col items-center justify-center w-full h-full"},g=t("div",{class:"mt-2 text-lg font-bold tracking-widest uppercase opacity-60"}," under construction . . . ",-1),b=c({__name:"index",setup(_){const n=l();r();const e=u(null);function s(o){e.value&&e.value.style&&(e.value.style.background=`radial-gradient(
+import{b as c,i as l,a2 as r,r as u,j as d,g as t,h as p,f,o as h}from"./vendor.e73689a0.js";const m={class:"flex flex-col items-center justify-center w-full h-full"},g=t("div",{class:"mt-2 text-lg font-bold tracking-widest uppercase opacity-60"}," under construction . . . ",-1),b=c({__name:"index",setup(_){const n=l();r();const e=u(null);function s(o){e.value&&e.value.style&&(e.value.style.background=`radial-gradient(
           1000px at ${o.clientX}px ${o.clientY}px,
           rgba(29, 78, 216, 0.15),
           transparent 80%
