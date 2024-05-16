@@ -20,11 +20,28 @@
       </n-form-item>
     </n-form>
 
-    <div class="text-right">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-1">
+        <n-button strong secondary type="primary" size="small">
+          <a
+            href="mailto:nguyenconghiep0212@gmail.com?subject=Greeting&body=Let keep in touch !!"
+          >
+            <img
+              class="w-5"
+              src="https://res.cloudinary.com/dc7jd2eeu/image/upload/v1715451670/Contacts/egxecjvy5cwwu28fkanz.png"
+            />
+          </a>
+        </n-button>
+
+        <span class="text-xs italic opacity-40"
+          >open official gmail composer</span
+        >
+      </div>
+
       <n-button
         :loading="loading"
         size="small"
-        type="primary"
+        type="info"
         strong
         secondary
         @click="handleValidateButtonClick"
