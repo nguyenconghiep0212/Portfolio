@@ -117,7 +117,7 @@
     <div class="flex flex-col items-start mt-6 mb-4 space-y-1">
       <div class="flex space-x-5">
         <div v-for="(item, index) in aboutMe.contacts" :key="index" class="">
-          <a :href="item.url" target="_blank">
+          <a v-if="item.label !== 'Email'"  :href="item.url" target="_blank">
             <img
               :src="item.url_img"
               :class="`
@@ -125,8 +125,8 @@
                w-9 h-9 mb-1 grayscale opacity-40 hover:opacity-100 transition-all duration-150`"
             />
           </a>
-          <!-- <div v-else>
-            <n-popover trigger="click">
+          <div v-else>
+            <n-popover trigger="click" :arrow-style="{background:'#020713'}" :content-style="{background: '#020713'}"	raw>
               <template #trigger>
                 <img
                   :src="item.url_img"
@@ -135,7 +135,7 @@
               </template>
               <MailForm />
             </n-popover>
-          </div> -->
+          </div>
         </div>
       </div>
       <span class="h-[1px] bg-white opacity-30 w-full"></span>

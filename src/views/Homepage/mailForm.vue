@@ -1,25 +1,48 @@
 <template>
-  <div class="flex flex-col p-1 space-y-1">
-    <n-input v-model:value="mailForm.company" placeholder="Company's name" />
-    <n-input
-      v-model:value="mailForm.companyUrl"
-      placeholder="Company's homepage / Recruiting url"
-    />
-    <n-input
-      v-model:value="mailForm.content"
-      type="textarea"
-      :rows="7"
-      placeholder="Mail's content"
-    />
+  <div class="flex flex-col p-2 space-y-1 w-96">
+    <n-form ref="formRef" :model="mailForm" :rules="rules" size="small">
+      <n-form-item path="company" label="From:">
+        <n-input v-model:value="mailForm.company" placeholder="From" />
+      </n-form-item>
+      <n-form-item path="companyUrl" label="Referral link:">
+        <n-input
+          v-model:value="mailForm.companyUrl"
+          placeholder="Referral link"
+        />
+      </n-form-item>
+      <n-form-item path="content" label="Content:">
+        <n-input
+          v-model:value="mailForm.content"
+          type="textarea"
+          :rows="7"
+          placeholder="Mail's content"
+        />
+      </n-form-item>
+    </n-form>
+
     <div class="text-right">
-      <n-button @click="handleSendMail">Send</n-button>
+      <n-button
+        :loading="loading"
+        size="small"
+        type="primary"
+        strong
+        secondary
+        @click="handleValidateButtonClick"
+      >
+        Send
+      </n-button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
   import { ref } from "vue";
-  import { useNotification, NotificationType } from "naive-ui";
+  import {
+    useNotification,
+    NotificationType,
+    FormRules,
+    FormValidationError,
+  } from "naive-ui";
   import { sendMail } from "/@/api/sendMail";
   const mailForm = ref<{
     company: string;
@@ -28,8 +51,27 @@
   }>({
     company: "",
     companyUrl: "",
-    content: "Let keep in touch !!",
+    content: "",
   });
+  const formRef = ref(null);
+  const rules: FormRules = {
+    company: {
+      required: true,
+      message: "Please enter your name",
+      trigger: ["input"],
+    },
+    companyUrl: {
+      required: true,
+      message: "Please enter referral link (recruitment link)",
+      trigger: ["input"],
+    },
+    content: {
+      required: true,
+      message: "Please enter mail content",
+      trigger: ["input"],
+    },
+  };
+  const loading = ref(false);
   const notification = useNotification();
   function notify(type: NotificationType, content: string, meta = "") {
     notification[type]({
@@ -42,6 +84,7 @@
 
   async function handleSendMail() {
     try {
+      loading.value = true;
       const res = await sendMail(mailForm.value);
       console.log(res, "res");
       if (res) {
@@ -53,6 +96,26 @@
         "Oops, there seem to be a problem has occurred",
         "Please contact me in others platforms"
       );
+    } finally {
+      loading.value = false;
     }
   }
+
+  function handleValidateButtonClick(e: MouseEvent) {
+    e.preventDefault();
+    formRef.value?.validate(
+      (errors: Array<FormValidationError> | undefined) => {
+        if (!errors) {
+          handleSendMail();
+        } else {
+          console.log(errors);
+        }
+      }
+    );
+  }
 </script>
+<style>
+  .n-form-item-feedback-wrapper {
+    min-height: 10px !important;
+  }
+</style>

@@ -4,12 +4,12 @@
       <!-- INTRODUCTION -->
       <div class="space-y-1 text-left">
         <div
-          class="px-4 py-3 text-5xl font-bold tracking-tight uppercase transition-all duration-150 font-inter w-max bg-sky-500 mix-blend-screen"
+          class="px-4 py-3 text-xl font-bold tracking-tight uppercase transition-all duration-150 sm:text-5xl font-inter w-max bg-sky-500 mix-blend-screen"
         >
           {{ aboutMe.name }}
         </div>
         <div
-          class="pt-3 px-4 pb-1 !-ml-2 !-mt-3 bg-[darkcyan] mix-blend-screen w-max text-2xl font-medium tracking-tight transition-all duration-150 font-inter"
+          class="pt-3 px-4 pb-1 !-ml-2 !-mt-3 bg-[darkcyan] mix-blend-screen w-max text-md sm:text-2xl font-medium tracking-tight transition-all duration-150 font-inter"
         >
           {{ aboutMe.title }}
         </div>
@@ -22,7 +22,7 @@
       <div class="mt-6 text-left">
         <div class="flex items-center space-x-4">
           <span
-            class="text-lg font-bold tracking-widest uppercase w-max whitespace-nowrap px-2 py-1 bg-[darkcyan]"
+            class="text-xs sm:text-lg font-bold tracking-widest uppercase w-max whitespace-nowrap px-2 py-1 bg-[darkcyan]"
           >
             <span class="opacity-80">{{ t("view.homepage.academic") }}</span>
           </span>
@@ -45,7 +45,7 @@
       <div class="mt-6 text-left">
         <div class="flex items-center space-x-2">
           <div
-            class="text-lg font-bold tracking-widest uppercase w-max whitespace-nowrap px-2 py-1 bg-[darkcyan]"
+            class="text-xs sm:text-lg font-bold tracking-widest uppercase w-max whitespace-nowrap px-2 py-1 bg-[darkcyan]"
           >
             <span class="opacity-80">
               {{ t("view.homepage.languages") }} &
@@ -75,7 +75,7 @@
       <div class="mt-6 text-left">
         <div class="flex items-center space-x-2">
           <span
-            class="text-lg font-bold tracking-widest uppercase w-max whitespace-nowrap px-2 py-1 bg-[darkcyan]"
+            class="text-xs sm:text-lg font-bold tracking-widest uppercase w-max whitespace-nowrap px-2 py-1 bg-[darkcyan]"
           >
             <span class="opacity-80">{{ t("view.homepage.libraries") }}</span>
           </span>
@@ -107,7 +107,7 @@
     <div class="flex flex-col items-start mt-8 space-y-1">
       <div class="flex space-x-5">
         <div v-for="(item, index) in aboutMe.contacts" :key="index" class="">
-          <a :href="item.url" target="_blank">
+          <a v-if="item.label !== 'Email'" :href="item.url" target="_blank">
             <img
               :src="item.url_img"
               :class="`
@@ -115,8 +115,8 @@
                w-9 h-9 mb-1 grayscale opacity-40 hover:opacity-100 transition-all duration-150`"
             />
           </a>
-          <!-- <div v-else>
-            <n-popover trigger="click">
+          <div v-else>
+            <n-popover trigger="click" :arrow-style="{background:'#020713'}" :content-style="{background: '#020713'}"	raw>
               <template #trigger>
                 <img
                   :src="item.url_img"
@@ -125,7 +125,7 @@
               </template>
               <MailForm />
             </n-popover>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>

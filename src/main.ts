@@ -25,6 +25,8 @@ import {
   NTag,
   NPopover,
   NNotificationProvider,
+  NForm,
+  NFormItem,
 } from "naive-ui";
 
 async function bootstrap() {
@@ -44,16 +46,14 @@ async function bootstrap() {
       NIconWrapper,
       NSkeleton,
       NTag,
-      NNotificationProvider
+      NNotificationProvider,
+      NForm,
+      NFormItem,
     ],
   });
-  const app = createApp(App)
-    .use(router)
-    .use(createPinia())
-    .use(naive)
+  const app = createApp(App).use(router).use(createPinia()).use(naive);
 
-
-     registerGlobalComp(app)
+  registerGlobalComp(app);
 
   await setupI18n(app);
 
