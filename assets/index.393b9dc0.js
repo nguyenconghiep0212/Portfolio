@@ -1,0 +1,5 @@
+import{b as c,i as l,a5 as r,r as u,j as d,g as t,h as f,f as p,o as h}from"./vendor.94fbfd90.js";const m={class:"flex flex-col items-center justify-center w-full h-full"},g=t("div",{class:"mt-2 text-lg font-bold tracking-widest uppercase opacity-60"}," under construction . . . ",-1),b=c({__name:"index",setup(_){const n=l();r();const e=u(null);function s(o){e.value&&e.value.style&&(e.value.style.background=`radial-gradient(
+          1000px at ${o.clientX}px ${o.clientY}px,
+          rgba(29, 78, 216, 0.15),
+          transparent 80%
+        )`)}function a(){n.push({path:"/"})}return(o,x)=>{const i=p("Icon");return h(),d("div",{class:"w-full h-full",onMousemove:s},[t("div",{ref_key:"mouseHighlight",ref:e,class:"fixed inset-0 z-30 transition duration-300 pointer-events-none"},null,512),t("div",m,[f(i,{class:"!text-9xl opacity-60 animate-bounce",icon:"solar:sledgehammer-bold-duotone"}),g,t("div",{class:"flex justify-center w-40 p-1 tracking-widest uppercase transition-all duration-200 cursor-pointer bg-cyan-500 hover:w-96",onClick:a}," let's head back ")])],32)}}});export{b as default};

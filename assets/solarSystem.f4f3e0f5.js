@@ -1,0 +1,1 @@
+import{h as s}from"./index.788fa20f.js";const e=a=>s.post({url:"/api/texture-map/list-all",data:a},{isTransformResponse:!1,joinParamsToUrl:!1}),r=a=>s.post({url:"/api/planets/list-all",data:a},{isTransformResponse:!1,joinParamsToUrl:!1});export{r as a,e as f};
