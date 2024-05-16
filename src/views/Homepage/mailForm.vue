@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col p-2 space-y-1 w-96">
+  <div class="flex flex-col p-2 space-y-1 sm:w-96">
     <n-form ref="formRef" :model="mailForm" :rules="rules" size="small">
       <n-form-item path="company" label="From:">
         <n-input v-model:value="mailForm.company" placeholder="From" />
@@ -33,12 +33,13 @@
           </a>
         </n-button>
 
-        <span class="text-xs italic opacity-40"
-          >open official gmail composer</span
-        >
+        <span class="text-xs italic opacity-40">
+          open official gmail composer
+        </span>
       </div>
 
       <n-button
+        class="ml-4"
         :loading="loading"
         size="small"
         type="info"
